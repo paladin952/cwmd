@@ -16,6 +16,7 @@ Faculty group project for creating a web aplication where users can manage flows
 * Radu Corbu     - team lead, implementation, documentation
 * Diana Cosma    - documentation, testing, application design
 
+**For more information regarding the application, please check the contents of the docs folder**
 
 ###### **Babeș-Bolyai University, 2016**
 
