@@ -1,4 +1,4 @@
-# cwmd
+# application
 ---
 
 ### Content Workflow Management Document

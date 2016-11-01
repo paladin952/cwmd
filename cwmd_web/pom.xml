@@ -12,10 +12,16 @@
     <artifactId>cwmd_web</artifactId>
 
     <properties>
-        <spring.version>4.3.3.RELEASE</spring.version>
+        <spring.version>4.2.5.RELEASE</spring.version>
+        <myapp.version>0.1</myapp.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.0.Final</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -27,9 +33,14 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+        <dependency>
             <groupId>com.RESILIENCEWILLFIXIT</groupId>
             <artifactId>cwmd_core</artifactId>
-            <version>0.1</version>
+            <version>${myapp.version}</version>
         </dependency>
     </dependencies>
 </project>

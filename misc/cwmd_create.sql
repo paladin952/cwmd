@@ -12,22 +12,22 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure for cwdm_db
-CREATE DATABASE IF NOT EXISTS `cwdm_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `cwdm_db`;
+-- Dumping database structure for cwmd_db
+CREATE DATABASE IF NOT EXISTS `cwmd_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `cwmd_db`;
 
--- Dumping structure for table cwdm_db.department
+-- Dumping structure for table cwmd_db.department
 CREATE TABLE IF NOT EXISTS `department` (
   `DepartmentID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
   PRIMARY KEY (`DepartmentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwdm_db.department: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.department: ~0 rows (approximately)
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 
--- Dumping structure for table cwdm_db.department_user
+-- Dumping structure for table cwmd_db.department_user
 CREATE TABLE IF NOT EXISTS `department_user` (
   `DepartmentID` int(11) NOT NULL,
   `Username` varchar(60) NOT NULL,
@@ -37,11 +37,11 @@ CREATE TABLE IF NOT EXISTS `department_user` (
   CONSTRAINT `FK_DepartmentUserUser` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of users assigned to a department';
 
--- Dumping data for table cwdm_db.department_user: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.department_user: ~0 rows (approximately)
 /*!40000 ALTER TABLE `department_user` DISABLE KEYS */;
 /*!40000 ALTER TABLE `department_user` ENABLE KEYS */;
 
--- Dumping structure for table cwdm_db.document
+-- Dumping structure for table cwmd_db.document
 CREATE TABLE IF NOT EXISTS `document` (
   `DocumentID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(60) NOT NULL,
@@ -53,11 +53,11 @@ CREATE TABLE IF NOT EXISTS `document` (
   CONSTRAINT `FK_DocumentOwner` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwdm_db.document: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.document: ~0 rows (approximately)
 /*!40000 ALTER TABLE `document` DISABLE KEYS */;
 /*!40000 ALTER TABLE `document` ENABLE KEYS */;
 
--- Dumping structure for table cwdm_db.flow
+-- Dumping structure for table cwmd_db.flow
 CREATE TABLE IF NOT EXISTS `flow` (
   `FlowID` int(11) NOT NULL AUTO_INCREMENT,
   `CurrentDepartment` int(11) NOT NULL DEFAULT '0',
@@ -65,11 +65,11 @@ CREATE TABLE IF NOT EXISTS `flow` (
   PRIMARY KEY (`FlowID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwdm_db.flow: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.flow: ~0 rows (approximately)
 /*!40000 ALTER TABLE `flow` DISABLE KEYS */;
 /*!40000 ALTER TABLE `flow` ENABLE KEYS */;
 
--- Dumping structure for table cwdm_db.flow_document
+-- Dumping structure for table cwmd_db.flow_document
 CREATE TABLE IF NOT EXISTS `flow_document` (
   `FlowID` int(11) NOT NULL,
   `DocumentID` int(11) NOT NULL,
@@ -79,11 +79,11 @@ CREATE TABLE IF NOT EXISTS `flow_document` (
   CONSTRAINT `FK_FlowDocumentFlow` FOREIGN KEY (`DocumentID`) REFERENCES `document` (`DocumentID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwdm_db.flow_document: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.flow_document: ~0 rows (approximately)
 /*!40000 ALTER TABLE `flow_document` DISABLE KEYS */;
 /*!40000 ALTER TABLE `flow_document` ENABLE KEYS */;
 
--- Dumping structure for table cwdm_db.flow_path
+-- Dumping structure for table cwmd_db.flow_path
 CREATE TABLE IF NOT EXISTS `flow_path` (
   `FlowID` int(11) NOT NULL,
   `DepartmentID` int(11) NOT NULL,
@@ -93,39 +93,44 @@ CREATE TABLE IF NOT EXISTS `flow_path` (
   CONSTRAINT `FK_FlowDepartmentFlow` FOREIGN KEY (`FlowID`) REFERENCES `flow` (`FlowID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwdm_db.flow_path: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.flow_path: ~0 rows (approximately)
 /*!40000 ALTER TABLE `flow_path` DISABLE KEYS */;
 /*!40000 ALTER TABLE `flow_path` ENABLE KEYS */;
 
--- Dumping structure for table cwdm_db.user
+-- Dumping structure for table cwmd_db.user
 CREATE TABLE IF NOT EXISTS `user` (
   `Username` varchar(60) NOT NULL,
   `Password` varchar(30) NOT NULL,
-  `Role` enum('A','M','C','R') NOT NULL,
-  `UserInfo` int(11) NOT NULL,
-  PRIMARY KEY (`Username`),
-  KEY `FK_UserInfo` (`UserInfo`),
-  CONSTRAINT `FK_UserInfo` FOREIGN KEY (`UserInfo`) REFERENCES `user_details` (`EntryID`) ON DELETE CASCADE ON UPDATE CASCADE
+  `Role` int(11) NOT NULL,
+  PRIMARY KEY (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwdm_db.user: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.user: ~0 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`Username`, `Password`, `Role`) VALUES
+	('admin', 'admin', 0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
--- Dumping structure for table cwdm_db.user_details
+-- Dumping structure for table cwmd_db.user_details
 CREATE TABLE IF NOT EXISTS `user_details` (
   `EntryID` int(11) NOT NULL AUTO_INCREMENT,
+  `Username` varchar(60) NOT NULL,
   `FirstName` varchar(60) NOT NULL,
   `LastName` varchar(60) NOT NULL,
   `Address` varchar(255) DEFAULT NULL,
   `Email` varchar(60) NOT NULL,
   `PhoneNumber` bigint(20) DEFAULT NULL,
   `IsDepartmentChief` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`EntryID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`EntryID`),
+  KEY `FK7nor195hp6whxc5qt7xgga842` (`Username`),
+  CONSTRAINT `FK7nor195hp6whxc5qt7xgga842` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`),
+  CONSTRAINT `FK_UserDetailsUsername` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwdm_db.user_details: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.user_details: ~1 rows (approximately)
 /*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
+INSERT INTO `user_details` (`EntryID`, `Username`, `FirstName`, `LastName`, `Address`, `Email`, `PhoneNumber`, `IsDepartmentChief`) VALUES
+	(1, 'admin', 'Awesome', 'McAwesomesauce', '42A Awesome st', 'awesome@awesome.com', 743760319, 1);
 /*!40000 ALTER TABLE `user_details` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
