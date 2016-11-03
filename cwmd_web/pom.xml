@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cwmd_web</artifactId>
+    <packaging>war</packaging>
 
     <properties>
         <spring.version>4.2.5.RELEASE</spring.version>
@@ -18,10 +19,19 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.RESILIENCEWILLFIXIT</groupId>
+            <artifactId>cwmd_core</artifactId>
+            <version>${myapp.version}</version>
+        </dependency>
+
+        <!-- HIBERNATE -->
+        <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <version>1.0.0.Final</version>
         </dependency>
+
+        <!-- SPRING -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -32,15 +42,27 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
+        <!-- JACKSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.7.3</version>
         </dependency>
+
+        <!-- JSTL -->
         <dependency>
-            <groupId>com.RESILIENCEWILLFIXIT</groupId>
-            <artifactId>cwmd_core</artifactId>
-            <version>${myapp.version}</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
         </dependency>
+
+        <!-- UPLOAD -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
     </dependencies>
 </project>

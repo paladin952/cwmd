@@ -53,12 +53,18 @@ span
     margin-bottom: 1em;
 }
 
+form .from-errors {
+    position: absolute;
+    font-style: italic;
+    color: #f44343 !important;
+}
+
 .welcome-msg
 {
     height: 64px;
     line-height: 64px;
     overflow: auto;
-    color: #996019;
+    color: red;
     text-shadow: 2px 2px #000000;
     border-box: none;
     text-align: center;
