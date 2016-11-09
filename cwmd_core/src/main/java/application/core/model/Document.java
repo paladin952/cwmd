@@ -1,6 +1,5 @@
-package application.core.model.validators;
+package application.core.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

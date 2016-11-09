@@ -1,6 +1,5 @@
 package application.core.model;
 
-import application.core.model.validators.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -16,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class Flow implements Serializable{
+public class Flow implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EntryID")
@@ -26,11 +25,11 @@ public class Flow implements Serializable{
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "EntryID")
-    private List<Document> userDocument;
+    private List<Document> documents;
 
     // Could do: change to FetchType.LAZY
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "EntryID")
-    private List<Department> userDepartment;
+    private List<Department> departments;
 }

@@ -47,18 +47,16 @@ public class UserDetails implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("first name: ");
-        return sb.append(firstName)
-                .append(", last name: ")
-                .append(lastName)
-                .append(", address: ")
-                .append(address)
-                .append(", e-mail: ")
-                .append(email)
-                .append(", phone no.: ")
-                .append(phoneNumber)
-                .append(", is chief of department: ")
-                .append(isDepartmentChief)
-                .toString();
+        return "first name: " + firstName +
+                ", last name: " +
+                lastName +
+                ", address: " +
+                address +
+                ", e-mail: " +
+                email +
+                ", phone no.: " +
+                phoneNumber +
+                ", is chief of department: " +
+                isDepartmentChief;
     }
 }
