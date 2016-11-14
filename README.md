@@ -2,7 +2,7 @@
 
 ---
 
-### Content Workflow Management Document
+### Content Workflow Management
 
 Faculty group project for creating a web aplication where users can manage flows of documents.
 
