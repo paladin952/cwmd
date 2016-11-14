@@ -1,4 +1,5 @@
-# application
+# Group project application
+
 ---
 
 ### Content Workflow Management Document
