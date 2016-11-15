@@ -26,4 +26,7 @@ public class Document implements Serializable {
 
     @Column(name = "DateAdded", nullable = false)
     private Date dateAdded;
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    private User owner;
 }

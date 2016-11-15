@@ -14,7 +14,7 @@
     <h1 class="welcome-msg">
         LOG IN
     </h1>
-    <form:form id="login-form" method="post" commandName="user">
+    <form:form id="login-form" method="post" commandName="user" class="login-form">
         <div id="error">
             ${error}
         </div>
