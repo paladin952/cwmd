@@ -1,6 +1,5 @@
 package application.core.model;
 
-import application.core.model.validators.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -22,15 +21,16 @@ public class Flow implements Serializable{
     @Column(name = "EntryID")
     private Integer id;
 
-    // Could do: change to FetchType.LAZY
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "EntryID")
-    private List<Document> userDocument;
-
-    // Could do: change to FetchType.LAZY
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "EntryID")
-    private List<Department> userDepartment;
+    //TODO: UNDO THE COMMENT AND FIX THE HIBERNATE RELATIONSHIPS
+//    // Could do: change to FetchType.LAZY
+//    @JsonIgnore
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "EntryID")
+//    private List<Document> userDocument;
+//
+//    // Could do: change to FetchType.LAZY
+//    @JsonIgnore
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "EntryID")
+//    private List<Department> userDepartment;
 }
