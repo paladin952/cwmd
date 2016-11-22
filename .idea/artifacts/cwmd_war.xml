@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="cwmd:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="cwmd-0.1.war">
+      <element id="artifact" artifact-name="cwmd:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="aspose-words-16.11.0-jdk16" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

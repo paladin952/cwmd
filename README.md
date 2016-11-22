@@ -24,4 +24,3 @@ Faculty group project for creating a web aplication where users can manage flows
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job)
 
 [(RO) Assignment details]: <http://danmirceasuciu.wixsite.com/home/proiect-colectiv>
-

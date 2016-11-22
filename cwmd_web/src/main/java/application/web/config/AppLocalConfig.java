@@ -1,7 +1,6 @@
 package application.web.config;
 
-import java.io.IOException;
-import java.util.Properties;
+
 import application.core.config.JPAConfig;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
@@ -11,6 +10,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactory;
+
+import java.io.IOException;
+import java.util.Properties;
 
 @Configuration
 @ComponentScan("application.core")
@@ -59,5 +61,4 @@ public class AppLocalConfig {
         factory.setVelocityProperties(props);
         return factory.createVelocityEngine();
     }
-
 }

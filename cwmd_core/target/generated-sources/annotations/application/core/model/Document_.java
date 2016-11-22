@@ -9,7 +9,6 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Document.class)
 public abstract class Document_ {
 
-	public static volatile SingularAttribute<Document, User> owner;
 	public static volatile SingularAttribute<Document, String> name;
 	public static volatile SingularAttribute<Document, Integer> id;
 	public static volatile SingularAttribute<Document, Date> dateAdded;

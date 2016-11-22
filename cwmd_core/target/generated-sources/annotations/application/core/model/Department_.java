@@ -1,7 +1,6 @@
 package application.core.model;
 
 import javax.annotation.Generated;
-import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
@@ -9,7 +8,6 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Department.class)
 public abstract class Department_ {
 
-	public static volatile ListAttribute<Department, User> userList;
 	public static volatile SingularAttribute<Department, String> name;
 	public static volatile SingularAttribute<Department, Integer> id;
 

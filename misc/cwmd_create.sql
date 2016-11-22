@@ -20,6 +20,7 @@ USE `cwmd_db`;
 CREATE TABLE IF NOT EXISTS `department` (
   `DepartmentID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
+  `EntryID` int(11) NOT NULL,
   PRIMARY KEY (`DepartmentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -44,12 +45,13 @@ CREATE TABLE IF NOT EXISTS `department_user` (
 -- Dumping structure for table cwmd_db.document
 CREATE TABLE IF NOT EXISTS `document` (
   `DocumentID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(60) NOT NULL,
+  `Name` varchar(150) NOT NULL,
   `DateAdded` date NOT NULL,
   `Owner` varchar(50) NOT NULL,
   `Version` float NOT NULL,
+  `EntryID` int(11) NOT NULL,
   PRIMARY KEY (`DocumentID`),
-  KEY `FK_DocumentOwner` (`Owner`),
+  KEY `FK54bckn7stqnapx9l837ufqdqm` (`Owner`),
   CONSTRAINT `FK_DocumentOwner` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -62,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `flow` (
   `FlowID` int(11) NOT NULL AUTO_INCREMENT,
   `CurrentDepartment` int(11) NOT NULL DEFAULT '0',
   `Remarks` varchar(255) DEFAULT NULL,
+  `EntryID` int(11) NOT NULL,
   PRIMARY KEY (`FlowID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -127,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `user_details` (
   CONSTRAINT `FK_UserDetailsUsername` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.user_details: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.user_details: ~0 rows (approximately)
 /*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
 INSERT INTO `user_details` (`EntryID`, `Username`, `FirstName`, `LastName`, `Address`, `Email`, `PhoneNumber`, `IsDepartmentChief`) VALUES
 	(1, 'admin', 'Awesome', 'McAwesomesauce', '42A Awesome st', 'awesome@awesome.com', 743760319, 1);
