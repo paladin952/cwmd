@@ -25,7 +25,6 @@ public class UserValidator implements Validator{
         if (name.length() < 5 || name.length() > 255) {
             errors.rejectValue("username", "user.username.size", "*  The username is of invalid size.");
         }
-
     }
 
     private void validatePassword(User user, Errors errors) {

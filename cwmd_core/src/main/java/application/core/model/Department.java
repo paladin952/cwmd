@@ -21,12 +21,12 @@ public class Department implements Serializable {
     @Column(name = "EntryID")
     private Integer id;
 
-    // Could do: change to FetchType.LAZY
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "Username")
-    private List<User> userList;
-
+    // TODO: UNDO ME AND FIX THE HIBERNATE RELATIONSHIPS
+//    // Could do: change to FetchType.LAZY
+//    @JsonIgnore
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "Username")
+//    private List<User> userList;
 
     @Column(name = "Name", length = 60, nullable = false)
     private String name;
