@@ -15,15 +15,20 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Document implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableGenerator(name = "TABLE_GENERATOR", initialValue = 0, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GENERATOR")
     @Column(name = "EntryID")
     private Integer id;
 
-    @Column(name = "Name", length = 30, nullable = false)
+    @Column(name = "Name", length = 150, nullable = false)
     private String name;
 
     @Column(name = "DateAdded", nullable = false)
     private Date dateAdded;
+
+    //TODO: add a path field to store the path the document can be found on disk
 }

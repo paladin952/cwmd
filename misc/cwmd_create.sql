@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `department_user` (
 -- Dumping structure for table cwmd_db.document
 CREATE TABLE IF NOT EXISTS `document` (
   `DocumentID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(60) NOT NULL,
+  `Name` varchar(150) NOT NULL,
   `DateAdded` date NOT NULL,
   `Owner` varchar(50) NOT NULL,
   `Version` float NOT NULL,

@@ -3,6 +3,7 @@ package application.web.controller;
 import application.core.model.User;
 import application.core.service.IUserService;
 import application.core.validator.UserValidator;
+import application.web.misc.ViewPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-    private static final String LOGIN_PATH="common/login/login";
-
-
     @Autowired
     private IUserService userService;
 
@@ -34,20 +32,20 @@ public class LoginController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView login() {
-        return new ModelAndView(LOGIN_PATH, "user", new User());
+        return new ModelAndView(ViewPath.LOGIN, "user", new User());
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public String login(@ModelAttribute @Validated User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return LOGIN_PATH;
+            return ViewPath.LOGIN;
 
         } else {
             User tmp = userService.readOne(user.getUsername());
             if (tmp != null && tmp.getPassword().equals(user.getPassword()))
                 return "welcome";
             model.addAttribute("error", "Authentication failed. Please check your credentials.");
-            return LOGIN_PATH;
+            return ViewPath.LOGIN;
         }
     }
 

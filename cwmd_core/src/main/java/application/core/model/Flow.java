@@ -1,11 +1,9 @@
 package application.core.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "flow")
@@ -21,14 +19,14 @@ public class Flow implements Serializable{
     @Column(name = "EntryID")
     private Integer id;
 
-    //TODO: UNDO THE COMMENT AND FIX THE HIBERNATE RELATIONSHIPS
-//    // Could do: change to FetchType.LAZY
+    // Could do: change to FetchType.LAZY
+    // FIXME: 15.11.2016 this column does not have a mapping in the Document entity. when fixed uncomment following lines
 //    @JsonIgnore
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "EntryID")
 //    private List<Document> userDocument;
-//
-//    // Could do: change to FetchType.LAZY
+
+    // Could do: change to FetchType.LAZY
 //    @JsonIgnore
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "EntryID")
