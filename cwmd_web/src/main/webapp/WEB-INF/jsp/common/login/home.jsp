@@ -7,7 +7,7 @@
 <head>
     <title>Home</title>
     <base href="${pageContext.request.contextPath}">
-    <link rel="stylesheet" type="text/css" href="D:\Info\SEM5\Proiect colectiv\cwmd\cwmd_web\src\main\webapp\resources\css\style.css">
+    <link rel="stylesheet" type="text/css" href="\resources\css\style.css">
 </head>
 <body>
 
