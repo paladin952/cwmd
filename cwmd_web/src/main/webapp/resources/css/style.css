@@ -1,0 +1,397 @@
+body,
+html {
+    width: 100%;
+    height: 100%;
+	margin:0;
+	padding:0;
+}
+body{
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	background:#d2d6d7;
+	font-size:18px;
+}
+
+h2{
+	color:#0aa6a5;
+	font-size:34px;
+	font-weight: 50;
+}
+
+.header{
+	width: 100%;
+	height: 50px;
+	background-color: #0aa6a5;
+	font-size:18px;
+}
+
+.download{
+	width: 500px;
+	padding-left: 50px;
+	display:inline;
+	float:left;
+}
+
+.upload{
+	width: 500px;
+	padding-left: 50px;
+	display:inline;
+	float:left;
+}
+
+.welcomeLabel{
+	padding-top: 20px !important;
+	padding-left: 20px;
+	color: #fff;
+	
+}
+
+a,
+a:link{
+	color:#8d5493;
+}
+a:hover,
+a:focus{
+	color:#6a3f6e;
+}
+.logo{
+    margin: 0 auto;
+}
+.bg-cover{
+	background: url(images/backg.jpg);
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-bottom: 20px;
+	min-height:500px;
+}
+.dropBox{
+	border:2px dashed #b7b7b7;
+	background:#fff;
+	min-height:100px;
+	padding-top:100px;
+	padding-bottom:30px;
+	font-size:20px;
+}
+.dropBox span{
+	font-weight:900;
+}
+.premium{
+	
+	padding-top: 200px;
+}
+.btn{
+	font-size:18px;
+	font-weight:900;
+	border-radius:0;
+	border:none;
+	padding: 9px 30px;
+}
+.turqoiseBox{
+	background:#0aa6a5;
+	color:#fff;
+	padding-top:1px;
+	padding: 1px 15px 15px;
+	margin-top:30px;
+	min-height:280px;
+}
+.purpleBox{
+	background:#8d5493;
+	color:#fff;
+	padding-top:15px;
+	padding: 1px 15px 15px;
+	margin-top:30px;
+	min-height:280px;
+}
+.turqoiseBox h3,
+.purpleBox h3
+{
+	font-weight:900;
+	font-size:24px;
+}
+.btn-primary.turqoise{
+	background:#0aa6a5;
+	color:#fff;
+	text-align:center;
+}
+.btn-primary.turqoise:hover,
+.btn-primary.turqoise:focus
+{
+	background:#077c7c;
+}
+.btn-primary.purple{
+	background:#8d5493;
+	color:#fff;
+	text-align:center;
+}
+.purpleBox .btn-primary.purple{
+	background:#fff;
+	color:#8d5493;
+	text-align:center;
+}
+.btn-primary.purple:hover,
+.btn-primary.purple:focus
+{
+	background:#6a3f6e;
+	color:#fff;
+}
+ul.checked{
+	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
+	margin-bottom:20px;
+}
+.checked li {
+	padding-left: 1em;
+	text-indent: -1em;
+}
+
+.checked li:before {
+	content: "√";
+	padding-right: 5px;
+	font-weight:900;
+}
+.checked strong{
+	font-weight:900;
+}
+footer{
+	font-size:12px;
+	margin-top:30px;
+}
+
+.credentials{
+	font-size:14px;
+	position:absolute;
+	top:20px;
+	right:13px;
+}
+.credentials input[type="text"]{
+	background:#e8eaeb;
+	color:#a6abb0;
+	border:none;
+	border-bottom:1px solid #c3c9ce;
+	padding:6px;
+	width:137px;
+}
+.credentials input[type="submit"]{
+	background:#8d5493;
+	color:#fff;
+	border:none;
+	padding:6px 20px;
+	font-weight:700;
+}
+.credentials input[type="submit"]:hover,
+.credentials input[type="submit"]:focus
+{
+	background:#6a3f6e;
+}
+/* registered user */
+h1{
+	color:#8d5493;
+	font-size:24px;
+	font-weight:900;
+	margin-bottom:15px;
+}
+.itemscopeLogo{
+	margin-top:20px;
+}
+.firstLineInBox{
+	margin-top:20px;
+}
+.noMinHeight{
+	min-height:inherit;
+}
+.credentials .glyphicon-cog{
+	font-size:20px;
+	vertical-align:middle;
+	padding-left:10px;
+}
+.credentials a,
+.credentials a:link{
+	color:#333;
+}
+.credentials a:hover,
+.credentialsa:focus{
+	color:#777;
+}
+/* login/register Box */
+.login-container{
+	margin-top: 170px;
+}
+
+.registerBox{
+	position:relative;
+	width:520px;
+	background:#fff;
+	margin:0 auto;
+	padding:10px 30px 0 30px;
+	font-weight:400;
+	height: 330px;
+}
+.registerBox input[type="text"],
+.registerBox input[type="email"],
+.registerBox input[type="password"]{
+	width:100%;
+	font-size:18px;
+	background:none;
+	border:none;
+	border-bottom:1px solid #a0a0a0;
+	margin-top:-2px;
+	padding:0 0 0 15px;
+	line-height: 5px;
+	display:block;
+}
+.registerBox button[type="submit"]{
+	background:#0aa6a5;
+	color:#fff;
+	opacity:1;
+	padding:20px 0;
+	width:100%;
+	font-size:18px;
+}
+.registerBox button[type="submit"]:hover{
+	background:#6a3f6e;
+}
+.registerBox label{
+	font-size:14px;
+	color:#a0a0a0;
+	font-weight:400;
+	margin-bottom:0;
+	padding-left:15px;
+}
+.registerBox label.labelNormalSize{
+	font-size:18px;
+	color:#333;
+	font-weight:400;
+	margin-bottom:0;
+	padding-left:15px;
+}
+.registerBox .row{
+	margin-top:50px;
+}
+.error-msg{
+	color:#a94442;
+	font-size:12px;
+	position:absolute;
+	margin-top:2px;
+}
+.closeButton{
+	font-size:30px;
+	color:#c9c9c9;
+	position:absolute;
+	right:10px;
+	top:10px;
+}
+.hide{
+	visibility:hidden;
+}
+.spacer{
+	margin:40px 0 30px;
+}
+.fullWidth{
+	margin-left: -15px;
+    margin-right: -15px;
+}
+/* end login/register Box */
+
+
+/* responsive */
+@media screen and (max-width: 960px) {
+    .bg-cover{
+		background: none;
+	}
+}
+@media screen and (max-width: 1490px) {
+    .credentials input{
+		display:block;
+		margin-bottom:5px;
+	}
+	.credentials input[type="text"]{
+		width:150px;
+	}
+	.credentials input[type="submit"]{
+		width:150px;
+	}
+}
+@media screen and (max-width: 1080px) {
+	.credentials{
+		position:relative;
+		margin:0 auto;
+		width:668px;
+		margin-bottom:20px;
+		right:inherit;
+		max-width:100%;
+		top:inherit;
+		margin-top:15px;
+	}
+    .credentials input[type="text"]{
+		width:100%;
+	}
+	.credentials input[type="submit"]{
+		width:100%;
+		
+	}
+	.registerBox{
+		position:relative;
+		width:100%;
+		background:#fff;
+		min-height:500px;
+		margin:0;
+		padding:50px 30px 0 30px;
+		font-weight:400;
+	}
+	.registerBox .row {
+		margin-top: 0;
+	}
+	.registerBox input[type="text"],
+	.registerBox input[type="email"],
+	.registerBox input[type="password"]{
+		width:100%;
+		font-size:30px;
+		margin-bottom:15px;
+		padding:0 0 0 15px;
+		line-height: inherit;
+		display:block;
+	}
+	.error-msg{
+		font-size:24px;
+	}
+	.registerBox label{
+		padding-top:25px;
+	}
+	.registerBox button[type="submit"]{
+		font-size:36px;
+		margin-top:40px;
+	}
+	.registerBox label,
+	.registerBox a,
+	.registerBox p{
+		font-size:28px !important;
+		margin-top:45px;
+		display:inline-block;
+	}
+	.closeButton{
+		font-size:60px;
+	}
+}
+
+/* new css 2016.10.11*/
+.white-bg{
+    background:#ffffff !important;
+	padding-top:30px;
+	padding-bottom:45px;
+}
+.copyright a, .copyright a:hover, .copyright a:focus {
+    text-decoration: none;
+}
+p.copyright {
+    margin: 15px 0 0;
+}
+.highlightBox{
+	background:#8d5493;
+	padding:15px;
+	color:#fff;
+}
+.highlightBox a{
+	color:#e6adeb;
+}

@@ -1,0 +1,6 @@
+<html>
+    <body>
+        <h3>${doc.name} is the document</h3>
+        <span>Sent using Velocity Template</span>
+    </body>
+</html>

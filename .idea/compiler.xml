@@ -29,7 +29,7 @@
     <bytecodeTargetLevel>
       <module name="cwmd" target="1.8" />
       <module name="cwmd_core" target="1.8" />
-      <module name="cwmd_web" target="1.8" />
+      <module name="cwmd_web" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
