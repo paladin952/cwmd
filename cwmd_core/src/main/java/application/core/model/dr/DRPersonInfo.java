@@ -3,8 +3,9 @@ package application.core.model.dr;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import javax.persistence.*;
 
 @Getter
 @Setter

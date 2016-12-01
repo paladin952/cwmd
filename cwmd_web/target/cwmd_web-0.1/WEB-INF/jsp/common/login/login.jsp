@@ -7,38 +7,35 @@
 <head>
     <title>Login</title>
     <base href="${pageContext.request.contextPath}">
-    <link rel="stylesheet" href="<c:url value='/resources/css/ui.css'/>"/>
+    <link rel="stylesheet" type="text/css" href="\resources\css\style.css">
 </head>
 <body>
-<div class="container">
-    <h1 class="welcome-msg">
-        LOG IN
-    </h1>
-    <form:form id="login-form" method="post" commandName="user">
-        <div id="error">
-            ${error}
-        </div>
-        <div id="username-group">
-            <span>
-                Username:
-            </span>
-            <br />
-            <form:input type="text" name="username" title="username" path="username"/>
-            <form:errors path="username" cssClass="from-errors"/>
-        </div>
-        <br />
-        <div id="password-group">
-            <span>
-                Password:
-            </span>
-            <br />
-            <form:input type="password" name="password" title="password" path="password"/>
-            <form:errors path="password" cssClass="from-errors"/>
-        </div>
-        <br />
-        <button type="submit" id="btn-login" onclick="form.action='<c:url value='/login'/>'">LOG IN</button>
-        <button type="submit" id="btn-register" onclick="form.action='<c:url value='/register'/>'">REGISTER</button>
-    </form:form>
-</div>
+	<div class="container-fluid login-container">
+	    <form:form id="login-form" method="post" commandName="user" class="login-form">
+				<div class="row">
+					<div class="registerBox">
+						<div class="row">
+							<div class="col-md-12">
+								<label id="input-label">Username or Email*</label>
+								<input  type="text">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<label id="input-label" >Password*</label>
+								<input type="password">
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="text-center fullWidth">
+								<button class="btn" type="submit" >Login</button>
+							</div>
+						</div>
+					</div>
+				</div>
+		</form:form>
+	</div>
+
 </body>
 </html>
