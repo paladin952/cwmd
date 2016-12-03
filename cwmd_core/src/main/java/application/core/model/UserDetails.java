@@ -1,6 +1,5 @@
 package application.core.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,12 +18,6 @@ public class UserDetails implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EntryID")
     private Integer id;
-
-    // Could do: change to FetchType.LAZY
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "Username")
-    private User user;
 
     @Column(name = "FirstName", length = 60, nullable = false)
     private String firstName;

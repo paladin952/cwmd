@@ -4,15 +4,16 @@ import application.core.service.DRDocumentService;
 import application.web.misc.ViewPath;
 import com.aspose.words.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/document")
-@Controller
+@RestController
+// TODO: 03.12.2016 check how this works for angular and do necessary changes
 public class DRDocumentController {
 
     @Autowired

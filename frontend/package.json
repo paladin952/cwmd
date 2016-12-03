@@ -1,0 +1,45 @@
+{
+  "name": "cmwd",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "live-server --port=8099 --ignorePattern=.*json | json-server db.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Dana",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "cors": "^2.8.1",
+    "json-server": "^0.8.15",
+    "live-reload": "^1.1.0",
+    "lodash": "^4.13.1"
+  },
+  "main": "app.js",
+  "description": "",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-injector": "^1.0.1",
+    "grunt-karma": "^2.0.0",
+    "grunt-open": "^0.2.3",
+    "grunt-wiredep": "^3.0.1",
+    "jasmine-core": "^2.4.1",
+    "jit-grunt": "^0.10.0",
+    "karma": "^1.1.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-coverage": "^1.0.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-junit-reporter": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.1"
+  }
+}
