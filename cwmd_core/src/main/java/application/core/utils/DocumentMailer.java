@@ -20,8 +20,8 @@ import java.util.Map;
 
 // TODO: ADD YOUR OWN email.properties FILE, UNDER CWMD_CORE.SRC.MAIN.RESOURCES
 // properties file format:
-// address=YOUREMAIL@gmail.com
-// password=YOURPASSWORD
+// email.address=YOUREMAIL@gmail.com
+// email.password=YOURPASSWORD
 // ! might need to set up an application password
 // if two-step authentication is enabled on your account
 @Component
