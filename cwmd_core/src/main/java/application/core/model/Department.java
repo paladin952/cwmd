@@ -15,18 +15,17 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EntryID")
+    @Column(name = "DepartmentID")
     private Integer id;
 
-    // TODO: UNDO ME AND FIX THE HIBERNATE RELATIONSHIPS
-//    // Could do: change to FetchType.LAZY
 //    @JsonIgnore
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "Username")
-//    private List<User> userList;
+//    // Could do: change to FetchType.LAZY
+//    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private List<DepartmentUser> userList;
 
     @Column(name = "Name", length = 60, nullable = false)
     private String name;
