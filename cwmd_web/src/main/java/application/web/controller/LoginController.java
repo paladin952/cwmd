@@ -3,6 +3,7 @@ package application.web.controller;
 import application.core.model.User;
 import application.core.service.IUserService;
 import application.core.validator.UserValidator;
+import application.core.utils.UserUtil;
 import application.web.misc.ViewPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -39,7 +40,9 @@ public class LoginController {
 //            return ViewPath.LOGIN;
 
         } else {
-            return userService.readOne(user.getUsername());
+            User loggedUser = userService.readOne(user.getUsername());
+            UserUtil.setCurrentUser(loggedUser);
+            return loggedUser;
         }
     }
 

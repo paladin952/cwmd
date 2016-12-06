@@ -30,5 +30,8 @@ public class Document implements Serializable {
     @Column(name = "DateAdded", nullable = false)
     private Date dateAdded;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private User user;
+
     //TODO: add a path field to store the path the document can be found on disk
 }

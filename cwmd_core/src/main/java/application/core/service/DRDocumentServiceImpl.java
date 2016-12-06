@@ -3,6 +3,7 @@ package application.core.service;
 
 import application.core.model.dr.*;
 import application.core.repository.DRDocumentRepository;
+import application.core.utils.UserUtil;
 import com.aspose.words.Document;
 import com.aspose.words.NodeCollection;
 import com.aspose.words.NodeType;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URL;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 @Service
 @Transactional
@@ -114,6 +116,7 @@ public class DRDocumentServiceImpl implements DRDocumentService {
 
         drDocument.setDateAdded(new Date());
         drDocument.setName(filename);
+        drDocument.setUser(UserUtil.getCurrentUser());
 
         DRDocument savedDocument = drDocumentRepository.save(drDocument);
 
@@ -175,5 +178,10 @@ public class DRDocumentServiceImpl implements DRDocumentService {
         drDocument.setDrBankInfo(drBankInfo);
 
         drDocumentRepository.save(drDocument);
+    }
+
+    @Override
+    public List<DRDocument> getDocuments(String username) {
+        return drDocumentRepository.findByUser_Username(username);
     }
 }

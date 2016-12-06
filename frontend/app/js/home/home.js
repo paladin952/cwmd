@@ -16,6 +16,6 @@ angular.module('cwmd').component('homeLayout', {
         };
 
         // $ctrl.getUsers();
-        UserSrv.login('admin','admin');
+        // UserSrv.login('admin','admin');
     }
 });

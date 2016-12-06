@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="row">
+        <button class="btn btn-default pull-left" ng-click="$ctrl.downloadDRSamples()">Download DR samples</button>
+        <button class="btn btn-primary pull-right" ng-click="$ctrl.addDocument()">Add new document</button>
+    </div>
+    <div class="row documentList">
+        <div ng-repeat="document in $ctrl.documents" class="col-xs-3 document">
+            <span>{{document.name}}</span>
+            <span class="caption pull-right">{{document.dateAdded | date: "yyyy-MM-dd"}}</span>
+        </div>
+    </div>
+</div>
