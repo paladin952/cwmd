@@ -1,6 +1,6 @@
 angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate'])
     .config(function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/workingArea');
+        $urlRouterProvider.otherwise('/login');
 
         $stateProvider
             .state('login', {

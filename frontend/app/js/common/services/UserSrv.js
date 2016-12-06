@@ -19,11 +19,7 @@ angular.module('cwmd').service('UserSrv', function (Restangular) {
         Restangular.all('login').post(_params)
             .then(function (response) {
                 _currentUser = response;
-                service.isAdmin();
-            })
-            .catch(function (response) {
-                //do nothing;
-            })
+            });
     };
 
     service.logout = function () {
