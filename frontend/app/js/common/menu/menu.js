@@ -9,7 +9,7 @@ angular.module('cwmd').component('menu', {
 
         $ctrl.logout = function () {
             UserSrv.logout();
-            //location.path(/login);
+            location.path('/login');
         }
     }
 });

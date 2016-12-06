@@ -8,14 +8,10 @@ angular.module('cwmd').component('homeLayout', {
             UserSrv.getUsers()
                 .then(function (response) {
                     $ctrl.users = response;
-                    debugger;
                 })
                 .catch(function (response) {
                     console.log(response);
                 });
         };
-
-        // $ctrl.getUsers();
-        // UserSrv.login('admin','admin');
     }
 });
