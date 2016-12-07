@@ -36,7 +36,7 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/foos").authenticated()
+                .antMatchers("/").authenticated()
                 .and()
                 .formLogin()
                 .successHandler(authenticationSuccessHandler)
