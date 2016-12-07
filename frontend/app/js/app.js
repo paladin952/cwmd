@@ -1,4 +1,4 @@
-angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate'])
+angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate', 'ngFileSaver', 'file-model'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/login');
 
