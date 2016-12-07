@@ -23,7 +23,7 @@ public class LoginService {
         List<User> users = userRepo.findAll();
 
         for (User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)){
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return true;
             }
         }
