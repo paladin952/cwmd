@@ -18,7 +18,7 @@ public class LoginService {
     @Autowired
     private UserRepository userRepo;
 
-    public boolean isLoggedIn(String username, String password) {
+    public boolean login(String username, String password) {
 
         List<User> users = userRepo.findAll();
 
