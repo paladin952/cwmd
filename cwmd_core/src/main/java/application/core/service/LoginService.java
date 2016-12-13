@@ -1,5 +1,6 @@
 package application.core.service;
 
+import application.core.model.User;
 import application.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,20 @@ public class LoginService {
     @Autowired
     private UserRepository userRepo;
 
-    public boolean isLoggedIn(String username, String password) {
+    public boolean login(String username, String password) {
 
+        List<User> users = userRepo.findAll();
 
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return true;
+            }
+        }
 
-        return true;
+        return false;
     }
 
+
 }
+
+
