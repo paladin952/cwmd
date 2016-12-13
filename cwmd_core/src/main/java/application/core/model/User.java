@@ -19,12 +19,6 @@ import java.util.List;
 public class User implements Serializable {
     private static final String DEFAULT_STRING = "N/A";
 
-    public User(String username, String password, RoleType role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
-
     @Id
     @Column(name = "Username", length = 60, unique = true, nullable = false)
     private String username;
@@ -35,10 +29,12 @@ public class User implements Serializable {
     @Column(name = "Role", nullable = false)
     private RoleType role;
 
+    //TODO fix this. JPA repo crashes when find.all()
     // Could do: change to FetchType.LAZY
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private UserDetails userInfo;
+//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private UserDetails userInfo;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private List<Document> documents;
+//     TODO fix this. userRepo.finAll() java.sql.SQLSyntaxErrorException: Table 'cwmd_db.drdocument' doesn't exist
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+//    private List<Document> documents;
 }
