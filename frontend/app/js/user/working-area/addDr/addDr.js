@@ -1,5 +1,5 @@
 angular.module('cwmd').component('addDr', {
-    templateUrl: 'app/js/working-area/addDr/addDr.html',
+    templateUrl: 'app/js/user/working-area/addDr/addDr.html',
     controller: function ($scope, DRDocumentSrv) {
         var $ctrl = this;
 
