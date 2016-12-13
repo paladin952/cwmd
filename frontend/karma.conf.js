@@ -24,6 +24,10 @@ module.exports = function(config) {
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/lodash/lodash.js',
       'bower_components/restangular/dist/restangular.js',
+      'bower_components/blob-polyfill/Blob.js',
+      'bower_components/file-saver.js/FileSaver.js',
+      'bower_components/angular-file-saver/dist/angular-file-saver.bundle.js',
+      'bower_components/angular-file-model/angular-file-model.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower //
       'app/index.js',

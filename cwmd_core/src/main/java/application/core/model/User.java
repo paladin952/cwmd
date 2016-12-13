@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -18,6 +19,12 @@ import java.io.Serializable;
 public class User implements Serializable {
     private static final String DEFAULT_STRING = "N/A";
 
+    public User(String username, String password, RoleType role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
     @Id
     @Column(name = "Username", length = 60, unique = true, nullable = false)
     private String username;
@@ -29,6 +36,9 @@ public class User implements Serializable {
     private RoleType role;
 
     // Could do: change to FetchType.LAZY
-//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    private UserDetails userInfo;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private UserDetails userInfo;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Document> documents;
 }
