@@ -19,7 +19,7 @@ public class LoginController {
         boolean loggedIn = loginService.login(username, password);
 
         if (!loggedIn) {
-            //401
+            //400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failure");
         } else {
             //200
