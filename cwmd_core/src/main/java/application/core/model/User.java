@@ -29,6 +29,6 @@ public class User implements Serializable {
     private RoleType role;
 
     // Could do: change to FetchType.LAZY
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private UserDetails userInfo;
+//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private UserDetails userInfo;
 }
