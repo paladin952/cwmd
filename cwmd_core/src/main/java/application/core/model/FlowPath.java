@@ -18,10 +18,10 @@ import java.io.Serializable;
 @Setter
 @Builder
 public class FlowPath implements Serializable {
-    @JsonIgnore
     @Id
     @ManyToOne
     @JoinColumn(name = "FlowID", nullable = false)
+    @JsonIgnore
     private Flow flow;
 
     @Id

@@ -18,14 +18,14 @@ import java.io.Serializable;
 @Setter
 @Builder
 public class FlowDocument implements Serializable {
-    @JsonIgnore
     @Id
     @ManyToOne
     @JoinColumn(name = "FlowID", nullable = false)
+    @JsonIgnore
     private Flow flow;
 
     @Id
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "DocumentID", unique = true, nullable = false)
     private Document document;
 }

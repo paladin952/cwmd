@@ -22,10 +22,10 @@ public class Department implements Serializable {
     @Column(name = "DepartmentID")
     private Integer id;
 
-//    @JsonIgnore
-//    // Could do: change to FetchType.LAZY
-//    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    private List<DepartmentUser> userList;
+    @JsonIgnore
+    // Could do: change to FetchType.LAZY
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<DepartmentUser> userList;
 
     @Column(name = "Name", length = 60, nullable = false)
     private String name;

@@ -71,7 +71,7 @@ public class FlowServiceImpl implements IFlowService {
         if (flow == null) throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
 
         int crt = flow.getCrtDepartment();
-        flow.setCrtDepartment(crt == flow.getFlowPath().size() - 1 ? crt : crt + 1); // stop going further once we're at the end of the road
+        //flow.setCrtDepartment(crt == flow.getFlowPath().size() - 1 ? crt : crt + 1); // stop going further once we're at the end of the road
 
         return flowRepo.save(flow);
     }
@@ -90,7 +90,9 @@ public class FlowServiceImpl implements IFlowService {
         Flow flow = flowRepo.findOne(flowId);
         if (flow == null) throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
 
-        return flow.getCrtDepartment() >= flow.getFlowPath().size();
+        //return flow.getCrtDepartment() >= flow.getFlowPath().size();
+
+        return true;
     }
 
     @Override
@@ -99,7 +101,9 @@ public class FlowServiceImpl implements IFlowService {
         if (flow == null) throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
 
         int crt = flow.getCrtDepartment();
-        return flow.getFlowPath().get(crt).getDepartment();
+        //return flow.getFlowPath().get(crt).getDepartment();
+
+        return null;
     }
 
     @Override
@@ -107,15 +111,15 @@ public class FlowServiceImpl implements IFlowService {
         Flow flow = flowRepo.findOne(updatedFlow.getId());
         if (flow == null) throw new ServiceException("No flow having ID " + updatedFlow.getId().toString() + " was found in the database");
 
-        List<FlowDocument> flowDocuments = updatedFlow.getFlowDocuments();
-        List<FlowPath> flowPath = updatedFlow.getFlowPath();
-        flowDocuments.forEach(flowDocument -> flowDocumentRepo.save(flowDocument));
-        flowPath.forEach(flowDepartments -> flowPathRepo.save(flowDepartments));
+        //List<FlowDocument> flowDocuments = updatedFlow.getFlowDocuments();
+        //List<FlowPath> flowPath = updatedFlow.getFlowPath();
+        //flowDocuments.forEach(flowDocument -> flowDocumentRepo.save(flowDocument));
+        //flowPath.forEach(flowDepartments -> flowPathRepo.save(flowDepartments));
 
         flow.setRemarks(updatedFlow.getRemarks());
         flow.setCrtDepartment(updatedFlow.getCrtDepartment());
-        flow.setFlowPath(flowPath);
-        flow.setFlowDocuments(flowDocuments);
+        //flow.setFlowPath(flowPath);
+        //flow.setFlowDocuments(flowDocuments);
 
         return flowRepo.save(flow);
     }
