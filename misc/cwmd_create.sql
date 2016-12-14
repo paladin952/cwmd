@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `department` (
   PRIMARY KEY (`DepartmentID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.department: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.department: ~0 rows (approximately)
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
 INSERT INTO `department` (`DepartmentID`, `Name`) VALUES
 	(2, 'MI');
@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `document` (
   `Name` varchar(150) NOT NULL,
   `DateAdded` date NOT NULL,
   `Owner` varchar(50) NOT NULL,
+  `Status` int(11) NOT NULL DEFAULT '0',
   `Version` float NOT NULL,
   `Path` varchar(255) NOT NULL,
   PRIMARY KEY (`DocumentID`),
@@ -60,8 +61,8 @@ CREATE TABLE IF NOT EXISTS `document` (
 
 -- Dumping data for table cwmd_db.document: ~1 rows (approximately)
 /*!40000 ALTER TABLE `document` DISABLE KEYS */;
-INSERT INTO `document` (`DocumentID`, `Name`, `DateAdded`, `Owner`, `Version`, `Path`) VALUES
-	(2, 'Bob\'s diary', '2016-12-04', 'asdf', 0.1, 'N/A');
+INSERT INTO `document` (`DocumentID`, `Name`, `DateAdded`, `Owner`, `Status`, `Version`, `Path`) VALUES
+	(2, 'Bob\'s diary', '2016-12-04', 'asdf', 0, 0.1, 'N/A');
 /*!40000 ALTER TABLE `document` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.drbankinfo
@@ -108,6 +109,7 @@ CREATE TABLE IF NOT EXISTS `drdocument` (
   `DateAdded` datetime NOT NULL,
   `Name` varchar(150) NOT NULL,
   `Owner` varchar(50) NOT NULL,
+  `Status` int(11) NOT NULL DEFAULT '0',
   `Version` float NOT NULL,
   `Path` varchar(255) NOT NULL,
   `drBankInfo_drBankInfoId` int(11) DEFAULT NULL,
@@ -270,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `flow` (
   PRIMARY KEY (`FlowID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.flow: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.flow: ~0 rows (approximately)
 /*!40000 ALTER TABLE `flow` DISABLE KEYS */;
 INSERT INTO `flow` (`FlowID`, `CurrentDepartment`, `Remarks`) VALUES
 	(1, 0, 'Hi');
@@ -286,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `flow_document` (
   CONSTRAINT `FKqennofhcscbxw9cfogxvyhxum` FOREIGN KEY (`FlowID`) REFERENCES `flow` (`FlowID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.flow_document: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.flow_document: ~0 rows (approximately)
 /*!40000 ALTER TABLE `flow_document` DISABLE KEYS */;
 INSERT INTO `flow_document` (`FlowID`, `DocumentID`) VALUES
 	(1, 2);
@@ -302,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `flow_path` (
   CONSTRAINT `FK_FlowDepartmentFlow` FOREIGN KEY (`FlowID`) REFERENCES `flow` (`FlowID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.flow_path: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.flow_path: ~0 rows (approximately)
 /*!40000 ALTER TABLE `flow_path` DISABLE KEYS */;
 INSERT INTO `flow_path` (`FlowID`, `DepartmentID`) VALUES
 	(1, 2);
@@ -319,11 +321,11 @@ CREATE TABLE IF NOT EXISTS `user` (
   CONSTRAINT `FKffq5lcso3c8xcmdov20d1jwia` FOREIGN KEY (`userInfo_EntryID`) REFERENCES `user_details` (`EntryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.user: ~2 rows (approximately)
+-- Dumping data for table cwmd_db.user: ~3 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`Username`, `Password`, `Role`, `userInfo_EntryID`) VALUES
 	('admin', 'admin', 0, 1),
-	('asdf', 'asdf', 0, NULL),
+	('asdf', 'asdf', 0, 1),
 	('radu', 'radu', 1, 2);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
@@ -343,7 +345,7 @@ CREATE TABLE IF NOT EXISTS `user_details` (
   CONSTRAINT `FK_UserDetailsUsername` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.user_details: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.user_details: ~0 rows (approximately)
 /*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
 INSERT INTO `user_details` (`EntryID`, `Username`, `FirstName`, `LastName`, `Address`, `Email`, `PhoneNumber`, `IsDepartmentChief`) VALUES
 	(1, 'admin', 'Awesome', 'McAwesomesauce', '42A Awesome st', 'awesome@awesome.com', 743760319, 1),
