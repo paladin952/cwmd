@@ -36,5 +36,7 @@ public class Document implements Serializable {
     @JsonIgnore
     private User user;
 
+    private Boolean isDigitallySigned;
+
     //TODO: add a path field to store the path the document can be found on disk
 }

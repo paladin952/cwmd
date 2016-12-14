@@ -4,10 +4,7 @@ package application.core.service;
 import application.core.model.dr.*;
 import application.core.repository.DRDocumentRepository;
 import application.core.utils.UserUtil;
-import com.aspose.words.Document;
-import com.aspose.words.NodeCollection;
-import com.aspose.words.NodeType;
-import com.aspose.words.Shape;
+import com.aspose.words.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +46,8 @@ public class DRDocumentServiceImpl implements DRDocumentService {
         drPersonInfo.setTitle(it.next().getText());
         drPersonInfo.setDepartment(it.next().getText());
         drPersonInfo.setPhoneNumber(it.next().getText());
-        drPersonInfo.setEmail(it.next().getText().replaceAll("\\s+",""));
+        String email = it.next().getText().replaceAll("\\s+","");
+        drPersonInfo.setEmail(email);
         drDocument.setDrPersonInfo(drPersonInfo);
 
         DRTravelInfo drTravelInfo = new DRTravelInfo();
@@ -117,6 +115,19 @@ public class DRDocumentServiceImpl implements DRDocumentService {
         drDocument.setDateAdded(new Date());
         drDocument.setName(filename);
         drDocument.setUser(UserUtil.getCurrentUser());
+
+        drDocument.setIsDigitallySigned(document.getDigitalSignatures().isValid());
+
+        if (drDocument.getIsDigitallySigned()) {
+            for (DigitalSignature d : document.getDigitalSignatures()) {
+                DRSignatureInfo info = new DRSignatureInfo();
+
+                info.setSignedBy(d.getComments());
+                info.setSignedOn(d.getSignTime());
+
+                drDocument.getDrSignatures().add(info);
+            }
+        }
 
         DRDocument savedDocument = drDocumentRepository.save(drDocument);
 

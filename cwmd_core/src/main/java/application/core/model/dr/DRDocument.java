@@ -4,6 +4,7 @@ import application.core.model.Document;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,4 +37,7 @@ public class DRDocument extends Document {
 
     @OneToOne(cascade = CascadeType.ALL)
     private DRBankInfo drBankInfo;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<DRSignatureInfo> drSignatures;
 }
