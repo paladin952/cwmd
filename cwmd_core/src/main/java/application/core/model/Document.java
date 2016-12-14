@@ -34,6 +34,9 @@ public class Document implements Serializable {
     @JoinColumn(name = "Owner", nullable = false)
     private User user;
 
+    @Column(name = "Status", nullable = false)
+    private Integer status;
+
     @Column(name = "Version", nullable = false)
     private Float version;
 

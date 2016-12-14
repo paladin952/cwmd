@@ -4,6 +4,9 @@ import application.core.model.Department;
 import application.core.model.Flow;
 import application.core.repository.DepartmentRepository;
 import application.core.service.IFlowService;
+import application.web.converter.Converter;
+import application.web.converter.DepartmentConverter;
+import application.web.converter.FlowConverter;
 import application.web.dto.*;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hibernate.Hibernate;
@@ -21,37 +24,40 @@ import java.util.List;
 public class FlowController {
     private final static String OK_MSG = "OK";
 
+    private Converter<Flow, FlowDTO> flowConverter = new FlowConverter();
+    private Converter<Department, DepartmentDTO> departmentConverter = new DepartmentConverter();
+
     @Autowired
     private IFlowService flowService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
-    public ResponseEntity<Flow> startFlow(@RequestBody FlowStartDTO flowStartDTO) {
+    public ResponseEntity<FlowDTO> startFlow(@RequestBody FlowStartDTO flowStartDTO) {
         try {
-            return new ResponseEntity<>(flowService.startFlow(flowStartDTO.getDocuments(), flowStartDTO.getPath()), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTO(flowService.startFlow(flowStartDTO.getDocuments(), flowStartDTO.getPath())), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new Flow(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(flowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @Transactional
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity<List<Flow>> getAll() {
+    public ResponseEntity<List<FlowDTO>> getAll() {
         try {
-            return new ResponseEntity<>(flowService.read(), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTOs(flowService.read()), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new ArrayList<Flow>(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(flowConverter.toDTOs(new ArrayList<Flow>()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Flow> getOne(@PathVariable("id") final Integer flowId) {
+    public ResponseEntity<FlowDTO> getOne(@PathVariable("id") final Integer flowId) {
         try {
-            return new ResponseEntity<>(flowService.readOne(flowId), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTO(flowService.readOne(flowId)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new Flow(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(flowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -66,25 +72,25 @@ public class FlowController {
     }
 
     @RequestMapping(value = "/{id}/currentDepartment", method = RequestMethod.GET)
-    public ResponseEntity<Department> getCurrentDepartmentFor(@PathVariable("id") final Integer flowId) {
+    public ResponseEntity<DepartmentDTO> getCurrentDepartmentFor(@PathVariable("id") final Integer flowId) {
         try {
-            return new ResponseEntity<>(flowService.getCurrentDepartmentFor(flowId), HttpStatus.OK);
+            return new ResponseEntity<>(departmentConverter.toDTO(flowService.getCurrentDepartmentFor(flowId)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new Department(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(departmentConverter.toDTO(new Department()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Flow> update(@PathVariable("id") final Integer flowId, @RequestBody Flow flow) {
+    public ResponseEntity<FlowDTO> update(@PathVariable("id") final Integer flowId, @RequestBody Flow flow) {
         if (!flow.getId().equals(flowId)) // can't modify someone else's flow using your current flow
-            return new ResponseEntity<>(new Flow(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(flowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
 
         try {
-            return new ResponseEntity<>(flowService.update(flow), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTO(flowService.update(flow)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new Flow(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(flowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
         }
     }
 
