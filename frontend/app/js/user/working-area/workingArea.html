@@ -1,8 +1,10 @@
 <div class="container">
     <div class="row">
-        <button class="btn btn-default pull-left" ng-click="$ctrl.downloadDRSamples()">Download DR samples</button>
-        <button class="btn btn-primary pull-right" ng-click="$ctrl.addDocument()">Add new document</button>
+        <button class="btn btn-default pull-left" ui-sref="downloadDr">Download DR samples</button>
+        <button class="btn btn-primary pull-right" ui-sref="addDr">Add new document</button>
+        <button class="btn btn-primary pull-right" ui-sref="addRn" >Add new RN document</button>
     </div>
+    <div ui-view></div>
     <div class="row documentList">
         <div ng-repeat="document in $ctrl.documents" class="col-xs-3 document">
             <span>{{document.name}}</span>

@@ -12,13 +12,5 @@ angular.module('cwmd').component('workingArea', {
                     console.log(response);
                 });
         };
-
-        $ctrl.addDocument = function () {
-            $state.transitionTo("home.addDr");
-        };
-
-        $ctrl.downloadDRSamples = function () {
-            $state.transitionTo("home.downloadDr")
-        }
     }
 });

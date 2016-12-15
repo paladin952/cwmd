@@ -16,3 +16,7 @@ working-area .caption {
     display: block;
     color: #65b0ff;
 }
+
+working-area .btn {
+    margin-left: 5px;
+}

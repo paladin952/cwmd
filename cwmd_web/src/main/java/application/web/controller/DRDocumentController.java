@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequestMapping("/document")
+@RequestMapping("/dr")
 @RestController
 // TODO: 03.12.2016 check how this works for angular and do necessary changes
 public class DRDocumentController {
@@ -41,11 +41,7 @@ public class DRDocumentController {
 //    public Integer uploadDR(@RequestParam("file") MultipartFile file, @RequestParam(value = "documentId", required=false) Integer documentId) throws Exception {
         Document document = null;
         Integer docId = null;
-        try {
-            document = new Document(file.getInputStream());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        document = new Document(file.getInputStream());
 
         drDocumentService.saveDocumentOnServer(document, file.getOriginalFilename());
         if (documentId == null) {

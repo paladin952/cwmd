@@ -2,11 +2,11 @@ angular.module('cwmd').service('DRDocumentSrv', function (Restangular, FileSaver
     var service = this;
 
     service.getDocuments = function () {
-        return Restangular.all('document').getList();
+        return Restangular.all('dr').getList();
     };
 
     service.getFirstPart = function () {
-        Restangular.all('document').customGET('downloadFirst', {}, {
+        Restangular.all('dr').customGET('downloadFirst', {}, {
             'Accept': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
             .then(function (data) {
                 debugger;
@@ -24,19 +24,19 @@ angular.module('cwmd').service('DRDocumentSrv', function (Restangular, FileSaver
     service.uploadFirstPart = function (file) {
         var fd = new FormData();
         fd.append('file', file);
-        return Restangular.one('/document/upload').withHttpConfig({transformRequest: angular.identity})
+        return Restangular.one('/dr/upload').withHttpConfig({transformRequest: angular.identity})
             .customPOST(fd, '', undefined, {'Content-Type': undefined})
     };
 
     service.uploadSecondPart = function (file, documentId) {
         var fd = new FormData();
         fd.append('file', file);
-        return Restangular.one('/document/upload').withHttpConfig({transformRequest: angular.identity})
+        return Restangular.one('/dr/upload').withHttpConfig({transformRequest: angular.identity})
             .customPOST(fd, '', undefined, {'Content-Type': undefined})
     };
 
     service.getSecondPart = function () {
-        Restangular.all('document').customGET('downloadSecond', {}, {
+        Restangular.all('dr').customGET('downloadSecond', {}, {
             'Accept': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
             .then(function (data) {
                 debugger;
