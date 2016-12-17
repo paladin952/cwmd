@@ -114,8 +114,9 @@ public class DRDocumentServiceImpl implements DRDocumentService {
         drHousingCosts.setHousing3_2Funding(it.next().getText());
         drDocument.setDrHousingCosts(drHousingCosts);
 
-        drDocument.setDateAdded(new Date());
-        drDocument.setName(filename);
+        Date dateAdded = new Date();
+        drDocument.setDateAdded(dateAdded);
+        drDocument.setName("DR - " + dateAdded.toString());
         drDocument.setUser(UserUtil.getCurrentUser());
 
         DRDocument savedDocument = drDocumentRepository.save(drDocument);

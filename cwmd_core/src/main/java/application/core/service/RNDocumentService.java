@@ -119,8 +119,9 @@ public class RNDocumentService {
         rnTotal.setTotalPrice(cells.get("M15").getFloatValue());
         rnDocument.setRnTotal(rnTotal);
 
-        rnDocument.setDateAdded(new Date());
-        rnDocument.setName(filename);
+        Date dateAdded = new Date();
+        rnDocument.setDateAdded(dateAdded);
+        rnDocument.setName("RN - " + dateAdded.toString());
         rnDocument.setUser(UserUtil.getCurrentUser());
 
         RNDocument savedDoc = rnDocumentRepository.save(rnDocument);
