@@ -24,8 +24,10 @@ import java.util.List;
 public class FlowController {
     private final static String OK_MSG = "OK";
 
-    private Converter<Flow, FlowDTO> flowConverter = new FlowConverter();
-    private Converter<Department, DepartmentDTO> departmentConverter = new DepartmentConverter();
+    @Autowired
+    private FlowConverter flowConverter;
+    @Autowired
+    private DepartmentConverter departmentConverter;
 
     @Autowired
     private IFlowService flowService;
@@ -67,7 +69,7 @@ public class FlowController {
             return new ResponseEntity<>(flowService.isFlowAtEnd(flowId), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(true, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -104,5 +106,4 @@ public class FlowController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 }

@@ -1,14 +1,15 @@
 package application.core.service;
 
 import application.core.model.*;
-import application.core.repository.FlowDocumentRepository;
-import application.core.repository.FlowPathRepository;
-import application.core.repository.FlowRepository;
+import application.core.model.PKs.FlowDocumentPK;
+import application.core.model.PKs.FlowPathPK;
+import application.core.repository.*;
 import application.core.service.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +21,10 @@ public class FlowServiceImpl implements IFlowService {
     private FlowPathRepository flowPathRepo;
     @Autowired
     private FlowDocumentRepository flowDocumentRepo;
+    @Autowired
+    private DocumentRepository documentRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     @Override
     public Flow startFlow(List<Document> documents, List<Department> departments) {
@@ -27,26 +32,30 @@ public class FlowServiceImpl implements IFlowService {
             Flow flow = Flow.builder()
                     .crtDepartment(0)
                     .remarks("")
+                    .flowPath(new ArrayList<>())
+                    .flowDocuments(new ArrayList<>())
                     .build();
 
-            flowRepo.save(flow);
-
-            for (Document doc : documents)
-            {
-                FlowDocument tmp = FlowDocument.builder()
-                        .flow(flow)
-                        .document(doc)
-                        .build();
-                flowDocumentRepo.save(tmp);
+            flow = flowRepo.saveAndFlush(flow);
+            for (Document doc : documents) {
+                Document dbDoc = documentRepository.findOne(doc.getId());
+                if (dbDoc != null) {
+                    FlowDocument tmp = FlowDocument.builder()
+                            .flow(flow)
+                            .document(dbDoc)
+                            .build();
+                    flow.addFlowDocument(tmp);
+                } else throw new RuntimeException("Document " + doc + " was not found in the database");
             }
-
-            for (Department department : departments)
-            {
-                FlowPath tmp = FlowPath.builder()
-                        .flow(flow)
-                        .department(department)
-                        .build();
-                flowPathRepo.save(tmp);
+            for (Department department : departments) {
+                Department dbDept = departmentRepository.getOneSQL(department.getId());
+                if (dbDept != null) {
+                    FlowPath tmp = FlowPath.builder()
+                            .flow(flow)
+                            .department(dbDept)
+                            .build();
+                    flow.addFlowDepartment(tmp);
+                } else throw new RuntimeException("Department " + department + " was not found in the database");
             }
 
             return flow;
@@ -62,16 +71,26 @@ public class FlowServiceImpl implements IFlowService {
 
     @Override
     public Flow readOne(Integer flowId) {
-        return flowRepo.findOne(flowId);
+        Flow flow = flowRepo.findOne(flowId);
+        if (flow == null)
+            return null;
+
+        flow.setFlowPath(flowPathRepo.getSomeSQL(flow.getId()));
+        for (FlowPath path : flow.getFlowPath()) {
+            path.setDepartment(departmentRepository.getOneSQL(path.getDepartment().getId()));
+        }
+
+        return flow;
     }
 
     @Override
     public Flow goToNextDepartmentFor(Integer flowId) {
         Flow flow = flowRepo.findOne(flowId);
-        if (flow == null) throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
+        if (flow == null)
+            throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
 
         int crt = flow.getCrtDepartment();
-        //flow.setCrtDepartment(crt == flow.getFlowPath().size() - 1 ? crt : crt + 1); // stop going further once we're at the end of the road
+        flow.setCrtDepartment(crt == flow.getFlowPath().size() - 1 ? crt : crt + 1); // stop going further once we're at the end of the road
 
         return flowRepo.save(flow);
     }
@@ -88,38 +107,52 @@ public class FlowServiceImpl implements IFlowService {
     @Override
     public Boolean isFlowAtEnd(Integer flowId) {
         Flow flow = flowRepo.findOne(flowId);
-        if (flow == null) throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
+        if (flow == null)
+            throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
 
-        //return flow.getCrtDepartment() >= flow.getFlowPath().size();
-
-        return true;
+        return flow.getCrtDepartment() >= flow.getFlowPath().size();
     }
 
     @Override
     public Department getCurrentDepartmentFor(Integer flowId) {
         Flow flow = flowRepo.findOne(flowId);
-        if (flow == null) throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
+        if (flow == null)
+            throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
 
         int crt = flow.getCrtDepartment();
-        //return flow.getFlowPath().get(crt).getDepartment();
+        if (flow.getFlowPath().size() == 0)
+            return null;
 
-        return null;
+        Department tmp = flow.getFlowPath().get(crt).getDepartment();
+        return departmentRepository.getOneSQL(tmp.getId());
     }
 
     @Override
     public Flow update(Flow updatedFlow) {
         Flow flow = flowRepo.findOne(updatedFlow.getId());
-        if (flow == null) throw new ServiceException("No flow having ID " + updatedFlow.getId().toString() + " was found in the database");
+        if (flow == null)
+            throw new ServiceException("No flow having ID " + updatedFlow.getId().toString() + " was found in the database");
 
-        //List<FlowDocument> flowDocuments = updatedFlow.getFlowDocuments();
-        //List<FlowPath> flowPath = updatedFlow.getFlowPath();
-        //flowDocuments.forEach(flowDocument -> flowDocumentRepo.save(flowDocument));
-        //flowPath.forEach(flowDepartments -> flowPathRepo.save(flowDepartments));
+        List<FlowDocument> flowDocuments = updatedFlow.getFlowDocuments();
+        List<FlowPath> flowPath = updatedFlow.getFlowPath();
+
+        List<FlowDocument> dbFlowDocs = new ArrayList<>();
+        for (FlowDocument flowDocument : flowDocuments) {
+            FlowDocument tmp = flowDocumentRepo.findOne(new FlowDocumentPK(flowDocument.getFlow(), flowDocument.getDocument()));
+            dbFlowDocs.add(tmp);
+        }
+
+        List<FlowPath> dbFlowPath = new ArrayList<>();
+        for (FlowPath flowDepartment : flowPath) {
+            FlowPath tmp = flowPathRepo.getOneSQL(flowDepartment.getFlow().getId(), flowDepartment.getDepartment().getId());
+            tmp.setDepartment(departmentRepository.getOneSQL(flowDepartment.getDepartment().getId()));
+            dbFlowPath.add(tmp);
+        }
 
         flow.setRemarks(updatedFlow.getRemarks());
         flow.setCrtDepartment(updatedFlow.getCrtDepartment());
-        //flow.setFlowPath(flowPath);
-        //flow.setFlowDocuments(flowDocuments);
+        flow.setFlowPath(dbFlowPath);
+        flow.setFlowDocuments(dbFlowDocs);
 
         return flowRepo.save(flow);
     }

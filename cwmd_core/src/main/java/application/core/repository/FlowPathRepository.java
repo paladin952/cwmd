@@ -6,4 +6,4 @@ import application.core.model.PKs.FlowPathPK;
 import javax.transaction.Transactional;
 
 @Transactional
-public interface FlowPathRepository extends CWMDRepository<FlowPathPK, FlowPath> {}
+public interface FlowPathRepository extends CWMDRepository<FlowPathPK, FlowPath>, FlowPathRepositoryCustom {}

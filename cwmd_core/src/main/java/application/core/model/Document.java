@@ -1,5 +1,6 @@
 package application.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class Document implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "Owner", nullable = false)
+    @JsonIgnore
     private User user;
 
     @Column(name = "Status", nullable = false)
