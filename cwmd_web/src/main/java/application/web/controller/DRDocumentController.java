@@ -38,7 +38,6 @@ public class DRDocumentController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public Integer uploadDR(@RequestParam("file") MultipartFile file) throws Exception {
-//    public Integer uploadDR(@RequestParam("file") MultipartFile file, @RequestParam(value = "documentId", required=false) Integer documentId) throws Exception {
         Document document = null;
         Integer docId = null;
         document = new Document(file.getInputStream());
