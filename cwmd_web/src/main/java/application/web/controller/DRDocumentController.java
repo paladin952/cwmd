@@ -4,6 +4,8 @@ import application.core.model.User;
 import application.core.model.dr.DRDocument;
 import application.core.service.DRDocumentService;
 import application.core.utils.UserUtil;
+import application.web.converter.DRDocumentConverter;
+import application.web.dto.DRDocumentDto;
 import application.web.misc.ViewPath;
 import com.aspose.words.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,7 @@ public class DRDocumentController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<DRDocument> getDocuments() {
+    public List<DRDocumentDto> getDocuments() {
         User currentUser = UserUtil.getCurrentUser();
 
         List<DRDocument> documents = new ArrayList<>();
@@ -64,7 +66,7 @@ public class DRDocumentController {
             documents = drDocumentService.getDocuments(currentUser.getUsername());
         }
 
-        return documents;
+        return new DRDocumentConverter().toDTOs(documents);
     }
 
     @RequestMapping(value = "/downloadFirst", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")

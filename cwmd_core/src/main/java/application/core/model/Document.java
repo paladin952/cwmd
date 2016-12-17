@@ -1,6 +1,5 @@
 package application.core.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,7 +32,6 @@ public class Document implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
     private User user;
 
     //TODO: add a path field to store the path the document can be found on disk

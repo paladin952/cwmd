@@ -2,7 +2,7 @@ package application.core.service;
 
 
 import application.core.model.rn.*;
-import application.core.repository.RNDocumentRepository;
+import application.core.repository.rn.*;
 import application.core.utils.UserUtil;
 import com.aspose.cells.Cell;
 import com.aspose.cells.Cells;
@@ -22,8 +22,27 @@ public class RNDocumentService {
     @Autowired
     private RNDocumentRepository rnDocumentRepository;
 
+    @Autowired
+    private RNOthersRepository rnOthersRepository;
+
+    @Autowired
+    private RNProductRepository rnProductRepository;
+
+    @Autowired
+    private RNResearchRepository rnResearchRepository;
+
+    @Autowired
+    private RNSponsorsRepository rnSponsorsRepository;
+
+    @Autowired
+    private RNTotalRepository rnTotalRepository;
+
+    public List<RNDocument> getDocuments(String username) {
+        return rnDocumentRepository.findByUser_Username(username);
+    }
+
     public void saveDocumentOnDisk(Workbook workbook, String filename) {
-        URL urlToResourses = DRDocumentServiceImpl.class.getClassLoader().getResource("");
+        URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         try {
             //TODO: get the current user logged in order to save files under personal folder
             workbook.save(urlToResourses.getPath() + "files/rn/" + filename);
@@ -127,5 +146,29 @@ public class RNDocumentService {
         RNDocument savedDoc = rnDocumentRepository.save(rnDocument);
 
         return savedDoc.getId();
+    }
+
+    public RNDocument getDocument(Integer id) {
+        return rnDocumentRepository.findOne(id);
+    }
+
+    public RNOthers getRnOthers(Integer id) {
+        return rnOthersRepository.findOne(id);
+    }
+
+    public RNProduct getRnProduct(Integer id) {
+        return rnProductRepository.findOne(id);
+    }
+
+    public RNResearch getRnResearch(Integer id) {
+        return rnResearchRepository.findOne(id);
+    }
+
+    public RNSponsors getRnSponsors(Integer id) {
+        return rnSponsorsRepository.findOne(id);
+    }
+
+    public RNTotal getRnTotal(Integer id) {
+        return rnTotalRepository.findOne(id);
     }
 }

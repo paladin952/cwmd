@@ -1,6 +1,11 @@
 package application.web.controller;
 
+import application.core.model.User;
+import application.core.model.rn.RNDocument;
 import application.core.service.RNDocumentService;
+import application.core.utils.UserUtil;
+import application.web.converter.RNDocumentConverter;
+import application.web.dto.RNDocumentDto;
 import com.aspose.cells.Cell;
 import com.aspose.cells.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequestMapping("/rn")
 @RestController
@@ -22,6 +29,19 @@ public class RNDocumentController {
 
     @Autowired
     private RNDocumentService rnDocumentService;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public List<RNDocumentDto> getDocuments() {
+        User currentUser = UserUtil.getCurrentUser();
+
+        List<RNDocument> documents = new ArrayList<>();
+
+        if (currentUser != null) {
+            documents = rnDocumentService.getDocuments(currentUser.getUsername());
+        }
+
+        return new RNDocumentConverter().toDTOs(documents);
+    }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public Integer uploadRN(@RequestParam("file") MultipartFile file) throws Exception {

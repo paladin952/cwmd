@@ -3,6 +3,7 @@ package application.core.model.rn;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "rnTotal")
-public class RNTotal {
+public class RNTotal implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

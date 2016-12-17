@@ -20,3 +20,8 @@ working-area .caption {
 working-area .btn {
     margin-left: 5px;
 }
+
+working-area h3 {
+    color: lightblue;
+    font-family: serif;
+}
