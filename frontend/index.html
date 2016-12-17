@@ -10,7 +10,7 @@
 
     <!-- injector:css -->
     <link rel="stylesheet" href="/app/css/header/header.css">
-    <link rel="stylesheet" href="/app/js/working-area/workingArea.css">
+    <link rel="stylesheet" href="/app/js/user/working-area/workingArea.css">
     <!-- endinjector -->
 </head>
 <body ng-app="cwmd">
@@ -33,20 +33,21 @@
 
 <!-- injector:js -->
 <script src="/app/js/app.js"></script>
-
-<script src="/app/common/services/DRDocumentSrv.js"></script>
-<script src="/app/common/services/UserSrv.js"></script>
 <script src="/app/js/common/menu/menu.js"></script>
-
+<script src="/app/js/common/services/DRDocumentSrv.js"></script>
+<script src="/app/js/common/services/RNDocumentSrv.js"></script>
+<script src="/app/js/common/services/UserSrv.js"></script>
 <script src="/app/js/config/restangularConfig.js"></script>
-
-<script src="/app/user/js/closed-tasks/closedTasks.js"></script>
-<script src="/app/user/js/home/home.js"></script>
-<script src="/app/user/js/my-tasks/myTasks.js"></script>
-<script src="/app/user/js/open-tasks/openTasks.js"></script>
-<script src="/app/user/js/working-area/addDr/addDr.js"></script>
-<script src="/app/user/js/working-area/downloadDr/downloadDr.js"></script>
-<script src="/app/user/js/working-area/workingArea.js"></script>
+<script src="/app/js/user/auth/login-ctrl.js"></script>
+<script src="/app/js/user/auth/module.js"></script>
+<script src="/app/js/user/closed-tasks/closedTasks.js"></script>
+<script src="/app/js/user/home/home.js"></script>
+<script src="/app/js/user/my-tasks/myTasks.js"></script>
+<script src="/app/js/user/open-tasks/openTasks.js"></script>
+<script src="/app/js/user/working-area/addDr/addDr.js"></script>
+<script src="/app/js/user/working-area/addRn/addRn.js"></script>
+<script src="/app/js/user/working-area/downloadDr/downloadDr.js"></script>
+<script src="/app/js/user/working-area/workingArea.js"></script>
 <!-- endinjector -->
 </body>
 </html>

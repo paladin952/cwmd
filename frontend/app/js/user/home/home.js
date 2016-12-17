@@ -1,5 +1,5 @@
 angular.module('cwmd').component('homeLayout', {
-    templateUrl: 'app/js/home/home.html',
+    templateUrl: 'app/js/user/home/home.html',
     controller: function (UserSrv) {
         var $ctrl = this;
         $ctrl.projectName = "CWMD";

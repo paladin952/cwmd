@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "drPersonInfo")
-public class DRPersonInfo {
+public class DRPersonInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "drPersonInfoId")

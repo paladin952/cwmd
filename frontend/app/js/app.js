@@ -27,11 +27,15 @@ angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate', 'n
                 url: '/closedTasks',
                 template: '<closed-tasks></closed-tasks>'
             })
-            .state('home.addDr', {
+            .state('addDr', {
                 url: '/addDr',
                 template: '<add-dr></add-dr>'
             })
-            .state('home.downloadDr', {
+            .state('addRn', {
+                url: '/addRn',
+                template: '<add-rn></add-rn>'
+            })
+            .state('downloadDr', {
                 url: '/downloadDr',
                 template: '<download-dr></download-dr>'
             });

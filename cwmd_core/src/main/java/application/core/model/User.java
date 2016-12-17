@@ -3,21 +3,28 @@ package application.core.model;
 import application.core.utils.enums.RoleType;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "user")
 @ToString
 @EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
 public class User implements Serializable {
     private static final String DEFAULT_STRING = "N/A";
+
+    public User(String username, String password, RoleType role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     @Id
     @Column(name = "Username", length = 60, unique = true, nullable = false)

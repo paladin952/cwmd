@@ -4,6 +4,8 @@ import application.core.model.User;
 import application.core.model.dr.DRDocument;
 import application.core.service.DRDocumentService;
 import application.core.utils.UserUtil;
+import application.web.converter.DRDocumentConverter;
+import application.web.dto.DRDocumentDto;
 import application.web.misc.ViewPath;
 import com.aspose.words.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequestMapping("/document")
+@RequestMapping("/dr")
 @RestController
 // TODO: 03.12.2016 check how this works for angular and do necessary changes
 public class DRDocumentController {
@@ -38,14 +40,9 @@ public class DRDocumentController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public Integer uploadDR(@RequestParam("file") MultipartFile file) throws Exception {
-//    public Integer uploadDR(@RequestParam("file") MultipartFile file, @RequestParam(value = "documentId", required=false) Integer documentId) throws Exception {
         Document document = null;
         Integer docId = null;
-        try {
-            document = new Document(file.getInputStream());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        document = new Document(file.getInputStream());
 
         drDocumentService.saveDocumentOnServer(document, file.getOriginalFilename());
         if (documentId == null) {
@@ -60,7 +57,7 @@ public class DRDocumentController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<DRDocument> getDocuments() {
+    public List<DRDocumentDto> getDocuments() {
         User currentUser = UserUtil.getCurrentUser();
 
         List<DRDocument> documents = new ArrayList<>();
@@ -69,7 +66,7 @@ public class DRDocumentController {
             documents = drDocumentService.getDocuments(currentUser.getUsername());
         }
 
-        return documents;
+        return new DRDocumentConverter().toDTOs(documents);
     }
 
     @RequestMapping(value = "/downloadFirst", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
