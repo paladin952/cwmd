@@ -1,16 +1,16 @@
 package application.web.converter;
 
-import application.core.model.Department;
 import application.core.model.Flow;
 import application.core.model.FlowDocument;
 import application.core.model.FlowPath;
-import application.web.dto.DepartmentDTO;
 import application.web.dto.FlowDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.stream.Collectors;
 
 public class FlowConverter extends Converter<Flow, FlowDTO> {
-    Converter<Department, DepartmentDTO> departmentConverter = new DepartmentConverter();
+    @Autowired
+    private DepartmentConverter departmentConverter;
 
     @Override
     public FlowDTO toDTO(Flow obj) {

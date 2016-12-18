@@ -1,0 +1,27 @@
+working-area .documentList {
+    margin-top: 15px;
+}
+
+working-area .document :first-child {
+    line-height: 40px;
+    font-style: italic;
+}
+
+working-area .document{
+    margin: 5px;
+    box-shadow: 0px 1px 5px #63879b;
+}
+
+working-area .caption {
+    display: block;
+    color: #65b0ff;
+}
+
+working-area .btn {
+    margin-left: 5px;
+}
+
+working-area h3 {
+    color: lightblue;
+    font-family: serif;
+}

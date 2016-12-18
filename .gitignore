@@ -56,6 +56,6 @@ email.properties
 .idea
 /cwmd_core/target
 /cwmd_web/target
-/node_modules
-/bower_components
-/dist
+/frontend/node_modules
+/frontend/bower_components
+/frontend/dist

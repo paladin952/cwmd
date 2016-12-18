@@ -10,7 +10,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "flow_path")
 @IdClass(FlowPathPK.class)
-@ToString
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,4 +27,9 @@ public class FlowPath implements Serializable {
     @ManyToOne
     @JoinColumn(name = "DepartmentID", nullable = false)
     private Department department;
+
+    @Override
+    public String toString() {
+        return "FlowPath = { flow: " + flow.getId() + ", department: " + department.getId() + " }";
+    }
 }

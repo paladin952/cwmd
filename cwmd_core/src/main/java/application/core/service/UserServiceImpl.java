@@ -30,7 +30,7 @@ public class UserServiceImpl implements IUserService {
                     .username(username)
                     .password(password)
                     .role(role)
-                    .userInfo(userInfo)
+//                    .userInfo(userInfo)
                     .build();
             validator.validate(user);
             return userRepo.save(user);
@@ -66,7 +66,7 @@ public class UserServiceImpl implements IUserService {
             User user = userRepo.findOne(username);
             user.setPassword(password);
             user.setRole(role);
-            user.setUserInfo(userInfo);
+//            user.setUserInfo(userInfo);
             return userRepo.save(user);
         } catch (Exception e) {
             throw new ServiceHibernateException("Unknown error while updating user having username" + username, e);

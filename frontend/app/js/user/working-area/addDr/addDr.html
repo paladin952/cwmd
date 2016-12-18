@@ -1,0 +1,11 @@
+<div ng-show="$ctrl.documentId === undefined">
+    <div>Please upload the first part of the DR</div>
+    <input type="file" file-model="firstPart"/>
+    <button class="btn btn-default" ng-click="$ctrl.uploadFirstPart()">Submit</button>
+</div>
+
+<div ng-hide="$ctrl.documentId === undefined">
+    <div>Please upload the second part of the DR</div>
+    <input type="file" file-model="secondPart"/>
+    <button class="btn btn-default" ng-click="$ctrl.uploadSecondPart()">Submit</button>
+</div>

@@ -3,20 +3,28 @@ package application.core.model;
 import application.core.utils.enums.RoleType;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "user")
 @ToString
 @EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
 public class User implements Serializable {
     private static final String DEFAULT_STRING = "N/A";
+
+    public User(String username, String password, RoleType role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     @Id
     @Column(name = "Username", length = 60, unique = true, nullable = false)
@@ -28,7 +36,12 @@ public class User implements Serializable {
     @Column(name = "Role", nullable = false)
     private RoleType role;
 
+    //TODO fix this. JPA repo crashes when find.all()
     // Could do: change to FetchType.LAZY
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private UserDetails userInfo;
+//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private UserDetails userInfo;
+
+//     TODO fix this. userRepo.finAll() java.sql.SQLSyntaxErrorException: Table 'cwmd_db.drdocument' doesn't exist
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+//    private List<Document> documents;
 }

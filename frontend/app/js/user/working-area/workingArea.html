@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <button class="btn btn-default pull-left" ui-sref="downloadDr">Download DR samples</button>
+        <button class="btn btn-primary pull-right" ui-sref="addDr">Add new document</button>
+        <button class="btn btn-primary pull-right" ui-sref="addRn">Add new RN document</button>
+    </div>
+    <div ui-view></div>
+    <div class="row">
+        <div class="col-xs-6 documentList">
+            <h3>DR - documents</h3>
+            <div ng-repeat="document in $ctrl.drDocuments" class="col-xs-12 document">
+                <span>{{document.name}}</span>
+                <span class="caption pull-right">{{document.dateAdded | date: "yyyy-MM-dd"}}</span>
+            </div>
+        </div>
+        <div class="col-xs-6 documentList">
+            <h3>RN - documents</h3>
+            <div ng-repeat="document in $ctrl.rnDocuments" class="col-xs-12 document">
+                <span>{{document.name}}</span>
+                <span class="caption pull-right">{{document.dateAdded | date: "yyyy-MM-dd"}}</span>
+            </div>
+        </div>
+
+    </div>
+</div>

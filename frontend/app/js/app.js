@@ -1,40 +1,52 @@
-angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate'])
+angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate', 'ngFileSaver', 'file-model'])
     .config(function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/home');
+        $urlRouterProvider.otherwise('/login');
 
-        // $stateProvider
-        //     .state('dashboard', {
-        //         url: '/dashboard',
-        //         template: '<dashboard></dashboard>'
-        //     })
-        //     .state('herolist', {
-        //         url: '/herolist',
-        //         template: '<hero-list></hero-list>'
-        //     })
-        //     .state('detail', {
-        //         url: '/detail/:id',
-        //         template: '<hero-details></hero-details>'
-        //     })
-        //     .state('login', {
-        //         url: '/login',
-        //         template: '<login></login>'
-        //     });
+        $stateProvider
+            .state('login', {
+                url: '/login',
+                template: '<login></login>'
+            })
+            .state('workingArea', {
+                url: '/workingArea',
+                template: '<working-area></working-area>'
+            })
+            .state('home', {
+                url: '/home',
+                template: '<home-layout></home-layout>'
+            })
+            .state('openTasks', {
+                url: '/openTasks',
+                template: '<open-tasks></open-tasks>'
+            })
+            .state('myTasks', {
+                url: '/myTasks',
+                template: '<my-tasks></my-tasks>'
+            })
+            .state('closedTasks', {
+                url: '/closedTasks',
+                template: '<closed-tasks></closed-tasks>'
+            })
+            .state('addDr', {
+                url: '/addDr',
+                template: '<add-dr></add-dr>'
+            })
+            .state('addRn', {
+                url: '/addRn',
+                template: '<add-rn></add-rn>'
+            })
+            .state('downloadDr', {
+                url: '/downloadDr',
+                template: '<download-dr></download-dr>'
+            });
     })
     .run(function ($rootScope, $state) {
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
             // console.log(arguments);
-            // debugger
-            console.log("State changed from " + fromState + ", to " + toState);
 
-            // if ($rootScope.loggedInUser == null) {
-            //     console.log('user not logged in:');
-            //     if (toState.name != 'login') {
-            //         console.log('redirecting to login');
-            //         $state.go('login');
-            //         event.preventDefault();
-            //     }
-            // } else {
-            //     console.log('user logged in:', $rootScope.loggedInUser);
-            // }
+            console.log("State changed from ");
+            console.log(fromState);
+            console.log(", to ");
+            console.log(toState);
         });
     });

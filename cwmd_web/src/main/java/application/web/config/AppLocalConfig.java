@@ -2,6 +2,11 @@ package application.web.config;
 
 
 import application.core.config.JPAConfig;
+import application.core.model.Department;
+import application.web.converter.Converter;
+import application.web.converter.DepartmentConverter;
+import application.web.converter.FlowConverter;
+import application.web.dto.DepartmentDTO;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,4 +68,10 @@ public class AppLocalConfig {
         factory.setVelocityProperties(props);
         return factory.createVelocityEngine();
     }
+
+    @Bean
+    public FlowConverter getFlowConverter() { return new FlowConverter(); }
+
+    @Bean
+    public DepartmentConverter getDepartmentConverter() { return new DepartmentConverter(); }
 }

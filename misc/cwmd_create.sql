@@ -36,10 +36,12 @@ CREATE TABLE IF NOT EXISTS `department_user` (
   PRIMARY KEY (`DepartmentID`,`Username`),
   UNIQUE KEY `Username` (`Username`),
   CONSTRAINT `FK_DepartmentUserDepartment` FOREIGN KEY (`DepartmentID`) REFERENCES `department` (`DepartmentID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_DepartmentUserUser` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK_DepartmentUserUser` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKhfbbcrkyn689m5hh6v6m7f9y2` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`),
+  CONSTRAINT `FKse13yqj157p3iy977u2m7ui2k` FOREIGN KEY (`DepartmentID`) REFERENCES `department` (`DepartmentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of users assigned to a department';
 
--- Dumping data for table cwmd_db.department_user: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.department_user: ~0 rows (approximately)
 /*!40000 ALTER TABLE `department_user` DISABLE KEYS */;
 INSERT INTO `department_user` (`DepartmentID`, `Username`) VALUES
 	(2, 'asdf');
@@ -50,19 +52,21 @@ CREATE TABLE IF NOT EXISTS `document` (
   `DocumentID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(150) NOT NULL,
   `DateAdded` date NOT NULL,
-  `Owner` varchar(50) NOT NULL,
+  `user_id` varchar(50) NOT NULL,
   `Status` int(11) NOT NULL DEFAULT '0',
   `Version` float NOT NULL,
   `Path` varchar(255) NOT NULL,
+  `Owner` varchar(60) NOT NULL,
   PRIMARY KEY (`DocumentID`),
-  KEY `FK54bckn7stqnapx9l837ufqdqm` (`Owner`),
-  CONSTRAINT `FK_DocumentOwner` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  KEY `FK54bckn7stqnapx9l837ufqdqm` (`user_id`),
+  KEY `FKlcoro0vc6c48aegbimextvf24` (`Owner`),
+  CONSTRAINT `FK_DocumentOwner` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKjhdxdv9sijhujiynqbb5jc010` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`),
+  CONSTRAINT `FKlcoro0vc6c48aegbimextvf24` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.document: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.document: ~0 rows (approximately)
 /*!40000 ALTER TABLE `document` DISABLE KEYS */;
-INSERT INTO `document` (`DocumentID`, `Name`, `DateAdded`, `Owner`, `Status`, `Version`, `Path`) VALUES
-	(2, 'Bob\'s diary', '2016-12-04', 'asdf', 0, 0.1, 'N/A');
 /*!40000 ALTER TABLE `document` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.drbankinfo
@@ -108,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `drdocument` (
   `DocumentID` int(11) NOT NULL,
   `DateAdded` datetime NOT NULL,
   `Name` varchar(150) NOT NULL,
-  `Owner` varchar(50) NOT NULL,
+  `user_id` varchar(50) NOT NULL,
   `Status` int(11) NOT NULL DEFAULT '0',
   `Version` float NOT NULL,
   `Path` varchar(255) NOT NULL,
@@ -120,6 +124,7 @@ CREATE TABLE IF NOT EXISTS `drdocument` (
   `drTotalCosts_drTotalCostsId` int(11) DEFAULT NULL,
   `drTransportationCosts_drTransportationCostsId` int(11) DEFAULT NULL,
   `drTravelInfo_drTravelInfoId` int(11) DEFAULT NULL,
+  `Owner` varchar(60) NOT NULL,
   PRIMARY KEY (`DocumentID`),
   KEY `FK5lmm2lh036nfm7x6yann31cgh` (`drBankInfo_drBankInfoId`),
   KEY `FK105edkqrpfxj876hygl9aos2` (`drDailyCosts_drDailyCostsId`),
@@ -129,12 +134,15 @@ CREATE TABLE IF NOT EXISTS `drdocument` (
   KEY `FKam39xbwe6f1gavtnxknb2se5a` (`drTotalCosts_drTotalCostsId`),
   KEY `FK308fko1dpth31flg4fdqu7x38` (`drTransportationCosts_drTransportationCostsId`),
   KEY `FK6or6c5it2qao4iehsv0ybnnbj` (`drTravelInfo_drTravelInfoId`),
-  KEY `FK_Owner` (`Owner`),
+  KEY `FK_prwm5udbj2xc9kwxdogs9bvdp` (`user_id`),
+  KEY `FK_isoyvk8gfq8p8nx9858qceq77` (`Owner`),
   CONSTRAINT `FK105edkqrpfxj876hygl9aos2` FOREIGN KEY (`drDailyCosts_drDailyCostsId`) REFERENCES `drdailycosts` (`drDailyCostsId`),
   CONSTRAINT `FK308fko1dpth31flg4fdqu7x38` FOREIGN KEY (`drTransportationCosts_drTransportationCostsId`) REFERENCES `drtransportationcosts` (`drTransportationCostsId`),
   CONSTRAINT `FK5lmm2lh036nfm7x6yann31cgh` FOREIGN KEY (`drBankInfo_drBankInfoId`) REFERENCES `drbankinfo` (`drBankInfoId`),
   CONSTRAINT `FK6or6c5it2qao4iehsv0ybnnbj` FOREIGN KEY (`drTravelInfo_drTravelInfoId`) REFERENCES `drtravelinfo` (`drTravelInfoId`),
-  CONSTRAINT `FK_Owner` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`),
+  CONSTRAINT `FK_Owner` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`),
+  CONSTRAINT `FK_isoyvk8gfq8p8nx9858qceq77` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`),
+  CONSTRAINT `FK_prwm5udbj2xc9kwxdogs9bvdp` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`),
   CONSTRAINT `FKam39xbwe6f1gavtnxknb2se5a` FOREIGN KEY (`drTotalCosts_drTotalCostsId`) REFERENCES `drtotalcosts` (`drTotalCostsId`),
   CONSTRAINT `FKf2yocl90wp3xpw9whjjrxpn5a` FOREIGN KEY (`drOtherCosts_drOtherCostsId`) REFERENCES `drothercosts` (`drOtherCostsId`),
   CONSTRAINT `FKn2g4piekywfy9phvkubuvs0bn` FOREIGN KEY (`drHousingCosts_drHousingCostsId`) REFERENCES `drhousingcosts` (`drHousingCostsId`),
@@ -272,10 +280,10 @@ CREATE TABLE IF NOT EXISTS `flow` (
   PRIMARY KEY (`FlowID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.flow: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.flow: ~1 rows (approximately)
 /*!40000 ALTER TABLE `flow` DISABLE KEYS */;
 INSERT INTO `flow` (`FlowID`, `CurrentDepartment`, `Remarks`) VALUES
-	(1, 0, 'Hi');
+	(1, 0, 'asdadadadad');
 /*!40000 ALTER TABLE `flow` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.flow_document
@@ -284,14 +292,13 @@ CREATE TABLE IF NOT EXISTS `flow_document` (
   `DocumentID` int(11) NOT NULL,
   PRIMARY KEY (`FlowID`,`DocumentID`),
   UNIQUE KEY `DocumentID` (`DocumentID`),
-  CONSTRAINT `FK_FlowDocumentDocumentID` FOREIGN KEY (`DocumentID`) REFERENCES `document` (`DocumentID`),
-  CONSTRAINT `FKqennofhcscbxw9cfogxvyhxum` FOREIGN KEY (`FlowID`) REFERENCES `flow` (`FlowID`)
+  UNIQUE KEY `UK_bg72aphuccehpip6exti784cy` (`DocumentID`),
+  CONSTRAINT `FK_FlowDocumentDocumentID` FOREIGN KEY (`DocumentID`) REFERENCES `document` (`DocumentID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKqennofhcscbxw9cfogxvyhxum` FOREIGN KEY (`FlowID`) REFERENCES `flow` (`FlowID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.flow_document: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.flow_document: ~1 rows (approximately)
 /*!40000 ALTER TABLE `flow_document` DISABLE KEYS */;
-INSERT INTO `flow_document` (`FlowID`, `DocumentID`) VALUES
-	(1, 2);
 /*!40000 ALTER TABLE `flow_document` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.flow_path
@@ -300,15 +307,138 @@ CREATE TABLE IF NOT EXISTS `flow_path` (
   `DepartmentID` int(11) NOT NULL,
   PRIMARY KEY (`FlowID`,`DepartmentID`),
   KEY `FK_FlowDepartmentDepartment` (`DepartmentID`),
+  CONSTRAINT `FK79ov9ymvuj3ngjryb6hhqtxam` FOREIGN KEY (`FlowID`) REFERENCES `flow` (`FlowID`),
   CONSTRAINT `FK_FlowDepartmentDepartment` FOREIGN KEY (`DepartmentID`) REFERENCES `department` (`DepartmentID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_FlowDepartmentFlow` FOREIGN KEY (`FlowID`) REFERENCES `flow` (`FlowID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK_FlowDepartmentFlow` FOREIGN KEY (`FlowID`) REFERENCES `flow` (`FlowID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKjlxasdf2b4nuplik3djyjg56q` FOREIGN KEY (`DepartmentID`) REFERENCES `department` (`DepartmentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.flow_path: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.flow_path: ~1 rows (approximately)
 /*!40000 ALTER TABLE `flow_path` DISABLE KEYS */;
 INSERT INTO `flow_path` (`FlowID`, `DepartmentID`) VALUES
 	(1, 2);
 /*!40000 ALTER TABLE `flow_path` ENABLE KEYS */;
+
+-- Dumping structure for table cwmd_db.hibernate_sequence
+CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
+  `next_val` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table cwmd_db.hibernate_sequence: ~0 rows (approximately)
+/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
+INSERT INTO `hibernate_sequence` (`next_val`) VALUES
+	(3);
+/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+
+-- Dumping structure for table cwmd_db.rndocument
+CREATE TABLE IF NOT EXISTS `rndocument` (
+  `DocumentID` int(11) NOT NULL,
+  `DateAdded` date NOT NULL,
+  `Name` varchar(150) NOT NULL,
+  `Path` varchar(255) NOT NULL,
+  `Status` int(11) NOT NULL,
+  `Version` float NOT NULL,
+  `Owner` varchar(60) NOT NULL,
+  `budget` float DEFAULT NULL,
+  `personalFunds` float DEFAULT NULL,
+  `rnOthers_rnOthersId` int(11) DEFAULT NULL,
+  `rnResearch_rnResearchId` int(11) DEFAULT NULL,
+  `rnSponsors_rnSponsorsId` int(11) DEFAULT NULL,
+  `rnTotal_rnTotalId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`DocumentID`),
+  KEY `FK1bjqpc37c5dwhu8lf3gdl2199` (`rnOthers_rnOthersId`),
+  KEY `FKnpnvai2txm0tv0aea611ukq08` (`rnResearch_rnResearchId`),
+  KEY `FKi025k7hxkqwfjwwqt3xiolo5k` (`rnSponsors_rnSponsorsId`),
+  KEY `FKi6j8pcdapvidrq9o16v6vq6e6` (`rnTotal_rnTotalId`),
+  KEY `FK_ec4msvbjjq1eitlft8kmux4ni` (`Owner`),
+  CONSTRAINT `FK1bjqpc37c5dwhu8lf3gdl2199` FOREIGN KEY (`rnOthers_rnOthersId`) REFERENCES `rnothers` (`rnOthersId`),
+  CONSTRAINT `FK_ec4msvbjjq1eitlft8kmux4ni` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`),
+  CONSTRAINT `FKi025k7hxkqwfjwwqt3xiolo5k` FOREIGN KEY (`rnSponsors_rnSponsorsId`) REFERENCES `rnsponsors` (`rnSponsorsId`),
+  CONSTRAINT `FKi6j8pcdapvidrq9o16v6vq6e6` FOREIGN KEY (`rnTotal_rnTotalId`) REFERENCES `rntotal` (`rnTotalId`),
+  CONSTRAINT `FKnpnvai2txm0tv0aea611ukq08` FOREIGN KEY (`rnResearch_rnResearchId`) REFERENCES `rnresearch` (`rnResearchId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table cwmd_db.rndocument: ~0 rows (approximately)
+/*!40000 ALTER TABLE `rndocument` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rndocument` ENABLE KEYS */;
+
+-- Dumping structure for table cwmd_db.rnothers
+CREATE TABLE IF NOT EXISTS `rnothers` (
+  `rnOthersId` int(11) NOT NULL AUTO_INCREMENT,
+  `advancePayment` float DEFAULT NULL,
+  `externalFunding` float DEFAULT NULL,
+  `externalFundingIdentification` varchar(255) DEFAULT NULL,
+  `other` float DEFAULT NULL,
+  `otherIdentification` varchar(255) DEFAULT NULL,
+  `structuralFunds` float DEFAULT NULL,
+  `structuralFundsIdentification` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`rnOthersId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table cwmd_db.rnothers: ~0 rows (approximately)
+/*!40000 ALTER TABLE `rnothers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rnothers` ENABLE KEYS */;
+
+-- Dumping structure for table cwmd_db.rnproduct
+CREATE TABLE IF NOT EXISTS `rnproduct` (
+  `rnProductId` int(11) NOT NULL AUTO_INCREMENT,
+  `codCPV` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `nrCrt` int(11) DEFAULT NULL,
+  `pricePerUnit` float DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `totalPrice` float DEFAULT NULL,
+  `um` varchar(255) DEFAULT NULL,
+  `rnDocumentId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`rnProductId`),
+  KEY `FK8i3egfs905pk87llfacelt4aq` (`rnDocumentId`),
+  CONSTRAINT `FK8i3egfs905pk87llfacelt4aq` FOREIGN KEY (`rnDocumentId`) REFERENCES `rndocument` (`DocumentID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table cwmd_db.rnproduct: ~0 rows (approximately)
+/*!40000 ALTER TABLE `rnproduct` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rnproduct` ENABLE KEYS */;
+
+-- Dumping structure for table cwmd_db.rnresearch
+CREATE TABLE IF NOT EXISTS `rnresearch` (
+  `rnResearchId` int(11) NOT NULL AUTO_INCREMENT,
+  `nationalFunds1` float DEFAULT NULL,
+  `nationalFunds1Identification` varchar(255) DEFAULT NULL,
+  `nationalFunds2` float DEFAULT NULL,
+  `nationalFunds2Identification` varchar(255) DEFAULT NULL,
+  `ternaryContracts` float DEFAULT NULL,
+  `ternaryContractsIdentification` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`rnResearchId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table cwmd_db.rnresearch: ~0 rows (approximately)
+/*!40000 ALTER TABLE `rnresearch` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rnresearch` ENABLE KEYS */;
+
+-- Dumping structure for table cwmd_db.rnsponsors
+CREATE TABLE IF NOT EXISTS `rnsponsors` (
+  `rnSponsorsId` int(11) NOT NULL AUTO_INCREMENT,
+  `amount` float DEFAULT NULL,
+  `sponsorName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`rnSponsorsId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table cwmd_db.rnsponsors: ~0 rows (approximately)
+/*!40000 ALTER TABLE `rnsponsors` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rnsponsors` ENABLE KEYS */;
+
+-- Dumping structure for table cwmd_db.rntotal
+CREATE TABLE IF NOT EXISTS `rntotal` (
+  `rnTotalId` int(11) NOT NULL AUTO_INCREMENT,
+  `totalPrice` float DEFAULT NULL,
+  `totalPricePerUnit` float DEFAULT NULL,
+  `totalQuantity` int(11) DEFAULT NULL,
+  PRIMARY KEY (`rnTotalId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table cwmd_db.rntotal: ~0 rows (approximately)
+/*!40000 ALTER TABLE `rntotal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rntotal` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.user
 CREATE TABLE IF NOT EXISTS `user` (

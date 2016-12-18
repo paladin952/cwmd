@@ -1,5 +1,6 @@
 package application.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +19,8 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Document implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @TableGenerator(name = "TABLE_GENERATOR", initialValue = 0, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GENERATOR")
     @Column(name = "DocumentID")
     private Integer id;
 
@@ -31,7 +33,8 @@ public class Document implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "Owner", nullable = false)
-    private User owner;
+    @JsonIgnore
+    private User user;
 
     @Column(name = "Status", nullable = false)
     private Integer status;

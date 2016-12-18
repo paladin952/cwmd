@@ -2,13 +2,18 @@ package application.web.converter;
 
 import application.core.model.Department;
 import application.core.model.DepartmentUser;
+import application.core.repository.DepartmentRepository;
 import application.web.dto.DepartmentDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.stream.Collectors;
 
 public class DepartmentConverter extends Converter<Department, DepartmentDTO> {
+
     @Override
     public DepartmentDTO toDTO(Department obj) {
+        if (obj == null)
+            return new DepartmentDTO();
         return DepartmentDTO.builder()
                 .id(obj.getId())
                 .userList(obj.getUserList().stream()

@@ -24,7 +24,7 @@ public class Department implements Serializable {
 
     @JsonIgnore
     // Could do: change to FetchType.LAZY
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DepartmentUser> userList;
 
     @Column(name = "Name", length = 60, nullable = false)

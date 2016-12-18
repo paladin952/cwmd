@@ -1,8 +1,12 @@
-angular.module('cwmd').service('UserSrv', function () {
-    service = this;
-    var _currentUser = {};
+angular.module('cwmd').service('UserSrv', function (Restangular) {
+    var service = this;
+    var _currentUser = {
+        username : "Mock.username",
+        password: "Mock.password"
+    };
 
     service.getUsers = function () {
+        debugger;
         return Restangular.all('user').getList();
     };
 
@@ -15,11 +19,7 @@ angular.module('cwmd').service('UserSrv', function () {
         Restangular.all('login').post(_params)
             .then(function (response) {
                 _currentUser = response;
-                service.isAdmin();
-            })
-            .catch(function (response) {
-                //do nothing;
-            })
+            });
     };
 
     service.logout = function () {
@@ -29,6 +29,10 @@ angular.module('cwmd').service('UserSrv', function () {
 
     service.getUserRole = function () {
         return _currentUser.User.role;
+    };
+
+    service.getCurrentUser = function () {
+        return _currentUser;
     };
 
     service.isAdmin = function () {

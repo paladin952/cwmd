@@ -10,6 +10,7 @@
 
     <!-- injector:css -->
     <link rel="stylesheet" href="/app/css/header/header.css">
+    <link rel="stylesheet" href="/app/js/user/working-area/workingArea.css">
     <!-- endinjector -->
 </head>
 <body ng-app="cwmd">
@@ -24,13 +25,29 @@
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/lodash/lodash.js"></script>
 <script src="bower_components/restangular/dist/restangular.js"></script>
+<script src="bower_components/blob-polyfill/Blob.js"></script>
+<script src="bower_components/file-saver.js/FileSaver.js"></script>
+<script src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
+<script src="bower_components/angular-file-model/angular-file-model.js"></script>
 <!-- endbower -->
 
 <!-- injector:js -->
 <script src="/app/js/app.js"></script>
-<script src="/app/services/UserSrv.js"></script>
+<script src="/app/js/common/menu/menu.js"></script>
+<script src="/app/js/common/services/DRDocumentSrv.js"></script>
+<script src="/app/js/common/services/RNDocumentSrv.js"></script>
+<script src="/app/js/common/services/UserSrv.js"></script>
 <script src="/app/js/config/restangularConfig.js"></script>
-<script src="/app/js/home/home.js"></script>
+<script src="/app/js/user/auth/login-ctrl.js"></script>
+<script src="/app/js/user/auth/module.js"></script>
+<script src="/app/js/user/closed-tasks/closedTasks.js"></script>
+<script src="/app/js/user/home/home.js"></script>
+<script src="/app/js/user/my-tasks/myTasks.js"></script>
+<script src="/app/js/user/open-tasks/openTasks.js"></script>
+<script src="/app/js/user/working-area/addDr/addDr.js"></script>
+<script src="/app/js/user/working-area/addRn/addRn.js"></script>
+<script src="/app/js/user/working-area/downloadDr/downloadDr.js"></script>
+<script src="/app/js/user/working-area/workingArea.js"></script>
 <!-- endinjector -->
 </body>
 </html>
