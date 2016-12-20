@@ -2,3 +2,12 @@ body {
     width: 100%;
     padding-top: 50px;
 }
+
+
+.modal-header{
+    background-color: #0f0f0f;
+    color: #5bc0de;
+    padding: 15px;
+    border-bottom: 1px solid;
+    border-radius: 5px 5px 0px 0px;
+}

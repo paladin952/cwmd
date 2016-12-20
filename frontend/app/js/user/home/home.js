@@ -1,9 +1,8 @@
 angular.module('cwmd').component('homeLayout', {
     templateUrl: 'app/js/user/home/home.html',
-    controller: function (UserSrv) {
+    controller: function () {
         var $ctrl = this;
         $ctrl.projectName = "CWMD";
-
         $ctrl.getUsers = function () {
             UserSrv.getUsers()
                 .then(function (response) {
