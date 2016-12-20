@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,17 +43,19 @@ public class RNDocumentService {
         return rnDocumentRepository.findByUser_Username(username);
     }
 
-    public void saveDocumentOnDisk(Workbook workbook, String filename) {
+    public void saveDocumentOnDisk(Workbook workbook) {
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         try {
+            LocalDate date = LocalDate.now();
+            String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
             //TODO: get the current user logged in order to save files under personal folder
-            workbook.save(urlToResourses.getPath() + "files/rn/" + filename);
+            workbook.save(urlToResourses.getPath() + "files/rn/" + "RN - " + dateString);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public Integer saveDocumentInDB(Workbook workbook, String filename) {
+    public Integer saveDocumentInDB(Workbook workbook, String filename) throws ParseException {
         Cells cells = workbook.getWorksheets().get(0).getCells();
 
         RNDocument rnDocument = new RNDocument();
@@ -138,10 +142,18 @@ public class RNDocumentService {
         rnTotal.setTotalPrice(cells.get("M15").getFloatValue());
         rnDocument.setRnTotal(rnTotal);
 
-        Date dateAdded = new Date();
-        rnDocument.setDateAdded(dateAdded);
-        rnDocument.setName("RN - " + dateAdded.toString());
+        LocalDate date = LocalDate.now();
+        rnDocument.setDateAdded(new SimpleDateFormat("yyyy-MM-dd").parse(date.toString()));
+        String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
+        rnDocument.setName("RN - " + dateString);
         rnDocument.setUser(UserUtil.getCurrentUser());
+
+        //// FIXME: 20.12.2016 set the correct status as soon as it known how the integer representation of the status is mapped
+        rnDocument.setStatus(1);
+        rnDocument.setVersion(0.1f);
+
+        URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
+        rnDocument.setPath(urlToResourses.getPath() + "files/rn/" + "RN - " + dateString);
 
         RNDocument savedDoc = rnDocumentRepository.save(rnDocument);
 
