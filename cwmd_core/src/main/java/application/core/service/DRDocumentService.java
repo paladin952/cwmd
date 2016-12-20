@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,17 +50,19 @@ public class DRDocumentService {
     @Autowired
     private DRTravelInfoRepository drTravelInfoRepository;
 
-    public void saveDocumentOnServer(Document document, String filename) {
+    public void saveDocumentOnServer(Document document) {
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         try {
             //TODO: get the current user logged in order to save files under personal folder
-            document.save(urlToResourses.getPath() + "files/dr/" + filename);
+            LocalDate date = LocalDate.now();
+            String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
+            document.save(urlToResourses.getPath() + "files/dr/" + "DR - " + dateString);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public Integer saveDocumentInDBFirstPart(Document document, String filename) {
+    public Integer saveDocumentInDBFirstPart(Document document, String filename) throws ParseException {
         NodeCollection shapes = document.getChildNodes(NodeType.SHAPE, true);
         System.out.println("shapes.getCount() = " + shapes.getCount());
 
@@ -136,10 +140,17 @@ public class DRDocumentService {
         drHousingCosts.setHousing3_2Funding(it.next().getText());
         drDocument.setDrHousingCosts(drHousingCosts);
 
-        Date dateAdded = new Date();
-        drDocument.setDateAdded(dateAdded);
-        drDocument.setName("DR - " + dateAdded.toString());
+        LocalDate date = LocalDate.now();
+        drDocument.setDateAdded(new SimpleDateFormat("yyyy-MM-dd").parse(date.toString()));
+        String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
+        drDocument.setName("DR - " + dateString);
         drDocument.setUser(UserUtil.getCurrentUser());
+        //// FIXME: 20.12.2016 set the correct status as soon as it known how the integer representation of the status is mapped
+        drDocument.setStatus(1);
+        drDocument.setVersion(0.1f);
+
+        URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
+        drDocument.setPath(urlToResourses.getPath() + "files/dr/" + "DR - " + dateString);
 
         DRDocument savedDocument = drDocumentRepository.save(drDocument);
 

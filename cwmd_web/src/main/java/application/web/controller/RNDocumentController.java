@@ -57,7 +57,7 @@ public class RNDocumentController {
 
             System.out.println("cell.getValue().toString() = " + cell.getValue().toString());
 
-            rnDocumentService.saveDocumentOnDisk(workbook, file.getOriginalFilename());
+            rnDocumentService.saveDocumentOnDisk(workbook);
             return rnDocumentService.saveDocumentInDB(workbook, file.getOriginalFilename());
         }
 
@@ -72,7 +72,7 @@ public class RNDocumentController {
                 .ok()
                 .contentLength(file.contentLength())
                 .contentType(
-                        MediaType.parseMediaType("application/octet-stream"))
+                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(new InputStreamResource(file.getInputStream()));
     }
 }
