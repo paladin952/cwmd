@@ -44,7 +44,7 @@ public class DRDocumentController {
         Integer docId = null;
         document = new Document(file.getInputStream());
 
-        drDocumentService.saveDocumentOnServer(document, file.getOriginalFilename());
+        drDocumentService.saveDocumentOnServer(document);
         if (documentId == null) {
             documentId = drDocumentService.saveDocumentInDBFirstPart(document, file.getOriginalFilename());
             docId = documentId;
@@ -69,7 +69,7 @@ public class DRDocumentController {
         return new DRDocumentConverter().toDTOs(documents);
     }
 
-    @RequestMapping(value = "/downloadFirst", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    @RequestMapping(value = "/First_part_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     public ResponseEntity<InputStreamResource> downloadDRFirstPart()
             throws IOException {
 
@@ -79,11 +79,11 @@ public class DRDocumentController {
                 .ok()
                 .contentLength(file.contentLength())
                 .contentType(
-                        MediaType.parseMediaType("application/octet-stream"))
+                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
                 .body(new InputStreamResource(file.getInputStream()));
     }
 
-    @RequestMapping(value = "/downloadSecond", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    @RequestMapping(value = "/Second_part_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     public ResponseEntity<InputStreamResource> downloadDRSecondPart()
             throws IOException {
 
@@ -93,7 +93,7 @@ public class DRDocumentController {
                 .ok()
                 .contentLength(file.contentLength())
                 .contentType(
-                        MediaType.parseMediaType("application/octet-stream"))
+                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
                 .body(new InputStreamResource(file.getInputStream()));
     }
 }

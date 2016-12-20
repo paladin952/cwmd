@@ -39,6 +39,7 @@ public class Document implements Serializable {
     @Column(name = "Status", nullable = false)
     private Integer status;
 
+    // TODO: 20.12.2016 i think this should be a string
     @Column(name = "Version", nullable = false)
     private Float version;
 

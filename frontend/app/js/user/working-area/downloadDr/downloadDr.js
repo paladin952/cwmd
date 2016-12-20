@@ -3,6 +3,9 @@ angular.module('cwmd').component('downloadDr', {
     controller: function (DRDocumentSrv) {
         var $ctrl = this;
 
+        $ctrl.firstPart = "http://localhost:8080/dr/First_part_sample";
+        $ctrl.secondPart = "http://localhost:8080/dr/Second_part_sample";
+
         $ctrl.downloadFirst = function () {
             DRDocumentSrv.getFirstPart();
         };
