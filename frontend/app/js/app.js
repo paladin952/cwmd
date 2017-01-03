@@ -7,13 +7,13 @@ angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate', 'n
                 url: '/login',
                 template: '<login></login>'
             })
-            .state('workingArea', {
-                url: '/workingArea',
-                template: '<working-area></working-area>'
-            })
             .state('home', {
                 url: '/home',
                 template: '<home-layout></home-layout>'
+            })
+            .state('workingArea', {
+                url: '/workingArea',
+                template: '<working-area></working-area>'
             })
             .state('openTasks', {
                 url: '/openTasks',

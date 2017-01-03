@@ -1,19 +1,22 @@
 angular.module('cwmd').service('UserSrv', function (Restangular) {
     var service = this;
     var _currentUser = {
-        username : "Mock.username",
-        password: "Mock.password"
+        username : "user",
+        password: "pass"
     };
 
     service.getUsers = function () {
-        debugger;
-        return Restangular.all('user').getList();
+         return Restangular.all('user').getList();
     };
 
     service.login = function (username, password) {
+        if (!username || !password){
+            return;
+        }
+
         var _params = {
-            username: username ? username : '',
-            password: password ? password : ''
+            username: username,
+            password: password
         };
 
         Restangular.all('login').post(_params)

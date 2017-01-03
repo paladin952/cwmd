@@ -1,6 +1,6 @@
 angular.module('cwmd').component('menu', {
-    templateUrl: 'app/js/common/menu/menu.html',
-    controller: function (UserSrv) {
+    templateUrl: '/app/js/common/menu/menu.html',
+    controller: function (UserSrv, $state) {
         var $ctrl = this;
 
         $ctrl.$onInit = function () {
@@ -9,7 +9,7 @@ angular.module('cwmd').component('menu', {
 
         $ctrl.logout = function () {
             UserSrv.logout();
-            location.path('/login');
+            $state.go('login');
         }
     }
 });
