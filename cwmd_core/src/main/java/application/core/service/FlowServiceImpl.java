@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -67,6 +68,22 @@ public class FlowServiceImpl implements IFlowService {
     @Override
     public List<Flow> read() {
         return flowRepo.findAll();
+    }
+
+    @Override
+    public List<Flow> readActive() {
+        return flowRepo.findAll()
+                .stream()
+                .filter(flow -> flow.getCrtDepartment() < flow.getFlowPath().size())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Flow> readFinished() {
+        return flowRepo.findAll()
+                .stream()
+                .filter(flow -> flow.getCrtDepartment() >= flow.getFlowPath().size())
+                .collect(Collectors.toList());
     }
 
     @Override

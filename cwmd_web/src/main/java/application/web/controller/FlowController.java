@@ -2,14 +2,12 @@ package application.web.controller;
 
 import application.core.model.Department;
 import application.core.model.Flow;
-import application.core.repository.DepartmentRepository;
 import application.core.service.IFlowService;
-import application.web.converter.Converter;
 import application.web.converter.DepartmentConverter;
 import application.web.converter.FlowConverter;
-import application.web.dto.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.hibernate.Hibernate;
+import application.web.dto.DepartmentDTO;
+import application.web.dto.FlowDTO;
+import application.web.dto.FlowStartDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +47,29 @@ public class FlowController {
             return new ResponseEntity<>(flowConverter.toDTOs(flowService.read()), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(flowConverter.toDTOs(new ArrayList<Flow>()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(flowConverter.toDTOs(new ArrayList<>()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional
+    @RequestMapping(value = "/all/active", method = RequestMethod.GET)
+    public ResponseEntity<List<FlowDTO>> getActive() {
+        try {
+            return new ResponseEntity<>(flowConverter.toDTOs(flowService.readActive()), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(flowConverter.toDTOs(new ArrayList<>()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional
+    @RequestMapping(value = "/all/finished", method = RequestMethod.GET)
+    public ResponseEntity<List<FlowDTO>> getFinished() {
+        try {
+            return new ResponseEntity<>(flowConverter.toDTOs(flowService.readFinished()), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(flowConverter.toDTOs(new ArrayList<>()), HttpStatus.BAD_REQUEST);
         }
     }
 
