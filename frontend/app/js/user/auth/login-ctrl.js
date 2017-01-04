@@ -30,7 +30,7 @@
                 else{
                     console.log("aaa");
                     console.log($state);
-                     $state.go("home");
+                     $state.go("workingArea");
                 }   
             }
         }
