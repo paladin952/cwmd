@@ -9,6 +9,8 @@ import java.util.List;
 public interface IFlowService {
     Flow startFlow(List<Document> documents, List<Department> departments);
     List<Flow> read();
+    List<Flow> readActive();
+    List<Flow> readFinished();
     Flow readOne(Integer flowId);
     Flow goToNextDepartmentFor(Integer flowId);
     Flow returnToInitialDepartmentFor(Integer flowId, String remark);
