@@ -21,17 +21,15 @@
                 if(!$s.username || !$s.password){
                     $s.showLoginFailedModal();
                 }
-                //userService.login($s.username, $s.password);
-                var user = userService.getCurrentUser();
-                console.log("user " + user);  
-                if (!user){
-                    $s.showLoginFailedModal();
-                }
-                else{
-                    console.log("aaa");
-                    console.log($state);
-                     $state.go("workingArea");
-                }   
+                userService.login($s.username, $s.password)
+                    .then(function (response) {
+                        var user = response;
+                        if (!user){
+                            $s.showLoginFailedModal();
+                        } else{
+                            $state.go('workingArea');
+                        }
+                    });
             }
         }
 

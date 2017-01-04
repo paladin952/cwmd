@@ -1,9 +1,6 @@
 angular.module('cwmd').service('UserSrv', function (Restangular) {
-    var service = this;
-    var _currentUser = {
-        username : "user",
-        password: "pass"
-    };
+    var service = this,
+        _currentUser = {};
 
     service.getUsers = function () {
          return Restangular.all('user').getList();
@@ -19,9 +16,10 @@ angular.module('cwmd').service('UserSrv', function (Restangular) {
             password: password
         };
 
-        Restangular.all('login').post(_params)
+        return Restangular.all('login').post('login',_params)
             .then(function (response) {
                 _currentUser = response;
+                return _currentUser;
             });
     };
 
