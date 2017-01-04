@@ -14,24 +14,20 @@ import java.util.List;
 @Service
 @Transactional
 public class LoginService {
-
     @Autowired
     private UserRepository userRepo;
 
-    public boolean login(String username, String password) {
+    public User login(String username, String password) {
 
         List<User> users = userRepo.findAll();
 
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return true;
+                return user;
             }
         }
-
-        return false;
+        return null;
     }
-
-
 }
 
 
