@@ -32,7 +32,7 @@ public class Document implements Serializable {
     private Date dateAdded;
 
     @ManyToOne
-    @JoinColumn(name = "Owner", nullable = false)
+    @JoinColumn(name = "Username", nullable = false)
     @JsonIgnore
     private User user;
 

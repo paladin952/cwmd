@@ -4,10 +4,7 @@ package application.core.service;
 import application.core.model.dr.*;
 import application.core.repository.dr.*;
 import application.core.utils.UserUtil;
-import com.aspose.words.Document;
-import com.aspose.words.NodeCollection;
-import com.aspose.words.NodeType;
-import com.aspose.words.Shape;
+import com.aspose.words.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +53,7 @@ public class DRDocumentService {
             //TODO: get the current user logged in order to save files under personal folder
             LocalDate date = LocalDate.now();
             String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
-            document.save(urlToResourses.getPath() + "files/dr/" + "DR - " + dateString);
+            document.save(urlToResourses.getPath() + "files/dr/" + "DR - " + dateString, SaveFormat.DOCX);
         } catch (Exception e) {
             e.printStackTrace();
         }

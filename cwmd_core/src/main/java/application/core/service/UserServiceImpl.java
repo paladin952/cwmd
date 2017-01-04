@@ -26,12 +26,16 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User create(String username, String password, RoleType role, UserDetails userInfo) {
         try {
-            User user = User.builder()
-                    .username(username)
-                    .password(password)
-                    .role(role)
-//                    .userInfo(userInfo)
-                    .build();
+//            User user = User.builder()
+//                    .username(username)
+//                    .password(password)
+//                    .role(role)
+////                    .userInfo(userInfo)
+//                    .build();
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setRole(role);
             validator.validate(user);
             return userRepo.save(user);
 

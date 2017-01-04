@@ -4,7 +4,6 @@ angular.module('cwmd').component('addDr', {
         var $ctrl = this;
 
         $ctrl.uploadFirstPart = function () {
-            debugger;
             if ($scope.firstPart !== undefined) {
                 DRDocumentSrv.uploadFirstPart($scope.firstPart)
                     .then(function (response) {
@@ -17,7 +16,6 @@ angular.module('cwmd').component('addDr', {
         };
 
         $ctrl.uploadSecondPart = function () {
-            debugger;
             if ($scope.secondPart !== undefined) {
                 DRDocumentSrv.uploadSecondPart($scope.secondPart)
                     .then(function (response) {
