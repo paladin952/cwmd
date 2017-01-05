@@ -1,6 +1,6 @@
 angular.module('cwmd').component('addDr', {
     templateUrl: 'app/js/user/working-area/addDr/addDr.html',
-    controller: function ($scope, DRDocumentSrv) {
+    controller: function ($scope, $location, DRDocumentSrv) {
         var $ctrl = this;
 
         $ctrl.uploadFirstPart = function () {
@@ -20,6 +20,7 @@ angular.module('cwmd').component('addDr', {
                 DRDocumentSrv.uploadSecondPart($scope.secondPart)
                     .then(function (response) {
                         console.log(response);
+                        $location.path("/workingArea");
                     })
                     .catch(function (response) {
                         console.log(response);

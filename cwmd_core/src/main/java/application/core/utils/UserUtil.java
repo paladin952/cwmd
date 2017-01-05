@@ -1,18 +1,22 @@
 package application.core.utils;
 
-import application.core.model.User;
-import application.core.utils.enums.RoleType;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class UserUtil {
-    // TODO: 05.12.2016 remove this and set the current user on login
-    private static User currentUser = new User("admin", "admin", RoleType.ROLE_ADMIN);
-//    private static User currentUser;
-
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-
-    public static void setCurrentUser(User user) {
-        currentUser = user;
+    public static String getCurrentUsername(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        List<Cookie> cookieList = Arrays.asList(cookies);
+        Optional<Cookie> cookieOptional = cookieList.stream().filter(cookie -> Objects.equals(cookie.getName(), "username")).findFirst();
+        boolean cookieExists = cookieOptional.isPresent();
+        if (cookieExists) {
+            Cookie user = cookieOptional.get();
+            return user.getValue();
+        }
+        return null;
     }
 }

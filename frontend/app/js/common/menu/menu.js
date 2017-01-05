@@ -4,7 +4,7 @@ angular.module('cwmd').component('menu', {
         var $ctrl = this;
 
         $ctrl.$onInit = function () {
-            $ctrl.user = UserSrv.getCurrentUser();
+            $ctrl.user = UserSrv.getCurrentUser;
         };
 
         $ctrl.logout = function () {

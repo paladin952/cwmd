@@ -1,7 +1,9 @@
 package application.core.service;
 
 
+import application.core.model.User;
 import application.core.model.dr.*;
+import application.core.repository.UserRepository;
 import application.core.repository.dr.*;
 import application.core.utils.UserUtil;
 import com.aspose.words.*;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,6 +50,9 @@ public class DRDocumentService {
     @Autowired
     private DRTravelInfoRepository drTravelInfoRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public void saveDocumentOnServer(Document document) {
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         try {
@@ -59,7 +65,7 @@ public class DRDocumentService {
         }
     }
 
-    public Integer saveDocumentInDBFirstPart(Document document, String filename) throws ParseException {
+    public Integer saveDocumentInDBFirstPart(Document document, HttpServletRequest request) throws ParseException {
         NodeCollection shapes = document.getChildNodes(NodeType.SHAPE, true);
         System.out.println("shapes.getCount() = " + shapes.getCount());
 
@@ -141,7 +147,9 @@ public class DRDocumentService {
         drDocument.setDateAdded(new SimpleDateFormat("yyyy-MM-dd").parse(date.toString()));
         String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
         drDocument.setName("DR - " + dateString);
-        drDocument.setUser(UserUtil.getCurrentUser());
+        String username = UserUtil.getCurrentUsername(request);
+        User user = userRepository.findOne(username);
+        drDocument.setUser(user);
         //// FIXME: 20.12.2016 set the correct status as soon as it known how the integer representation of the status is mapped
         drDocument.setStatus(1);
         drDocument.setVersion(0.1f);
