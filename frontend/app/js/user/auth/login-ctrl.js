@@ -27,7 +27,7 @@
                         if (!user){
                             $s.showLoginFailedModal();
                         } else{
-                            $state.go('workingArea');
+                            $state.go('/workingArea');
                         }
                     });
             }
