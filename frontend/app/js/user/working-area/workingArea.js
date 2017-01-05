@@ -1,6 +1,6 @@
 angular.module('cwmd').component('workingArea', {
     templateUrl: 'app/js/user/working-area/workingArea.html',
-    controller: function (DRDocumentSrv, RNDocumentSrv, $state) {
+    controller: function (DRDocumentSrv, RNDocumentSrv) {
         var $ctrl = this;
 
         $ctrl.$onInit = function () {
