@@ -1,7 +1,9 @@
 package application.core.service;
 
 
+import application.core.model.User;
 import application.core.model.rn.*;
+import application.core.repository.UserRepository;
 import application.core.repository.rn.*;
 import application.core.utils.UserUtil;
 import com.aspose.cells.Cell;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +42,9 @@ public class RNDocumentService {
     @Autowired
     private RNTotalRepository rnTotalRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public List<RNDocument> getDocuments(String username) {
         return rnDocumentRepository.findByUser_Username(username);
     }
@@ -55,7 +61,7 @@ public class RNDocumentService {
         }
     }
 
-    public Integer saveDocumentInDB(Workbook workbook, String filename) throws ParseException {
+    public Integer saveDocumentInDB(Workbook workbook, HttpServletRequest request) throws ParseException {
         Cells cells = workbook.getWorksheets().get(0).getCells();
 
         RNDocument rnDocument = new RNDocument();
@@ -146,7 +152,9 @@ public class RNDocumentService {
         rnDocument.setDateAdded(new SimpleDateFormat("yyyy-MM-dd").parse(date.toString()));
         String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
         rnDocument.setName("RN - " + dateString);
-        rnDocument.setUser(UserUtil.getCurrentUser());
+        String username = UserUtil.getCurrentUsername(request);
+        User user = userRepository.findOne(username);
+        rnDocument.setUser(user);
 
         //// FIXME: 20.12.2016 set the correct status as soon as it known how the integer representation of the status is mapped
         rnDocument.setStatus(1);

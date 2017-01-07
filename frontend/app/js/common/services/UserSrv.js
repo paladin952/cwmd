@@ -29,7 +29,7 @@ angular.module('cwmd').service('UserSrv', function (Restangular) {
     };
 
     service.getUserRole = function () {
-        return _currentUser.User.role;
+        return _currentUser.role;
     };
 
     service.getCurrentUser = function () {
@@ -37,19 +37,19 @@ angular.module('cwmd').service('UserSrv', function (Restangular) {
     };
 
     service.isAdmin = function () {
-        return _currentUser.User.role == "ROLE_ADMIN";
+        return _currentUser.role == "ROLE_ADMIN";
     };
 
     service.isManager = function () {
-        return _currentUser.User.role == "ROLE_MANAGER";
+        return _currentUser.role == "ROLE_MANAGER";
     };
 
     service.isContributor = function () {
-        return _currentUser.User.role == "ROLE_CONTRIBUTOR";
+        return _currentUser.role == "ROLE_CONTRIBUTOR";
     };
 
     service.isReader = function () {
-        return _currentUser.User.role == "ROLE_READER";
+        return _currentUser.role == "ROLE_READER";
     };
 
 });

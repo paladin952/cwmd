@@ -1,6 +1,5 @@
 package application.web.controller;
 
-import application.core.model.User;
 import application.core.model.dr.DRDocument;
 import application.core.service.DRDocumentService;
 import application.core.utils.UserUtil;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +39,14 @@ public class DRDocumentController {
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public Integer uploadDR(@RequestParam("file") MultipartFile file) throws Exception {
+    public Integer uploadDR(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         Document document = null;
         Integer docId = null;
         document = new Document(file.getInputStream());
 
         drDocumentService.saveDocumentOnServer(document);
         if (documentId == null) {
-            documentId = drDocumentService.saveDocumentInDBFirstPart(document, file.getOriginalFilename());
+            documentId = drDocumentService.saveDocumentInDBFirstPart(document, request);
             docId = documentId;
         } else {
             drDocumentService.saveDocumentInDBSecondPart(document, documentId);
@@ -57,14 +57,10 @@ public class DRDocumentController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<DRDocumentDto> getDocuments() {
-        User currentUser = UserUtil.getCurrentUser();
-
+    public List<DRDocumentDto> getDocuments(HttpServletRequest request) {
         List<DRDocument> documents = new ArrayList<>();
 
-        if (currentUser != null) {
-            documents = drDocumentService.getDocuments(currentUser.getUsername());
-        }
+        documents = drDocumentService.getDocuments(UserUtil.getCurrentUsername(request));
 
         return new DRDocumentConverter().toDTOs(documents);
     }

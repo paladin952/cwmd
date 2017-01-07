@@ -1,6 +1,5 @@
 package application.web.controller;
 
-import application.core.model.User;
 import application.core.model.rn.RNDocument;
 import application.core.service.RNDocumentService;
 import application.core.utils.UserUtil;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,20 +31,16 @@ public class RNDocumentController {
     private RNDocumentService rnDocumentService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<RNDocumentDto> getDocuments() {
-        User currentUser = UserUtil.getCurrentUser();
-
+    public List<RNDocumentDto> getDocuments(HttpServletRequest request) {
         List<RNDocument> documents = new ArrayList<>();
 
-        if (currentUser != null) {
-            documents = rnDocumentService.getDocuments(currentUser.getUsername());
-        }
+        documents = rnDocumentService.getDocuments(UserUtil.getCurrentUsername(request));
 
         return new RNDocumentConverter().toDTOs(documents);
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public Integer uploadRN(@RequestParam("file") MultipartFile file) throws Exception {
+    public Integer uploadRN(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         Workbook workbook = null;
         try {
             workbook = new Workbook(file.getInputStream());
@@ -58,7 +54,7 @@ public class RNDocumentController {
             System.out.println("cell.getValue().toString() = " + cell.getValue().toString());
 
             rnDocumentService.saveDocumentOnDisk(workbook);
-            return rnDocumentService.saveDocumentInDB(workbook, file.getOriginalFilename());
+            return rnDocumentService.saveDocumentInDB(workbook, request);
         }
 
         return null;
