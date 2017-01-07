@@ -1,1 +1,19 @@
-<div>my tasks</div>
+<div class="container">
+    <div ui-view></div>
+    <div class="row">
+        <div class="col-xs-6 documentList">
+            <h3>My tasks</h3>
+            <div ng-repeat="flow in $ctrl.flows" class="col-xs-12 flow">
+                <span>Flow in department {{flow.crtDepartment}}</span>
+                <span>Documents:</span>
+                <div ng-repeat="document in flow.flowDocuments" class="col-xs-14 document">
+                    <span>{{document.name}}</span>
+                </div>
+                <span>Path:</span>
+                <div ng-repeat="path in flow.flowPath" class="col-xs-14 document">
+                    <span>{{path.department.name}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

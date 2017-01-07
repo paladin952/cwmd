@@ -7,10 +7,6 @@ angular.module('cwmd').service('UserSrv', function (Restangular) {
     };
 
     service.login = function (username, password) {
-        if (!username || !password){
-            return;
-        }
-
         var _params = {
             username: username,
             password: password

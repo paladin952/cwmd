@@ -83,23 +83,33 @@ public class FlowController {
         }
     }
 
-    @RequestMapping(value = "/{id}/isAtEnd", method = RequestMethod.GET)
+    @RequestMapping(value = "/isAtEnd/{id}", method = RequestMethod.GET)
     public ResponseEntity<Boolean> isFlowAtEnd(@PathVariable("id") final Integer flowId) {
         try {
             return new ResponseEntity<>(flowService.isFlowAtEnd(flowId), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(true, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @RequestMapping(value = "/{id}/currentDepartment", method = RequestMethod.GET)
+    @RequestMapping(value = "/currentDepartment/{id}", method = RequestMethod.GET)
     public ResponseEntity<DepartmentDTO> getCurrentDepartmentFor(@PathVariable("id") final Integer flowId) {
         try {
             return new ResponseEntity<>(departmentConverter.toDTO(flowService.getCurrentDepartmentFor(flowId)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(departmentConverter.toDTO(new Department()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/goToNextDepartment/{id}", method = RequestMethod.GET)
+    public ResponseEntity<FlowDTO> goToNextDepartmentFor(@PathVariable("id") final Integer flowId) {
+        try {
+            return new ResponseEntity<>(flowConverter.toDTO(flowService.goToNextDepartmentFor(flowId)), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(FlowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
         }
     }
 

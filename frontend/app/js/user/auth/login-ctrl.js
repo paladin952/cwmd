@@ -20,6 +20,7 @@
             $s.login = function () {
                 if(!$s.username || !$s.password){
                     $s.showLoginFailedModal();
+                    return;
                 }
                 userService.login($s.username, $s.password)
                     .then(function (response) {

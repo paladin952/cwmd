@@ -2,95 +2,61 @@ angular.module('cwmd').service('FlowSrv', function (Restangular) {
     var service = this;
 
     service.getFlows = function () {
-        var flows = null;
-
-        Restangular.all('flow').getList()
-            .then(function (response) {
-                flows = response;
-            });
-        return flows;
+         return Restangular.all('flow').getList();
     };
 
     service.getFlowById = function (flowId) {
-        var flow = null;
+        var path = 'flow/' + flowId;
 
-        Restangular.one('flow', flowId)
-            .then(function (response) {
-                flow = response;
-            });
-
-        return flow;
+        return Restangular.one(path).get(flowId);
     };
 
     service.goToNextDepartment = function (flowId) {
-        if (!flowId) {
-            return;
-        }
+        var path = 'flow/goToNextDepartment/';
 
-        var newFlow = null;
-
-        Restangular.all('flow').post(flowId)
-            .then(function (response) {
-                newFlow = response;
-            });
-
-        return newFlow;
+        return Restangular.one(path).get(flowId);
     };
 
-    service.goToInitialDepartment = function (flowId, remark) {
-        if (!flowId) {
-            return;
-        }
+    // service.goToInitialDepartment = function (flowId, remark) {
+    //     var parameters = {
+    //         flowId: flowId,
+    //         remark: remark
+    //     };
 
-        var newRemark = remark;
-        if (!remark) {
-            newRemark = "There is no remark regarding this action.";
-        }
+    //     return Restangular.all('flow').post(parameters);
 
-        var parameters = {
-            flowId: flowId,
-            remark: newRemark
-        };
+    // };
 
-        var newFlow = null;
+    service.isFlowAtEnd = function (flowId) {
+        var path = 'flow/isAtEnd';
 
-        Restangular.all('flow').post(parameters)
-            .then(function (response) {
-                newFlow = response;
-            });
-
-        return newFlow;
-    };
-
-    service.isFlowAtEnd = function(flowId){
-        // Restangular.all('flow').post(flowId)
-        //     .then(function (response) {
-
-        //     });
-
-        // return newFlow;
+        return Restangular.one(path).get(flowId);
+            // .then(function (response) {
+            //     isAtEnd = response;
+            // },
+            // function (error, status) {
+            //     isAtEnd = "Error with status " + status;
+            // });
     }
 
-    service.updateFlow = function(flow){
-        var newflow = null;
+    service.getActiveFlows = function () {
+        var path = 'flow/all/active';
 
-        Restangular.all('flow').post(flow)
-            .then(function (response) {
-                newFlow = response;
-            });
-
-        return newFlow;
+        return Restangular.all(path).getList();
     }
 
-    service.deleteFlow = function(flowId){
-        var isDeleted = null;
+    service.getFinishedFlows = function () {
+        var path = 'flow/all/finished';
 
-        Restangular.all('flow').post(flowId)
-            .then(function (response) {
-                isDeleted = response;
-            });
+        return Restangular.all(path).getList();
+    }
 
-        return isDeleted;
+    service.updateFlow = function (flow) {
+        return Restangular.one('flow').put(flow);
+    }
+
+    service.deleteFlow = function (flowId) {
+        return Restangular.one('flow').delete(flowId);
     }
 
 });
