@@ -24,8 +24,10 @@ public class LoginController {
             Cookie userName = new Cookie("username", username);
             userName.setMaxAge(300*60);
             response.addCookie(userName);
+            return new UserConverter().toDTO(loggedUser);
         }
 
-        return new UserConverter().toDTO(loggedUser);
+        return null;
+
     }
 }

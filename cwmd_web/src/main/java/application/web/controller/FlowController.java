@@ -41,7 +41,7 @@ public class FlowController {
     }
 
     @Transactional
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<FlowDTO>> getAll() {
         try {
             return new ResponseEntity<>(flowConverter.toDTOs(flowService.read()), HttpStatus.OK);
@@ -109,7 +109,7 @@ public class FlowController {
             return new ResponseEntity<>(flowConverter.toDTO(flowService.goToNextDepartmentFor(flowId)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(FlowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new FlowConverter().toDTO(new Flow()), HttpStatus.BAD_REQUEST);
         }
     }
 
