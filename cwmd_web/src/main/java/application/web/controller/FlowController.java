@@ -29,9 +29,9 @@ public class FlowController {
     private IFlowService flowService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
-    public ResponseEntity<FlowDTO> startFlow(@RequestBody FlowStartDTO flowStartDTO) {
+    public ResponseEntity<FlowDTO> startFlow(@RequestBody List<Integer> documentIds, @RequestBody List<Integer> departmentIds) {
         try {
-            return new ResponseEntity<>(flowConverter.toDTO(flowService.startFlow(flowStartDTO.getDocuments(), flowStartDTO.getPath())), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTO(flowService.startFlow(documentIds, departmentIds)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

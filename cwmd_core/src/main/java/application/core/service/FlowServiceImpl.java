@@ -2,7 +2,6 @@ package application.core.service;
 
 import application.core.model.*;
 import application.core.model.PKs.FlowDocumentPK;
-import application.core.model.PKs.FlowPathPK;
 import application.core.repository.*;
 import application.core.service.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class FlowServiceImpl implements IFlowService {
     private DepartmentRepository departmentRepository;
 
     @Override
-    public Flow startFlow(List<Document> documents, List<Department> departments) {
+    public Flow startFlow(List<Integer> documents, List<Integer> departments) {
         try {
             Flow flow = Flow.builder()
                     .crtDepartment(0)
@@ -38,25 +37,25 @@ public class FlowServiceImpl implements IFlowService {
                     .build();
 
             flow = flowRepo.saveAndFlush(flow);
-            for (Document doc : documents) {
-                Document dbDoc = documentRepository.findOne(doc.getId());
+            for (Integer documentId : documents) {
+                Document dbDoc = documentRepository.findOne(documentId);
                 if (dbDoc != null) {
                     FlowDocument tmp = FlowDocument.builder()
                             .flow(flow)
                             .document(dbDoc)
                             .build();
                     flow.addFlowDocument(tmp);
-                } else throw new RuntimeException("Document " + doc + " was not found in the database");
+                } else throw new RuntimeException("Document with id " + documentId + " was not found in the database");
             }
-            for (Department department : departments) {
-                Department dbDept = departmentRepository.getOneSQL(department.getId());
+            for (Integer departmentId : departments) {
+                Department dbDept = departmentRepository.getOneSQL(departmentId);
                 if (dbDept != null) {
                     FlowPath tmp = FlowPath.builder()
                             .flow(flow)
                             .department(dbDept)
                             .build();
                     flow.addFlowDepartment(tmp);
-                } else throw new RuntimeException("Department " + department + " was not found in the database");
+                } else throw new RuntimeException("Department with id " + departmentId + " was not found in the database");
             }
 
             return flow;
