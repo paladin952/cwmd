@@ -2,7 +2,7 @@ package application.web.controller;
 
 import application.core.model.User;
 import application.core.service.LoginService;
-import application.web.converter.UserConverter;
+import application.web.converter.LightUserConverter;
 import application.web.dto.LightUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class LoginController {
             Cookie userName = new Cookie("username", username);
             userName.setMaxAge(300*60);
             response.addCookie(userName);
-            return new UserConverter().toDTO(loggedUser);
+            return new LightUserConverter().toDTO(loggedUser);
         }
         return null;
     }

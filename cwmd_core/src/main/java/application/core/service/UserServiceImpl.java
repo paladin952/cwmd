@@ -36,6 +36,7 @@ public class UserServiceImpl implements IUserService {
             user.setUsername(username);
             user.setPassword(password);
             user.setRole(role);
+            user.setUserInfo(userInfo);
             validator.validate(user);
             return userRepo.save(user);
 
