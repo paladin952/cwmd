@@ -12,6 +12,7 @@
 
             $s.showLoginModal = function () {
                 $state.go("login");
+                $('#loginModal').modal('show');
             };
 
             $s.password = "";
