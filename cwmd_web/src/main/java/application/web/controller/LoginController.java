@@ -26,8 +26,6 @@ public class LoginController {
             response.addCookie(userName);
             return new UserConverter().toDTO(loggedUser);
         }
-
         return null;
-
     }
 }

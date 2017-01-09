@@ -1,6 +1,5 @@
 package application.web.controller;
 
-import application.core.model.Department;
 import application.core.model.Flow;
 import application.core.service.IFlowService;
 import application.web.converter.DepartmentConverter;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/flow")
@@ -36,7 +34,7 @@ public class FlowController {
             return new ResponseEntity<>(flowConverter.toDTO(flowService.startFlow(flowStartDTO.getDocuments(), flowStartDTO.getPath())), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(flowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -47,7 +45,7 @@ public class FlowController {
             return new ResponseEntity<>(flowConverter.toDTOs(flowService.read()), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(flowConverter.toDTOs(new ArrayList<>()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -58,7 +56,7 @@ public class FlowController {
             return new ResponseEntity<>(flowConverter.toDTOs(flowService.readActive()), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(flowConverter.toDTOs(new ArrayList<>()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -69,7 +67,7 @@ public class FlowController {
             return new ResponseEntity<>(flowConverter.toDTOs(flowService.readFinished()), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(flowConverter.toDTOs(new ArrayList<>()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -79,7 +77,7 @@ public class FlowController {
             return new ResponseEntity<>(flowConverter.toDTO(flowService.readOne(flowId)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(flowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -99,7 +97,7 @@ public class FlowController {
             return new ResponseEntity<>(departmentConverter.toDTO(flowService.getCurrentDepartmentFor(flowId)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(departmentConverter.toDTO(new Department()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -109,20 +107,21 @@ public class FlowController {
             return new ResponseEntity<>(flowConverter.toDTO(flowService.goToNextDepartmentFor(flowId)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new FlowConverter().toDTO(new Flow()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<FlowDTO> update(@PathVariable("id") final Integer flowId, @RequestBody Flow flow) {
-        if (!flow.getId().equals(flowId)) // can't modify someone else's flow using your current flow
+        if (!flow.getId().equals(flowId)) { // can't modify someone else's flow using your current flow
             return new ResponseEntity<>(flowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
+        }
 
         try {
             return new ResponseEntity<>(flowConverter.toDTO(flowService.update(flow)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(flowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
