@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "department_user")
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-public class DepartmentUser {
+public class DepartmentUser implements Serializable {
     @JsonIgnore
     @Id
     @ManyToOne

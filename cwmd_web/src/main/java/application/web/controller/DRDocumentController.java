@@ -33,6 +33,9 @@ public class DRDocumentController {
     @Autowired
     private DRDocumentService drDocumentService;
 
+    @Autowired
+    private DRDocumentConverter drDocumentConverter;
+
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String uploadDR() {
         return ViewPath.UPLOAD_DOCUMENT;
@@ -62,7 +65,7 @@ public class DRDocumentController {
 
         documents = drDocumentService.getDocuments(UserUtil.getCurrentUsername(request));
 
-        return new DRDocumentConverter().toDTOs(documents);
+        return drDocumentConverter.toDTOs(documents);
     }
 
     @RequestMapping(value = "/First_part_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")

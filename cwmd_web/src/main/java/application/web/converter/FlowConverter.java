@@ -5,9 +5,11 @@ import application.core.model.FlowDocument;
 import application.core.model.FlowPath;
 import application.web.dto.FlowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+@Component
 public class FlowConverter extends Converter<Flow, FlowDTO> {
     @Autowired
     private DepartmentConverter departmentConverter;

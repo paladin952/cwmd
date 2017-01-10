@@ -4,7 +4,9 @@ import application.core.model.User;
 import application.core.service.IUserService;
 import application.web.dto.LightUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LightUserConverter extends Converter<User, LightUserDto> {
 
     @Autowired

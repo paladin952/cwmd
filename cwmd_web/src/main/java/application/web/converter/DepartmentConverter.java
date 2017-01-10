@@ -2,12 +2,12 @@ package application.web.converter;
 
 import application.core.model.Department;
 import application.core.model.DepartmentUser;
-import application.core.repository.DepartmentRepository;
 import application.web.dto.DepartmentDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+@Component
 public class DepartmentConverter extends Converter<Department, DepartmentDTO> {
 
     @Override

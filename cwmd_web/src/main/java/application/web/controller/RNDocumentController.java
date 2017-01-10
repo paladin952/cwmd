@@ -30,13 +30,16 @@ public class RNDocumentController {
     @Autowired
     private RNDocumentService rnDocumentService;
 
+    @Autowired
+    private RNDocumentConverter rnDocumentConverter;
+
     @RequestMapping(method = RequestMethod.GET)
     public List<RNDocumentDto> getDocuments(HttpServletRequest request) {
         List<RNDocument> documents = new ArrayList<>();
 
         documents = rnDocumentService.getDocuments(UserUtil.getCurrentUsername(request));
 
-        return new RNDocumentConverter().toDTOs(documents);
+        return rnDocumentConverter.toDTOs(documents);
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)

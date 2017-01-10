@@ -6,7 +6,6 @@ import application.web.converter.DepartmentConverter;
 import application.web.converter.FlowConverter;
 import application.web.dto.DepartmentDTO;
 import application.web.dto.FlowDTO;
-import application.web.dto.FlowStartDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,7 @@ public class FlowController {
 
     @Autowired
     private FlowConverter flowConverter;
+
     @Autowired
     private DepartmentConverter departmentConverter;
 

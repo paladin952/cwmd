@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan("application.web.controller")
+@ComponentScan("application.web")
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
 

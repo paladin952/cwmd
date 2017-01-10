@@ -17,6 +17,9 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private LightUserConverter lightUserConverter;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LightUserDto login(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
         User loggedUser = loginService.login(username, password);
@@ -24,7 +27,7 @@ public class LoginController {
             Cookie userName = new Cookie("username", username);
             userName.setMaxAge(300*60);
             response.addCookie(userName);
-            return new LightUserConverter().toDTO(loggedUser);
+            return lightUserConverter.toDTO(loggedUser);
         }
         return null;
     }

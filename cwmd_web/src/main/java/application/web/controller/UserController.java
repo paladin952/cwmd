@@ -1,7 +1,10 @@
 package application.web.controller;
 
+import application.core.model.Department;
 import application.core.model.User;
 import application.core.model.UserDetails;
+import application.core.service.DepartmentService;
+import application.core.service.DepartmentUserService;
 import application.core.service.IUserService;
 import application.core.utils.enums.RoleType;
 import application.web.converter.UserConverter;
@@ -24,7 +27,14 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    private UserConverter userConverter = new UserConverter();
+    @Autowired
+    private UserConverter userConverter;
+
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private DepartmentUserService departmentUserService;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.JSON_API)
     public ResponseEntity<List<UserDto>> getAll() {
@@ -44,9 +54,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<Boolean> createUser(@RequestBody UserDto user) {
+    public ResponseEntity<Boolean> createUser(@RequestBody UserDto userDto) {
         RoleType roleType;
-        switch (user.getRole()) {
+        switch (userDto.getRole()) {
             case "admin":
                 roleType = RoleType.ROLE_ADMIN;
                 break;
@@ -64,14 +74,17 @@ public class UserController {
         }
 
         UserDetails userDetails = new UserDetails();
-        userDetails.setAddress(user.getAddress());
-        userDetails.setEmail(user.getEmail());
-        userDetails.setFirstName(user.getFirstName());
-        userDetails.setIsDepartmentChief(user.getDepartmentChief());
-        userDetails.setLastName(user.getLastName());
-        userDetails.setPhoneNumber(user.getPhoneNumber());
+        userDetails.setAddress(userDto.getAddress());
+        userDetails.setEmail(userDto.getEmail());
+        userDetails.setFirstName(userDto.getFirstName());
+        userDetails.setIsDepartmentChief(userDto.getDepartmentChief());
+        userDetails.setLastName(userDto.getLastName());
+        userDetails.setPhoneNumber(userDto.getPhoneNumber());
 
-        userService.create(user.getUsername(), user.getPassword(), roleType, userDetails);
+        User user = userService.create(userDto.getUsername(), userDto.getPassword(), roleType, userDetails);
+        Department department = departmentService.getDepartmentByName(userDto.getDepartment());
+
+//        departmentUserService.addDepartmentUser(department, user); TODO make this work
 
         return new ResponseEntity<>(true, HttpStatus.OK);
     }

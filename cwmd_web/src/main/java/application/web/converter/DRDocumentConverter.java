@@ -5,7 +5,9 @@ import application.core.service.DRDocumentService;
 import application.core.service.IUserService;
 import application.web.dto.DRDocumentDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DRDocumentConverter extends Converter<DRDocument, DRDocumentDto> {
 
     @Autowired

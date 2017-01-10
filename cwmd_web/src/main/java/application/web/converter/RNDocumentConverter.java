@@ -6,9 +6,11 @@ import application.core.service.IUserService;
 import application.core.service.RNDocumentService;
 import application.web.dto.RNDocumentDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+@Component
 public class RNDocumentConverter extends Converter<RNDocument, RNDocumentDto> {
 
     @Autowired
