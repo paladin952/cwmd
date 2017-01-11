@@ -21,12 +21,25 @@ CREATE TABLE IF NOT EXISTS `department` (
   `DepartmentID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
   PRIMARY KEY (`DepartmentID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.department: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.department: ~14 rows (approximately)
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
 INSERT INTO `department` (`DepartmentID`, `Name`) VALUES
-	(2, 'MI');
+	(2, 'MI'),
+	(3, 'Rector Office'),
+	(4, 'Dean Office'),
+	(5, 'Faculty of Mathematics'),
+	(6, 'Faculty of Computer Science'),
+	(7, 'Faculty of Physics'),
+	(8, 'Faculty of Chemistry'),
+	(9, 'Faculty of Physical Education and Sport'),
+	(10, 'Management Center for Scientific Research'),
+	(11, 'CFO'),
+	(12, 'Grants'),
+	(13, 'Public Procurement Service'),
+	(14, 'International Cooperation Center'),
+	(15, 'Chief Operating Officer');
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.department_user
@@ -41,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `department_user` (
   CONSTRAINT `FKse13yqj157p3iy977u2m7ui2k` FOREIGN KEY (`DepartmentID`) REFERENCES `department` (`DepartmentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of users assigned to a department';
 
--- Dumping data for table cwmd_db.department_user: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.department_user: ~1 rows (approximately)
 /*!40000 ALTER TABLE `department_user` DISABLE KEYS */;
 INSERT INTO `department_user` (`DepartmentID`, `Username`) VALUES
 	(2, 'asdf');
@@ -57,10 +70,13 @@ CREATE TABLE IF NOT EXISTS `document` (
   `Version` float NOT NULL,
   `Path` varchar(255) NOT NULL,
   `Owner` varchar(60) NOT NULL,
+  `Username` varchar(60) NOT NULL,
   PRIMARY KEY (`DocumentID`),
   KEY `FK54bckn7stqnapx9l837ufqdqm` (`user_id`),
   KEY `FKlcoro0vc6c48aegbimextvf24` (`Owner`),
+  KEY `FKh2xnpiuqw33vcb6llvn8dt9cn` (`Username`),
   CONSTRAINT `FK_DocumentOwner` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKh2xnpiuqw33vcb6llvn8dt9cn` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`),
   CONSTRAINT `FKjhdxdv9sijhujiynqbb5jc010` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`),
   CONSTRAINT `FKlcoro0vc6c48aegbimextvf24` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -125,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `drdocument` (
   `drTransportationCosts_drTransportationCostsId` int(11) DEFAULT NULL,
   `drTravelInfo_drTravelInfoId` int(11) DEFAULT NULL,
   `Owner` varchar(60) NOT NULL,
+  `Username` varchar(60) NOT NULL,
   PRIMARY KEY (`DocumentID`),
   KEY `FK5lmm2lh036nfm7x6yann31cgh` (`drBankInfo_drBankInfoId`),
   KEY `FK105edkqrpfxj876hygl9aos2` (`drDailyCosts_drDailyCostsId`),
@@ -136,10 +153,12 @@ CREATE TABLE IF NOT EXISTS `drdocument` (
   KEY `FK6or6c5it2qao4iehsv0ybnnbj` (`drTravelInfo_drTravelInfoId`),
   KEY `FK_prwm5udbj2xc9kwxdogs9bvdp` (`user_id`),
   KEY `FK_isoyvk8gfq8p8nx9858qceq77` (`Owner`),
+  KEY `FK_6ry8xs477d7484h51wy0npuqs` (`Username`),
   CONSTRAINT `FK105edkqrpfxj876hygl9aos2` FOREIGN KEY (`drDailyCosts_drDailyCostsId`) REFERENCES `drdailycosts` (`drDailyCostsId`),
   CONSTRAINT `FK308fko1dpth31flg4fdqu7x38` FOREIGN KEY (`drTransportationCosts_drTransportationCostsId`) REFERENCES `drtransportationcosts` (`drTransportationCostsId`),
   CONSTRAINT `FK5lmm2lh036nfm7x6yann31cgh` FOREIGN KEY (`drBankInfo_drBankInfoId`) REFERENCES `drbankinfo` (`drBankInfoId`),
   CONSTRAINT `FK6or6c5it2qao4iehsv0ybnnbj` FOREIGN KEY (`drTravelInfo_drTravelInfoId`) REFERENCES `drtravelinfo` (`drTravelInfoId`),
+  CONSTRAINT `FK_6ry8xs477d7484h51wy0npuqs` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`),
   CONSTRAINT `FK_Owner` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`),
   CONSTRAINT `FK_isoyvk8gfq8p8nx9858qceq77` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`),
   CONSTRAINT `FK_prwm5udbj2xc9kwxdogs9bvdp` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`),
@@ -278,12 +297,13 @@ CREATE TABLE IF NOT EXISTS `flow` (
   `CurrentDepartment` int(11) NOT NULL DEFAULT '0',
   `Remarks` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`FlowID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table cwmd_db.flow: ~1 rows (approximately)
 /*!40000 ALTER TABLE `flow` DISABLE KEYS */;
 INSERT INTO `flow` (`FlowID`, `CurrentDepartment`, `Remarks`) VALUES
-	(1, 0, 'asdadadadad');
+	(1, 0, 'asdadadadad'),
+	(2, 0, 'asd');
 /*!40000 ALTER TABLE `flow` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.flow_document
@@ -330,6 +350,30 @@ INSERT INTO `hibernate_sequence` (`next_val`) VALUES
 	(3);
 /*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
 
+-- Dumping structure for table cwmd_db.log
+CREATE TABLE IF NOT EXISTS `log` (
+  `EntryID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Level` int(11) NOT NULL,
+  `Timestamp` datetime NOT NULL,
+  `Tag` varchar(60) NOT NULL,
+  `User` varchar(60) DEFAULT NULL,
+  `Department` varchar(60) DEFAULT NULL,
+  `DocumentType` varchar(60) DEFAULT NULL,
+  `Message` varchar(255) NOT NULL,
+  `Exception` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`EntryID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table cwmd_db.log: ~5 rows (approximately)
+/*!40000 ALTER TABLE `log` DISABLE KEYS */;
+INSERT INTO `log` (`EntryID`, `Level`, `Timestamp`, `Tag`, `User`, `Department`, `DocumentType`, `Message`, `Exception`) VALUES
+	(1, 1, '2017-01-11 13:30:03', 'UserController', NULL, NULL, NULL, 'Retrieving all users', NULL),
+	(2, 1, '2017-01-11 13:30:43', 'UserController', NULL, NULL, NULL, 'Retrieving all users', NULL),
+	(3, 1, '2017-01-11 13:32:22', 'UserController', NULL, NULL, NULL, 'Retrieving all users', NULL),
+	(4, 3, '2017-01-11 14:35:10', 'LogController', NULL, NULL, NULL, 'Error while retrieving application log', 'org.hibernate.InstantiationException: No default constructor for entity:  : application.core.model.logging.LogItem'),
+	(5, 1, '2017-01-11 14:54:08', 'UserController', NULL, NULL, NULL, 'Retrieving the user list', NULL);
+/*!40000 ALTER TABLE `log` ENABLE KEYS */;
+
 -- Dumping structure for table cwmd_db.rndocument
 CREATE TABLE IF NOT EXISTS `rndocument` (
   `DocumentID` int(11) NOT NULL,
@@ -345,13 +389,16 @@ CREATE TABLE IF NOT EXISTS `rndocument` (
   `rnResearch_rnResearchId` int(11) DEFAULT NULL,
   `rnSponsors_rnSponsorsId` int(11) DEFAULT NULL,
   `rnTotal_rnTotalId` int(11) DEFAULT NULL,
+  `Username` varchar(60) NOT NULL,
   PRIMARY KEY (`DocumentID`),
   KEY `FK1bjqpc37c5dwhu8lf3gdl2199` (`rnOthers_rnOthersId`),
   KEY `FKnpnvai2txm0tv0aea611ukq08` (`rnResearch_rnResearchId`),
   KEY `FKi025k7hxkqwfjwwqt3xiolo5k` (`rnSponsors_rnSponsorsId`),
   KEY `FKi6j8pcdapvidrq9o16v6vq6e6` (`rnTotal_rnTotalId`),
   KEY `FK_ec4msvbjjq1eitlft8kmux4ni` (`Owner`),
+  KEY `FK_6xvpd8rklbm6f8bxxbxnxhi5g` (`Username`),
   CONSTRAINT `FK1bjqpc37c5dwhu8lf3gdl2199` FOREIGN KEY (`rnOthers_rnOthersId`) REFERENCES `rnothers` (`rnOthersId`),
+  CONSTRAINT `FK_6xvpd8rklbm6f8bxxbxnxhi5g` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`),
   CONSTRAINT `FK_ec4msvbjjq1eitlft8kmux4ni` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`),
   CONSTRAINT `FKi025k7hxkqwfjwwqt3xiolo5k` FOREIGN KEY (`rnSponsors_rnSponsorsId`) REFERENCES `rnsponsors` (`rnSponsorsId`),
   CONSTRAINT `FKi6j8pcdapvidrq9o16v6vq6e6` FOREIGN KEY (`rnTotal_rnTotalId`) REFERENCES `rntotal` (`rnTotalId`),
@@ -451,7 +498,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   CONSTRAINT `FKffq5lcso3c8xcmdov20d1jwia` FOREIGN KEY (`userInfo_EntryID`) REFERENCES `user_details` (`EntryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.user: ~3 rows (approximately)
+-- Dumping data for table cwmd_db.user: ~4 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`Username`, `Password`, `Role`, `userInfo_EntryID`) VALUES
 	('admin', 'admin', 0, 1),
@@ -462,24 +509,20 @@ INSERT INTO `user` (`Username`, `Password`, `Role`, `userInfo_EntryID`) VALUES
 -- Dumping structure for table cwmd_db.user_details
 CREATE TABLE IF NOT EXISTS `user_details` (
   `EntryID` int(11) NOT NULL AUTO_INCREMENT,
-  `Username` varchar(60) NOT NULL,
   `FirstName` varchar(60) NOT NULL,
   `LastName` varchar(60) NOT NULL,
   `Address` varchar(255) DEFAULT NULL,
   `Email` varchar(60) NOT NULL,
   `PhoneNumber` bigint(20) DEFAULT NULL,
   `IsDepartmentChief` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`EntryID`),
-  KEY `FK7nor195hp6whxc5qt7xgga842` (`Username`),
-  CONSTRAINT `FK7nor195hp6whxc5qt7xgga842` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`),
-  CONSTRAINT `FK_UserDetailsUsername` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`EntryID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.user_details: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.user_details: ~3 rows (approximately)
 /*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
-INSERT INTO `user_details` (`EntryID`, `Username`, `FirstName`, `LastName`, `Address`, `Email`, `PhoneNumber`, `IsDepartmentChief`) VALUES
-	(1, 'admin', 'Awesome', 'McAwesomesauce', '42A Awesome st', 'awesome@awesome.com', 743760319, 1),
-	(2, 'radu', 'Radu', 'Corbu', 'N/A', 'corburadu@hotmail.com', 743760319, 0);
+INSERT INTO `user_details` (`EntryID`, `FirstName`, `LastName`, `Address`, `Email`, `PhoneNumber`, `IsDepartmentChief`) VALUES
+	(1, 'Awesome', 'McAwesomesauce', '42A Awesome st', 'awesome@awesome.com', 743760319, 1),
+	(2, 'Radu', 'Corbu', 'N/A', 'corburadu@hotmail.com', 743760319, 0);
 /*!40000 ALTER TABLE `user_details` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
