@@ -6,7 +6,9 @@ import application.core.model.UserDetails;
 import application.core.service.DepartmentService;
 import application.core.service.DepartmentUserService;
 import application.core.service.IUserService;
+import application.core.utils.UserUtil;
 import application.core.utils.enums.RoleType;
+import application.core.utils.logging.Log;
 import application.web.converter.UserConverter;
 import application.web.dto.UserDto;
 import application.web.misc.MediaType;
@@ -36,9 +38,14 @@ public class UserController {
     @Autowired
     private DepartmentUserService departmentUserService;
 
+    @Autowired
+    private Log log;
+
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.JSON_API)
     public ResponseEntity<List<UserDto>> getAll() {
         try {
+            log.info(UserController.class.getSimpleName(), "Retrieving the user list");
+
             List<User> users = userService.read();
             List<UserDto> userDtos = new ArrayList<>();
 
@@ -48,6 +55,7 @@ public class UserController {
             }
             return new ResponseEntity<>(userDtos, HttpStatus.OK);
         } catch (RuntimeException e) {
+            log.error(UserController.class.getSimpleName(), "Error while retrieving the user list", e);
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -72,6 +80,7 @@ public class UserController {
             default:
                 return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
+        log.info(UserController.class.getSimpleName(), "Creating a new user");
 
         UserDetails userDetails = new UserDetails();
         userDetails.setAddress(userDto.getAddress());
