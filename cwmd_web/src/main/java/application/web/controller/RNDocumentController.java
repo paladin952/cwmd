@@ -56,7 +56,7 @@ public class RNDocumentController {
 
             System.out.println("cell.getValue().toString() = " + cell.getValue().toString());
 
-            rnDocumentService.saveDocumentOnDisk(workbook);
+            rnDocumentService.saveDocumentOnDisk(workbook, request);
             return rnDocumentService.saveDocumentInDB(workbook, request);
         }
 

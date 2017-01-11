@@ -58,6 +58,13 @@ public class FlowServiceImpl implements IFlowService {
                 } else throw new RuntimeException("Department with id " + departmentId + " was not found in the database");
             }
 
+            for (Integer documentId : documents) {
+                Document dbDoc = documentRepository.findOne(documentId);
+                if (dbDoc != null) {
+                    dbDoc.setPartOfFlow(true);
+                } else throw new RuntimeException("Document with id " + documentId + " was not found in the database");
+            }
+
             return flow;
         } catch (Exception e) {
             throw new ServiceException("Unknown error while starting a flow", e);
@@ -174,9 +181,7 @@ public class FlowServiceImpl implements IFlowService {
     }
 
     @Override
-    public IFlowService delete(Integer flowId) {
+    public void delete(Integer flowId) {
         flowRepo.delete(flowId);
-
-        return this;
     }
 }

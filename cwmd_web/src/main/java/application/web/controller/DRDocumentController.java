@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/dr")
@@ -47,7 +46,7 @@ public class DRDocumentController {
         Integer docId = null;
         document = new Document(file.getInputStream());
 
-        drDocumentService.saveDocumentOnServer(document);
+        drDocumentService.saveDocumentOnServer(document, request);
         if (documentId == null) {
             documentId = drDocumentService.saveDocumentInDBFirstPart(document, request);
             docId = documentId;
@@ -61,7 +60,7 @@ public class DRDocumentController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<DRDocumentDto> getDocuments(HttpServletRequest request) {
-        List<DRDocument> documents = new ArrayList<>();
+        List<DRDocument> documents;
 
         documents = drDocumentService.getDocuments(UserUtil.getCurrentUsername(request));
 

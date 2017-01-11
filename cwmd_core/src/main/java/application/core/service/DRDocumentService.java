@@ -53,13 +53,14 @@ public class DRDocumentService {
     @Autowired
     private UserRepository userRepository;
 
-    public void saveDocumentOnServer(Document document) {
+    public void saveDocumentOnServer(Document document, HttpServletRequest request) {
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         try {
             //TODO: get the current user logged in order to save files under personal folder
             LocalDate date = LocalDate.now();
             String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
-            document.save(urlToResourses.getPath() + "files/dr/" + "DR - " + dateString, SaveFormat.DOCX);
+            String username = UserUtil.getCurrentUsername(request);
+            document.save(urlToResourses.getPath() + "files/" + username + "/dr/" + "DR - " + dateString, SaveFormat.DOCX);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -153,9 +154,10 @@ public class DRDocumentService {
         //// FIXME: 20.12.2016 set the correct status as soon as it known how the integer representation of the status is mapped
         drDocument.setStatus(1);
         drDocument.setVersion(0.1f);
+        drDocument.setPartOfFlow(false);
 
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
-        drDocument.setPath(urlToResourses.getPath() + "files/dr/" + "DR - " + dateString);
+        drDocument.setPath(urlToResourses.getPath() + "files/" + username + "/dr/" + "DR - " + dateString);
 
         DRDocument savedDocument = drDocumentRepository.save(drDocument);
 

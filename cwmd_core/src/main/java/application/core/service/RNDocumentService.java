@@ -49,13 +49,14 @@ public class RNDocumentService {
         return rnDocumentRepository.findByUser_Username(username);
     }
 
-    public void saveDocumentOnDisk(Workbook workbook) {
+    public void saveDocumentOnDisk(Workbook workbook, HttpServletRequest request) {
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         try {
             LocalDate date = LocalDate.now();
             String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
             //TODO: get the current user logged in order to save files under personal folder
-            workbook.save(urlToResourses.getPath() + "files/rn/" + "RN - " + dateString);
+            String username = UserUtil.getCurrentUsername(request);
+            workbook.save(urlToResourses.getPath() + "files/" + username + "/rn/" + "RN - " + dateString);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -159,9 +160,10 @@ public class RNDocumentService {
         //// FIXME: 20.12.2016 set the correct status as soon as it known how the integer representation of the status is mapped
         rnDocument.setStatus(1);
         rnDocument.setVersion(0.1f);
+        rnDocument.setPartOfFlow(false);
 
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
-        rnDocument.setPath(urlToResourses.getPath() + "files/rn/" + "RN - " + dateString);
+        rnDocument.setPath(urlToResourses.getPath() + "files/" + username + "/rn/" + "RN - " + dateString);
 
         RNDocument savedDoc = rnDocumentRepository.save(rnDocument);
 

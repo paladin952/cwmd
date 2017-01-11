@@ -36,4 +36,13 @@ public class DepartmentConverter extends Converter<Department, DepartmentDTO> {
 
         return tmp;
     }
+
+    public DepartmentDTO toDtoWithoutUsers(Department department) {
+        if (department == null)
+            return new DepartmentDTO();
+        return DepartmentDTO.builder()
+                .id(department.getId())
+                .name(department.getName())
+                .build();
+    }
 }
