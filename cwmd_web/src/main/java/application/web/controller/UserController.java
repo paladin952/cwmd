@@ -84,7 +84,7 @@ public class UserController {
         User user = userService.create(userDto.getUsername(), userDto.getPassword(), roleType, userDetails);
         Department department = departmentService.getDepartmentByName(userDto.getDepartment());
 
-//        departmentUserService.addDepartmentUser(department, user); TODO make this work
+        departmentUserService.addDepartmentUser(department, user);  
 
         return new ResponseEntity<>(true, HttpStatus.OK);
     }

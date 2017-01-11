@@ -34,10 +34,8 @@ public class DepartmentUserService {
         return departmentName;
     }
 
-    public DepartmentUser addDepartmentUser(Department department, User user) {
-        DepartmentUser departmentUser = new DepartmentUser();
-        departmentUser.setDepartment(department);
-        departmentUser.setUser(user);
-        return departmentUserRepository.save(departmentUser);
+    public void addDepartmentUser(Department department, User user) {
+        departmentUserRepository.saveSQL(department, user);
+        //return departmentUserRepository.save(departmentUser);
     }
 }
