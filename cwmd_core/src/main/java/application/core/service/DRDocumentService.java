@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
+import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
@@ -53,14 +53,30 @@ public class DRDocumentService {
     @Autowired
     private UserRepository userRepository;
 
+    public List<DRDocument> getDocumentsByUsername(String username) {
+        return drDocumentRepository.findByUser_Username(username);
+    }
+
+    public List<DRDocument> getAllDocuments() {
+        return drDocumentRepository.findAll();
+    }
+
+    public List<DRDocument> getPartOfAFlowDocumentsByUsername(String username) {
+        return drDocumentRepository.findByUser_UsernameAndIsPartOfFlow(username, true);
+    }
+
+    public List<DRDocument> getAllPartOfAFlowDocuments() {
+        return drDocumentRepository.findByIsPartOfFlow(true);
+    }
+
     public void saveDocumentOnServer(Document document, HttpServletRequest request) {
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         try {
-            //TODO: get the current user logged in order to save files under personal folder
             LocalDate date = LocalDate.now();
             String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
             String username = UserUtil.getCurrentUsername(request);
-            document.save(urlToResourses.getPath() + "files/" + username + "/dr/" + "DR - " + dateString, SaveFormat.DOCX);
+            String path = urlToResourses.getPath();
+            document.save(path + "files/" + username + "/dr/DR - " + dateString, SaveFormat.DOCX);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -145,8 +161,9 @@ public class DRDocumentService {
         drDocument.setDrHousingCosts(drHousingCosts);
 
         LocalDate date = LocalDate.now();
-        drDocument.setDateAdded(new SimpleDateFormat("yyyy-MM-dd").parse(date.toString()));
         String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
+        Date dateAdded = Date.valueOf(date.plusDays(1));
+        drDocument.setDateAdded(dateAdded);
         drDocument.setName("DR - " + dateString);
         String username = UserUtil.getCurrentUsername(request);
         User user = userRepository.findOne(username);
@@ -218,10 +235,6 @@ public class DRDocumentService {
         drDocument.setDrBankInfo(drBankInfo);
 
         drDocumentRepository.save(drDocument);
-    }
-
-    public List<DRDocument> getDocuments(String username) {
-        return drDocumentRepository.findByUser_Username(username);
     }
 
     public DRDocument getDocument(Integer id) {

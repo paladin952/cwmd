@@ -11,4 +11,6 @@ import java.util.List;
 public interface DRDocumentRepository extends CWMDRepository<Integer, DRDocument> {
 
     List<DRDocument> findByUser_Username(String user_Username);
+    List<DRDocument> findByUser_UsernameAndIsPartOfFlow(String user_Username, boolean isPartOfFlow);
+    List<DRDocument> findByIsPartOfFlow(boolean isPartOfFlow);
 }

@@ -8,17 +8,19 @@ import application.core.repository.rn.*;
 import application.core.utils.UserUtil;
 import com.aspose.cells.Cell;
 import com.aspose.cells.Cells;
+import com.aspose.cells.SaveFormat;
 import com.aspose.cells.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,18 +47,33 @@ public class RNDocumentService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<RNDocument> getDocuments(String username) {
+    public List<RNDocument> getDocumentsByUsername(String username) {
         return rnDocumentRepository.findByUser_Username(username);
     }
 
+    public List<RNDocument> getAllDocuments() {
+        return rnDocumentRepository.findAll();
+    }
+
+    public List<RNDocument> getPartOfAFlowDocumentsByUsername(String username) {
+        return rnDocumentRepository.findByUser_UsernameAndIsPartOfFlow(username, true);
+    }
+
+    public List<RNDocument> getAllPartOfAFlowDocuments() {
+        return rnDocumentRepository.findByIsPartOfFlow(true);
+    }
+
     public void saveDocumentOnDisk(Workbook workbook, HttpServletRequest request) {
-        URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
+        URL urlToResourses = RNDocumentService.class.getClassLoader().getResource("");
         try {
             LocalDate date = LocalDate.now();
             String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
-            //TODO: get the current user logged in order to save files under personal folder
             String username = UserUtil.getCurrentUsername(request);
-            workbook.save(urlToResourses.getPath() + "files/" + username + "/rn/" + "RN - " + dateString);
+            String path = urlToResourses.getPath();
+            boolean save = handleMissingDirectories(path, username);
+            if (save) {
+                workbook.save(path + "files/" + username + "/rn/RN - " + dateString, SaveFormat.XLSX);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,8 +167,9 @@ public class RNDocumentService {
         rnDocument.setRnTotal(rnTotal);
 
         LocalDate date = LocalDate.now();
-        rnDocument.setDateAdded(new SimpleDateFormat("yyyy-MM-dd").parse(date.toString()));
         String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
+        Date dateAdded = java.sql.Date.valueOf(date.plusDays(1));
+        rnDocument.setDateAdded(dateAdded);
         rnDocument.setName("RN - " + dateString);
         String username = UserUtil.getCurrentUsername(request);
         User user = userRepository.findOne(username);
@@ -192,5 +210,31 @@ public class RNDocumentService {
 
     public RNTotal getRnTotal(Integer id) {
         return rnTotalRepository.findOne(id);
+    }
+
+    private boolean handleMissingDirectories(String path, String username) {
+        String pathname = path + "files";
+        File filesDirectory = new File(pathname);
+        boolean ok = filesDirectory.exists();
+        if (!ok) {
+            ok = filesDirectory.mkdir();
+        }
+        if (ok) {
+            pathname = pathname + "/" + username;
+            File userDirectory = new File(pathname);
+            ok = userDirectory.exists();
+            if (!ok) {
+                ok = userDirectory.mkdir();
+            }
+        }
+        if (ok) {
+            pathname = pathname + "/rn";
+            File rnDirectory = new File(pathname);
+            ok = rnDirectory.exists();
+            if (!ok) {
+                ok = rnDirectory.mkdir();
+            }
+        }
+        return ok;
     }
 }

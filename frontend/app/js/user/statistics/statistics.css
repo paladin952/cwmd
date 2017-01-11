@@ -1,0 +1,26 @@
+statistics h2 {
+    margin-bottom: 50px;
+}
+
+statistics h4 {
+    margin-bottom: 30px;
+}
+
+statistics .row {
+    margin-bottom: 30px;
+}
+
+statistics .item {
+    margin-bottom: 20px;
+}
+
+statistics .item div{
+    display: inline;
+    font-size: 15px;
+    font-family: "Lucida Sans", "Lucida Grande", Verdana, Arial, sans-serif;
+}
+
+statistics .item div.statistic {
+    background-color: #ff8f22;
+    padding: 5px;
+}

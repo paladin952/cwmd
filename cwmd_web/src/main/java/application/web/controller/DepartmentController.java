@@ -30,5 +30,4 @@ public class DepartmentController {
                 .collect(Collectors.toList());
         return departmentDTOs;
     }
-
 }

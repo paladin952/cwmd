@@ -49,6 +49,16 @@ public class FlowController {
         }
     }
 
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public ResponseEntity<Integer> countAll() {
+        int size = flowService.read().size();
+        if (size == 0) {
+            return new ResponseEntity<>(size-1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        }
+    }
+
     @Transactional
     @RequestMapping(value = "/all/active", method = RequestMethod.GET)
     public ResponseEntity<List<FlowDTO>> getActive() {
@@ -60,6 +70,16 @@ public class FlowController {
         }
     }
 
+    @RequestMapping(value = "/count/active", method = RequestMethod.GET)
+    public ResponseEntity<Integer> countActive() {
+        int size = flowService.readActive().size();
+        if (size == 0) {
+            return new ResponseEntity<>(size-1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        }
+    }
+
     @Transactional
     @RequestMapping(value = "/all/finished", method = RequestMethod.GET)
     public ResponseEntity<List<FlowDTO>> getFinished() {
@@ -68,6 +88,16 @@ public class FlowController {
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/count/finished", method = RequestMethod.GET)
+    public ResponseEntity<Integer> countFinished() {
+        int size = flowService.readFinished().size();
+        if (size == 0) {
+            return new ResponseEntity<>(size-1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(size, HttpStatus.OK);
         }
     }
 

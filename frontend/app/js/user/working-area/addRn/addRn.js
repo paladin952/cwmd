@@ -4,9 +4,13 @@ angular.module('cwmd').component('addRn', {
         var $ctrl = this;
 
         $ctrl.upload = function () {
+
+            $('.btn').toggleClass('is-pending').prop('disabled', true);
+
             if ($scope.document !== undefined) {
                 RNDocumentSrv.upload($scope.document)
                     .then(function (response) {
+                        $('.btn').toggleClass('is-pending').prop('disabled', false);
                         $location.path("/workingArea");
                     })
                     .catch(function (response) {

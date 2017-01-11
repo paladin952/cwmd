@@ -37,26 +37,38 @@ angular.module('cwmd').service('FlowSrv', function (Restangular) {
             // function (error, status) {
             //     isAtEnd = "Error with status " + status;
             // });
-    }
+    };
 
     service.getActiveFlows = function () {
         var path = 'flow/all/active';
 
         return Restangular.all(path).getList();
-    }
+    };
 
     service.getFinishedFlows = function () {
         var path = 'flow/all/finished';
 
         return Restangular.all(path).getList();
-    }
+    };
 
     service.updateFlow = function (flow) {
         return Restangular.one('flow').put(flow);
-    }
+    };
 
     service.deleteFlow = function (flowId) {
         return Restangular.one('flow').delete(flowId);
-    }
+    };
+
+    service.countAllFlows = function () {
+        return Restangular.one('flow/count').get();
+    };
+
+    service.countAllActiveFlows = function () {
+        return Restangular.one('flow/count/active').get();
+    };
+
+    service.countAllFinishedFlows = function () {
+        return Restangular.one('flow/count/finished').get();
+    };
 
 });

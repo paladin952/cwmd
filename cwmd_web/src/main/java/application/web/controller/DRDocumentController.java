@@ -10,6 +10,7 @@ import com.aspose.words.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,8 +47,8 @@ public class DRDocumentController {
         Integer docId = null;
         document = new Document(file.getInputStream());
 
-        drDocumentService.saveDocumentOnServer(document, request);
         if (documentId == null) {
+            drDocumentService.saveDocumentOnServer(document, request);
             documentId = drDocumentService.saveDocumentInDBFirstPart(document, request);
             docId = documentId;
         } else {
@@ -62,9 +63,30 @@ public class DRDocumentController {
     public List<DRDocumentDto> getDocuments(HttpServletRequest request) {
         List<DRDocument> documents;
 
-        documents = drDocumentService.getDocuments(UserUtil.getCurrentUsername(request));
+        documents = drDocumentService.getDocumentsByUsername(UserUtil.getCurrentUsername(request));
 
         return drDocumentConverter.toDTOs(documents);
+    }
+
+    @RequestMapping(value = "/count",method = RequestMethod.GET)
+    public ResponseEntity<Integer> countDocuments() {
+        List<DRDocument> allDocuments = drDocumentService.getAllDocuments();
+        int size = allDocuments.size();
+        if (size == 0) {
+            return new ResponseEntity<>(size-1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/inFlow",method = RequestMethod.GET)
+    public ResponseEntity<Integer> countPartOfAFlowDocuments() {
+        int size = drDocumentService.getAllPartOfAFlowDocuments().size();
+        if (size == 0) {
+            return new ResponseEntity<>(size-1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/First_part_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")

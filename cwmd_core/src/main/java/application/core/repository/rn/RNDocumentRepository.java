@@ -11,4 +11,6 @@ import java.util.List;
 public interface RNDocumentRepository extends CWMDRepository<Integer, RNDocument> {
 
     List<RNDocument> findByUser_Username(String user_Username);
+    List<RNDocument> findByUser_UsernameAndIsPartOfFlow(String user_Username, boolean isPartOfFlow);
+    List<RNDocument> findByIsPartOfFlow(boolean isPartOfFlow);
 }

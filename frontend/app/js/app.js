@@ -38,6 +38,14 @@ angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate', 'n
             .state('downloadDr', {
                 url: '/downloadDr',
                 template: '<download-dr></download-dr>'
+            })
+            .state('manageUsers', {
+                url: '/manageUsers',
+                template: '<manage-users></manage-users>'
+            })
+            .state('statistics', {
+                url: '/statistics',
+                template: '<statistics></statistics>'
             });
     })
     .run(function ($rootScope, $state) {

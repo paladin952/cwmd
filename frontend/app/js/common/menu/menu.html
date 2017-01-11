@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Hello, {{$ctrl.user().username}}</a>
+            <a class="navbar-brand" href="#">Hello, {{$ctrl.username()}}</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
@@ -22,6 +22,13 @@
                 </li>
                 <li>
                     <a ui-sref="closedTasks">Closed tasks</a>
+                </li>
+                <li ng-if="$ctrl.isAdmin()">
+                    <a ui-sref="manageUsers">Add users</a>
+                </li>
+
+                <li ng-if="$ctrl.isManager()">
+                    <a ui-sref="statistics">Statistics</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

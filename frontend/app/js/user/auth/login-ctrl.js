@@ -26,6 +26,7 @@
                 userService.login($s.username, $s.password)
                     .then(function (response) {
                         var user = response;
+                        $('#loginModal').modal('hide');
                         if (!user){
                             $s.showLoginFailedModal();
                         } else{

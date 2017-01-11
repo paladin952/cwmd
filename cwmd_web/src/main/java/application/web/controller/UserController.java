@@ -65,16 +65,16 @@ public class UserController {
     public ResponseEntity<Boolean> createUser(@RequestBody UserDto userDto) {
         RoleType roleType;
         switch (userDto.getRole()) {
-            case "admin":
+            case "ROLE_ADMIN":
                 roleType = RoleType.ROLE_ADMIN;
                 break;
-            case "manager":
+            case "ROLE_MANAGER":
                 roleType = RoleType.ROLE_MANAGER;
                 break;
-            case "contributor":
+            case "ROLE_CONTRIBUTOR":
                 roleType = RoleType.ROLE_CONTRIBUTOR;
                 break;
-            case "reader":
+            case "ROLE_READER":
                 roleType = RoleType.ROLE_READER;
                 break;
             default:

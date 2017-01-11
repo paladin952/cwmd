@@ -1,11 +1,19 @@
-<div ng-show="$ctrl.documentId === undefined">
-    <div>Please upload the first part of the DR</div>
-    <input type="file" file-model="firstPart"/>
-    <button class="btn btn-default" ng-click="$ctrl.uploadFirstPart()">Submit</button>
-</div>
+<div class="container">
+    <div class="row" ng-show="$ctrl.documentId === undefined">
+        <h2>Please upload the <span class="highlight">first part</span> of the DR document</h2>
+        <input type="file" file-model="firstPart"/>
+        <button class="btn btn-default" ng-click="$ctrl.uploadFirstPart()">
+            <span class="btn-inner">Submit</span>
+            <span class="btn-inner-pending">Loading…</span>
+        </button>
+    </div>
 
-<div ng-hide="$ctrl.documentId === undefined">
-    <div>Please upload the second part of the DR</div>
-    <input type="file" file-model="secondPart"/>
-    <button class="btn btn-default" ng-click="$ctrl.uploadSecondPart()">Submit</button>
+    <div class="row" ng-hide="$ctrl.documentId === undefined">
+        <h2>Please upload the <span class="highlight">second part</span> of the DR document</h2>
+        <input type="file" file-model="secondPart"/>
+        <button class="btn btn-default" ng-click="$ctrl.uploadSecondPart()">
+            <span class="btn-inner">Submit</span>
+            <span class="btn-inner-pending">Loading…</span>
+        </button>
+    </div>
 </div>

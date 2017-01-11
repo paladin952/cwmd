@@ -1,8 +1,16 @@
 angular.module('cwmd').service('RNDocumentSrv', function (Restangular, FileSaver, Blob) {
     var service = this;
 
-    service.getDocuments = function () {
+    service.getDocumentsByUser = function () {
         return Restangular.all('rn').getList();
+    };
+
+    service.getAllDocumentCount = function () {
+        return Restangular.one('rn/count').get();
+    };
+
+    service.getAllPartOfAFlowDocumentCount = function () {
+        return Restangular.one('rn/inFlow').get();
     };
 
     service.upload = function (file) {

@@ -4,9 +4,12 @@ angular.module('cwmd').component('addDr', {
         var $ctrl = this;
 
         $ctrl.uploadFirstPart = function () {
+            $('.btn').toggleClass('is-pending').prop('disabled', true);
+
             if ($scope.firstPart !== undefined) {
                 DRDocumentSrv.uploadFirstPart($scope.firstPart)
                     .then(function (response) {
+                        $('.btn').toggleClass('is-pending').prop('disabled', false);
                         $ctrl.documentId = response;
                     })
                     .catch(function (response) {
@@ -16,9 +19,12 @@ angular.module('cwmd').component('addDr', {
         };
 
         $ctrl.uploadSecondPart = function () {
+            $('.btn').toggleClass('is-pending').prop('disabled', true);
+
             if ($scope.secondPart !== undefined) {
                 DRDocumentSrv.uploadSecondPart($scope.secondPart)
                     .then(function (response) {
+                        $('.btn').toggleClass('is-pending').prop('disabled', false);
                         console.log(response);
                         $location.path("/workingArea");
                     })
