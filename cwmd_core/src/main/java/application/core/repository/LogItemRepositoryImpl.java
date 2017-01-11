@@ -26,7 +26,7 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
                 "WHERE L.Tag LIKE :filter OR L.User LIKE :filter OR L.Department LIKE :filter OR L.DocumentType LIKE :filter";
         Query select = session.createSQLQuery(sql)
                 .addEntity("L", LogItem.class)
-                .setString("filter", filter)
+                .setString("filter", "%" + filter + "%")
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List logs = select.list();
 
@@ -63,7 +63,7 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
                 .addEntity("L", LogItem.class)
                 .setString("date_from", from.toString())
                 .setString("date_to", to.toString())
-                .setString("filter", filter)
+                .setString("filter", "%" + filter + "%")
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List logs = select.list();
 
@@ -157,7 +157,7 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
         Query select = session.createSQLQuery(sql)
                 .addEntity("L", LogItem.class)
                 .setInteger("loglevel", LogLevel.toValue(level))
-                .setString("filter", filter)
+                .setString("filter", "%" + filter + "%")
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List logs = select.list();
 
@@ -197,7 +197,7 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
                 .setInteger("loglevel", LogLevel.toValue(level))
                 .setString("date_from", from.toString())
                 .setString("date_to", to.toString())
-                .setString("filter", filter)
+                .setString("filter", "%" + filter + "%")
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List logs = select.list();
 
