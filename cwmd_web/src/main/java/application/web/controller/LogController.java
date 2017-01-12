@@ -6,6 +6,7 @@ import application.web.converter.LogItemConverter;
 import application.web.dto.LogFilterDataDTO;
 import application.web.dto.LogItemDTO;
 import application.web.dto.LogTimeIntervalDTO;
+import application.web.utils.TimestampConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RequestMapping("/log")
@@ -54,7 +56,10 @@ public class LogController {
     @RequestMapping(value = "/all/timestamps", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getAll(@RequestBody LogTimeIntervalDTO logTimeIntervalDTO) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getAll(logTimeIntervalDTO.getFrom(), logTimeIntervalDTO.getTo())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(logTimeIntervalDTO.getFrom());
+            Timestamp to = TimestampConverter.fromString(logTimeIntervalDTO.getTo());
+
+            return new ResponseEntity<>(converter.toDTOs(logService.getAll(from, to)), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application log", e);
             e.printStackTrace();
@@ -65,7 +70,10 @@ public class LogController {
     @RequestMapping(value = "/all/all_filters", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getAll(@RequestBody LogFilterDataDTO data) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getAll(data.getTimeIntervalDTO().getFrom(), data.getTimeIntervalDTO().getTo(), data.getFilter())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
+            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
+
+            return new ResponseEntity<>(converter.toDTOs(logService.getAll(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application log", e);
             e.printStackTrace();
@@ -164,7 +172,10 @@ public class LogController {
     @RequestMapping(value = "/debug/timestamps", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getDebug(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getDebug(timeIntervalDTO.getFrom(), timeIntervalDTO.getTo())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(timeIntervalDTO.getFrom());
+            Timestamp to = TimestampConverter.fromString(timeIntervalDTO.getTo());
+
+            return new ResponseEntity<>(converter.toDTOs(logService.getDebug(from, to)), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application debug log", e);
             e.printStackTrace();
@@ -175,7 +186,9 @@ public class LogController {
     @RequestMapping(value = "/info/timestamps", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getInfo(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getInfo(timeIntervalDTO.getFrom(), timeIntervalDTO.getTo())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(timeIntervalDTO.getFrom());
+            Timestamp to = TimestampConverter.fromString(timeIntervalDTO.getTo());
+            return new ResponseEntity<>(converter.toDTOs(logService.getInfo(from, to)), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application info log", e);
             e.printStackTrace();
@@ -186,7 +199,9 @@ public class LogController {
     @RequestMapping(value = "/warn/timestamps", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getWarnings(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getWarnings(timeIntervalDTO.getFrom(), timeIntervalDTO.getTo())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(timeIntervalDTO.getFrom());
+            Timestamp to = TimestampConverter.fromString(timeIntervalDTO.getTo());
+            return new ResponseEntity<>(converter.toDTOs(logService.getWarnings(from, to)), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application warnings log", e);
             e.printStackTrace();
@@ -197,7 +212,9 @@ public class LogController {
     @RequestMapping(value = "/error/timestamps", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getErrors(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getErrors(timeIntervalDTO.getFrom(), timeIntervalDTO.getTo())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(timeIntervalDTO.getFrom());
+            Timestamp to = TimestampConverter.fromString(timeIntervalDTO.getTo());
+            return new ResponseEntity<>(converter.toDTOs(logService.getErrors(from, to)), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Ironic error while retrieving application error log", e);
             e.printStackTrace();
@@ -208,7 +225,9 @@ public class LogController {
     @RequestMapping(value = "/debug/all_filters", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getDebug(@RequestBody LogFilterDataDTO data) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getDebug(data.getTimeIntervalDTO().getFrom(), data.getTimeIntervalDTO().getTo(), data.getFilter())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
+            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
+            return new ResponseEntity<>(converter.toDTOs(logService.getDebug(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application debug log", e);
             e.printStackTrace();
@@ -219,7 +238,9 @@ public class LogController {
     @RequestMapping(value = "/info/all_filters", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getInfo(@RequestBody LogFilterDataDTO data) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getInfo(data.getTimeIntervalDTO().getFrom(), data.getTimeIntervalDTO().getTo(), data.getFilter())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
+            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
+            return new ResponseEntity<>(converter.toDTOs(logService.getInfo(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application info log", e);
             e.printStackTrace();
@@ -230,7 +251,9 @@ public class LogController {
     @RequestMapping(value = "/warn/all_filters", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getWarnings(@RequestBody LogFilterDataDTO data) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getWarnings(data.getTimeIntervalDTO().getFrom(), data.getTimeIntervalDTO().getTo(), data.getFilter())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
+            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
+            return new ResponseEntity<>(converter.toDTOs(logService.getWarnings(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application warnings log", e);
             e.printStackTrace();
@@ -241,7 +264,9 @@ public class LogController {
     @RequestMapping(value = "/error/all_filters", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getErrors(@RequestBody LogFilterDataDTO data) {
         try {
-            return new ResponseEntity<>(converter.toDTOs(logService.getErrors(data.getTimeIntervalDTO().getFrom(), data.getTimeIntervalDTO().getTo(), data.getFilter())), HttpStatus.OK);
+            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
+            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
+            return new ResponseEntity<>(converter.toDTOs(logService.getErrors(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Ironic error while retrieving application error log", e);
             e.printStackTrace();

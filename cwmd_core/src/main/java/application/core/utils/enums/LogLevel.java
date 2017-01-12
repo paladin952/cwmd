@@ -4,7 +4,8 @@ public enum LogLevel {
     LOG_DEBUG,
     LOG_INFO,
     LOG_WARN,
-    LOG_ERROR;
+    LOG_ERROR,
+    LOG_ALL;
 
     public static String toString(LogLevel level) {
         switch (level) {

@@ -16,75 +16,69 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
         super(LogItem.class);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    public List<LogItem> getAll(String filter) {
+    private List<LogItem> oneGetToRuleThemAll(LogLevel loglevel, Timestamp from, Timestamp to, String filter)
+    {
         HibernateEntityManager manager = getEntityManager().unwrap(HibernateEntityManager.class);
         Session session = manager.getSession();
-        String sql = "SELECT DISTINCT * " +
-                "FROM cwmd_db.log L " +
-                "WHERE L.Tag LIKE :filter OR L.User LIKE :filter OR L.Department LIKE :filter OR L.DocumentType LIKE :filter";
+        String sql = "SELECT DISTINCT * FROM cwmd_db.log L WHERE ";
+        switch (loglevel)
+        {
+            case LOG_DEBUG:
+            case LOG_INFO:
+            case LOG_WARN:
+            case LOG_ERROR:
+                sql += "L.level = :loglevel";
+            default:
+                if (loglevel != LogLevel.LOG_ALL && filter != null)
+                    sql += " AND ";
+                if (filter != null)
+                        sql += "(L.Tag LIKE :filter OR L.User LIKE :filter OR L.Department LIKE :filter OR L.DocumentType LIKE :filter)";
+                if ((loglevel != LogLevel.LOG_ALL || filter != null) && (from != null && to != null))
+                    sql += " AND ";
+                if (from != null && to != null)
+                    sql += "L.Timestamp BETWEEN DATE(:date_from) AND DATE(:date_to)";
+                break;
+        }
+
         Query select = session.createSQLQuery(sql)
                 .addEntity("L", LogItem.class)
-                .setString("filter", "%" + filter + "%")
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if (loglevel != LogLevel.LOG_ALL)
+            select.setInteger("loglevel", LogLevel.toValue(loglevel));
+        if (filter != null)
+            select.setString("filter", "%" + filter + "%");
+        if (from != null && to != null)
+            select.setString("date_from", from.toString())
+                .setString("date_to", to.toString());
+
         List logs = select.list();
 
         return (List<LogItem>) logs;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<LogItem> getAll(String filter) {
+        return oneGetToRuleThemAll(LogLevel.LOG_ALL, null, null, filter);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getAll(Timestamp from, Timestamp to) {
-        HibernateEntityManager manager = getEntityManager().unwrap(HibernateEntityManager.class);
-        Session session = manager.getSession();
-        String sql = "SELECT DISTINCT * " +
-                "FROM cwmd_db.log L " +
-                "WHERE L.Timestamp BETWEEN DATE(:date_from) AND DATE(:date_to)";
-        Query select = session.createSQLQuery(sql)
-                .addEntity("L", LogItem.class)
-                .setString("date_from", from.toString())
-                .setString("date_to", to.toString())
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List logs = select.list();
-
-        return (List<LogItem>) logs;
+        return oneGetToRuleThemAll(LogLevel.LOG_ALL, from, to, null);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getAll(Timestamp from, Timestamp to, String filter) {
-        HibernateEntityManager manager = getEntityManager().unwrap(HibernateEntityManager.class);
-        Session session = manager.getSession();
-        String sql = "SELECT DISTINCT * " +
-                "FROM cwmd_db.log L " +
-                "WHERE (L.Timestamp BETWEEN DATE(:date_from) AND DATE(:date_to)) AND (L.Tag LIKE :filter OR L.User LIKE :filter OR L.Department LIKE :filter OR L.DocumentType LIKE :filter)";
-        Query select = session.createSQLQuery(sql)
-                .addEntity("L", LogItem.class)
-                .setString("date_from", from.toString())
-                .setString("date_to", to.toString())
-                .setString("filter", "%" + filter + "%")
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List logs = select.list();
-
-        return (List<LogItem>) logs;
+        return oneGetToRuleThemAll(LogLevel.LOG_ALL, from, to, filter);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getFor(LogLevel level) {
-        HibernateEntityManager manager = getEntityManager().unwrap(HibernateEntityManager.class);
-        Session session = manager.getSession();
-        String sql = "SELECT DISTINCT * " +
-                "FROM cwmd_db.log L " +
-                "WHERE L.Level = :loglevel";
-        Query select = session.createSQLQuery(sql)
-                .addEntity("L", LogItem.class)
-                .setInteger("loglevel", LogLevel.toValue(level))
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List logs = select.list();
-
-        return (List<LogItem>) logs;
+        return oneGetToRuleThemAll(level, null, null, null);
     }
 
     @Override
@@ -110,20 +104,7 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getFor(LogLevel level, Timestamp from, Timestamp to) {
-        HibernateEntityManager manager = getEntityManager().unwrap(HibernateEntityManager.class);
-        Session session = manager.getSession();
-        String sql = "SELECT DISTINCT * " +
-                "FROM cwmd_db.log L " +
-                "WHERE L.Level = :loglevel AND (L.Timestamp BETWEEN DATE(:date_from) AND DATE(:date_to))";
-        Query select = session.createSQLQuery(sql)
-                .addEntity("L", LogItem.class)
-                .setInteger("loglevel", LogLevel.toValue(level))
-                .setString("date_from", from.toString())
-                .setString("date_to", to.toString())
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List logs = select.list();
-
-        return (List<LogItem>) logs;
+        return oneGetToRuleThemAll(level, from, to, null);
     }
 
     @Override
@@ -149,19 +130,7 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getFor(LogLevel level, String filter) {
-        HibernateEntityManager manager = getEntityManager().unwrap(HibernateEntityManager.class);
-        Session session = manager.getSession();
-        String sql = "SELECT DISTINCT * " +
-                "FROM cwmd_db.log L " +
-                "WHERE L.Level = :loglevel AND (L.Tag LIKE :filter OR L.User LIKE :filter OR L.Department LIKE :filter OR L.DocumentType LIKE :filter)";
-        Query select = session.createSQLQuery(sql)
-                .addEntity("L", LogItem.class)
-                .setInteger("loglevel", LogLevel.toValue(level))
-                .setString("filter", "%" + filter + "%")
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List logs = select.list();
-
-        return (List<LogItem>) logs;
+        return oneGetToRuleThemAll(level, null, null, filter);
     }
 
     @Override
@@ -187,21 +156,7 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getFor(LogLevel level, Timestamp from, Timestamp to, String filter) {
-        HibernateEntityManager manager = getEntityManager().unwrap(HibernateEntityManager.class);
-        Session session = manager.getSession();
-        String sql = "SELECT DISTINCT * " +
-                "FROM cwmd_db.log L " +
-                "WHERE L.Level = :loglevel AND (L.Timestamp BETWEEN DATE(:date_from) AND DATE(:date_to)) AND (L.Tag LIKE :filter OR L.User LIKE :filter OR L.Department LIKE :filter OR L.DocumentType LIKE :filter)";
-        Query select = session.createSQLQuery(sql)
-                .addEntity("L", LogItem.class)
-                .setInteger("loglevel", LogLevel.toValue(level))
-                .setString("date_from", from.toString())
-                .setString("date_to", to.toString())
-                .setString("filter", "%" + filter + "%")
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List logs = select.list();
-
-        return (List<LogItem>) logs;
+        return oneGetToRuleThemAll(level, from, to, filter);
     }
 
     @Override

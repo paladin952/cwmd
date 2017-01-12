@@ -10,5 +10,5 @@ import lombok.*;
 @Builder
 public class LogFilterDataDTO {
     private String filter;
-    private LogTimeIntervalDTO timeIntervalDTO;
+    private LogTimeIntervalDTO interval;
 }

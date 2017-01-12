@@ -11,6 +11,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @ToString
 public class LogTimeIntervalDTO {
-    private Timestamp from;
-    private Timestamp to;
+    private String from;
+    private String to;
 }
