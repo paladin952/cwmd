@@ -75,7 +75,7 @@ public class DocumentMailer implements ICWMDMailer {
         try {
             mailSender.send(preparator);
         } catch (MailException e) {
-            throw new ServiceException("Mailing error occurred while sending mail", e);
+            throw new ServiceException("Error occurred while sending mail", e);
         }
 
         return this;
@@ -87,7 +87,7 @@ public class DocumentMailer implements ICWMDMailer {
 
             helper.setSubject("[CWMD] Concerning document " + doc.getName());
             helper.setFrom(from);
-            helper.setTo(PLACEHOLDER_DESTINATION);
+            helper.setTo(doc.getUser().getUserInfo().getEmail());
 
             Map<String, Object> model = new HashMap<>();
             model.put(DOCUMENT_TOKEN, doc);
@@ -105,6 +105,7 @@ public class DocumentMailer implements ICWMDMailer {
             VelocityContext velocityContext = new VelocityContext();
             velocityContext.put(DOCUMENT_TOKEN + ".name", doc.getName());
             velocityContext.put(DOCUMENT_TOKEN + ".date", doc.getDateAdded());
+            velocityContext.put(DOCUMENT_TOKEN + ".owner", doc.getUser().getUsername());
 
             StringWriter content = new StringWriter();
             velocityEngine.mergeTemplate(velocityTemplateLocation, "UTF-8", velocityContext, content);
