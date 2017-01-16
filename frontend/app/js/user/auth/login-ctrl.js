@@ -2,7 +2,7 @@
     'use strict';
 
     ng.module('cwmd')
-        .controller('loginCtrl', ['$rootScope', '$scope', '$state', 'UserSrv',function ($root, $s, $state, userService) {
+        .controller('loginCtrl', ['$rootScope', '$scope', '$state', '$window','UserSrv',function ($root, $s, $state, $window, userService) {
 
             $('#loginModal').modal('show');
 
@@ -18,21 +18,32 @@
             $s.password = "";
             $s.username ="";
 
+                 var currentUser = {
+            username: "user",
+            password: "pass",
+            role: "ROLE_ADMIN"
+        };
+
             $s.login = function () {
                 if(!$s.username || !$s.password){
                     $s.showLoginFailedModal();
                     return;
                 }
-                userService.login($s.username, $s.password)
-                    .then(function (response) {
-                        var user = response;
-                        $('#loginModal').modal('hide');
-                        if (!user){
-                            $s.showLoginFailedModal();
-                        } else{
-                            $state.go('workingArea');
-                        }
-                    });
+
+                $window.localStorage.setItem("currentUsername", currentUser.username);
+                $window.localStorage.setItem("currentUserRole", currentUser.role);
+
+                $state.go('workingArea');
+                // userService.login($s.username, $s.password)
+                //     .then(function (response) {
+                //         var user = response;
+                //         $('#loginModal').modal('hide');
+                //         if (!user){
+                //             $s.showLoginFailedModal();
+                //         } else{
+                //             $state.go('workingArea');
+                //         }
+                //     });
             }
         }
 
