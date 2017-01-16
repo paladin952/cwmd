@@ -1,9 +1,5 @@
-angular.module('cwmd').service('FlowSrv', function (Restangular) {
+angular.module('cwmd').service('LogSrv', function (Restangular) {
     var service = this;
-
-    service.startFlow = function(documentIds, departmentIds){
-        return Restangular.all('flow/start').post(documentIds, departmentIds);
-    };
 
     service.getFlows = function () {
          return Restangular.all('flow').getList();
@@ -21,20 +17,16 @@ angular.module('cwmd').service('FlowSrv', function (Restangular) {
         return Restangular.one(path).get(flowId);
     };
 
-    service.goToInitialDepartment = function (flowId, remark) {
-        var parameters = {
-            flowId: flowId,
-            remark: remark
-        };
-
-        return Restangular.all('flow').post(parameters);
-
-    };
-
     service.isFlowAtEnd = function (flowId) {
         var path = 'flow/isAtEnd';
 
         return Restangular.one(path).get(flowId);
+            // .then(function (response) {
+            //     isAtEnd = response;
+            // },
+            // function (error, status) {
+            //     isAtEnd = "Error with status " + status;
+            // });
     };
 
     service.getFlowsStartedByCurrentUser = function(username){

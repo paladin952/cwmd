@@ -23,16 +23,16 @@ angular.module('cwmd').service('UserSrv', function (Restangular, $window, $state
 
     service.createUser = function (user) {
         var _params = {
-            username : user.username ? user.username : "",
-            password: user.password ? user.password : "",
-            firstName: user.firstName ? user.firstName : "",
-            lastName: user.lastName ? user.lastName : "",
-            address: user.address ? user.address : "",
-            email: user.email ? user.email : "",
-            phoneNumber: user.phoneNumber ? user.phoneNumber : 0,
-            departmentChief: user.departmentChief ? user.departmentChief : false,
-            department: user.department.name ? user.department.name : "",
-            role: user.role ? "ROLE_" + user.role : ""
+            username : user.username,
+            password: user.password,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            address: user.address,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            departmentChief: user.departmentChief,
+            department: user.department.name,
+            role: user.role,
         };
 
         return Restangular.all('user/create').post(_params);

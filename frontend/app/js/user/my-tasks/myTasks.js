@@ -5,13 +5,14 @@ angular.module('cwmd').component('myTasks', {
         $ctrl.flows = null;
 
         $ctrl.$onInit = function () {
-            FlowSrv.getActiveFlows()
+            var currentUser = $window.localStorage.currentUser;
+            FlowSrv.getFlowsForCurrentUser(currentUser)
                 .then(function (response) {
                     $ctrl.flows = response;
                 })
                 .catch(function (response) {
                     console.log(response);
                 });    
-        };
+        };  
     }
 });

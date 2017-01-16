@@ -6,13 +6,20 @@
             <div ng-repeat="flow in $ctrl.flows" class="col-xs-12 flow">
                 <span>Flow in department {{flow.crtDepartment}}</span>
                 <span>Documents:</span>
-                <div ng-repeat="document in flow.flowDocuments" class="col-xs-14 document">
-                    <span>{{document.name}}</span>
-                </div>
+                 <table class="table-condensed">
+                    <tr ng-repeat="document in flow.flowDocuments" class="col-xs-14 document">
+                        <td><span>{{document.name}}</span></td>
+                        <td><button ng-click="">Download</button><td>
+                        <td><button ng-click="">Upload revised</button><td>
+                    </tr>
+                </table>
                 <span>Path:</span>
                 <div ng-repeat="path in flow.flowPath" class="col-xs-14 document">
                     <span>{{path.department.name}}</span>
                 </div>
+            </div>                
+            <div ng-hide="$ctrl.flows">
+                You haven't started any flows yet!
             </div>
         </div>
     </div>
