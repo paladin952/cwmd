@@ -21,7 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RequestMapping("/rn")
@@ -64,7 +67,7 @@ public class RNDocumentController {
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public Integer uploadRN(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+    public ResponseEntity<Integer> uploadRN(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         Workbook workbook = null;
         try {
             workbook = new Workbook(file.getInputStream());
@@ -72,16 +75,19 @@ public class RNDocumentController {
             e.printStackTrace();
         }
 
+        LocalDate date = LocalDate.now();
+
         if (workbook != null) {
             Cell cell = workbook.getWorksheets().get(0).getCells().get("B8");
 
             System.out.println("cell.getValue().toString() = " + cell.getValue().toString());
 
-            rnDocumentService.saveDocumentOnDisk(workbook, request);
-            return rnDocumentService.saveDocumentInDB(workbook, request);
+            Integer documentId = rnDocumentService.saveDocumentInDB(workbook, date, request);
+            rnDocumentService.saveDocumentOnDisk(workbook, date, documentId, request);
+            return new ResponseEntity<>(documentId, HttpStatus.OK);
         }
 
-        return null;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/RN_document_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -94,5 +100,23 @@ public class RNDocumentController {
                 .contentType(
                         MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(new InputStreamResource(file.getInputStream()));
+    }
+
+    @RequestMapping(value = "/download", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam Integer documentId, HttpServletRequest request) throws IOException {
+        RNDocument document = rnDocumentService.getDocument(documentId);
+        Date dateAdded = document.getDateAdded();
+        LocalDate date = dateAdded.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
+        String username = UserUtil.getCurrentUsername(request);
+        ClassPathResource file = new ClassPathResource("files/" + username + "/rn/" + documentId + "/RN - " + dateString + ".xlsx");
+
+        return ResponseEntity
+                .ok()
+                .contentLength(file.contentLength())
+                .contentType(
+                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(new InputStreamResource(file.getInputStream()));
+
     }
 }

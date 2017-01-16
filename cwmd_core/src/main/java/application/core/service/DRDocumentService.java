@@ -69,20 +69,19 @@ public class DRDocumentService {
         return drDocumentRepository.findByIsPartOfFlow(true);
     }
 
-    public void saveDocumentOnServer(Document document, HttpServletRequest request) {
+    public void saveDocumentOnServer(Document document, LocalDate date, Integer documentId, String part, HttpServletRequest request) {
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         try {
-            LocalDate date = LocalDate.now();
             String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
             String username = UserUtil.getCurrentUsername(request);
             String path = urlToResourses.getPath();
-            document.save(path + "files/" + username + "/dr/DR - " + dateString, SaveFormat.DOCX);
+            document.save(path + "files/" + username + "/dr/" + documentId + "/DR " + part + " - " + dateString + ".docx", SaveFormat.DOCX);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public Integer saveDocumentInDBFirstPart(Document document, HttpServletRequest request) throws ParseException {
+    public Integer saveDocumentInDBFirstPart(Document document, LocalDate date, HttpServletRequest request) throws ParseException {
         NodeCollection shapes = document.getChildNodes(NodeType.SHAPE, true);
         System.out.println("shapes.getCount() = " + shapes.getCount());
 
@@ -160,7 +159,6 @@ public class DRDocumentService {
         drHousingCosts.setHousing3_2Funding(it.next().getText());
         drDocument.setDrHousingCosts(drHousingCosts);
 
-        LocalDate date = LocalDate.now();
         String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
         Date dateAdded = Date.valueOf(date.plusDays(1));
         drDocument.setDateAdded(dateAdded);

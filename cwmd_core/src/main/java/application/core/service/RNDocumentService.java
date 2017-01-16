@@ -63,23 +63,22 @@ public class RNDocumentService {
         return rnDocumentRepository.findByIsPartOfFlow(true);
     }
 
-    public void saveDocumentOnDisk(Workbook workbook, HttpServletRequest request) {
+    public void saveDocumentOnDisk(Workbook workbook, LocalDate date, Integer documentId, HttpServletRequest request) {
         URL urlToResourses = RNDocumentService.class.getClassLoader().getResource("");
         try {
-            LocalDate date = LocalDate.now();
             String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
             String username = UserUtil.getCurrentUsername(request);
             String path = urlToResourses.getPath();
             boolean save = handleMissingDirectories(path, username);
             if (save) {
-                workbook.save(path + "files/" + username + "/rn/RN - " + dateString, SaveFormat.XLSX);
+                workbook.save(path + "files/" + username + "/rn/" + documentId + "/RN - " + dateString + ".xlsx", SaveFormat.XLSX);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public Integer saveDocumentInDB(Workbook workbook, HttpServletRequest request) throws ParseException {
+    public Integer saveDocumentInDB(Workbook workbook, LocalDate date, HttpServletRequest request) throws ParseException {
         Cells cells = workbook.getWorksheets().get(0).getCells();
 
         RNDocument rnDocument = new RNDocument();
@@ -166,7 +165,6 @@ public class RNDocumentService {
         rnTotal.setTotalPrice(cells.get("M15").getFloatValue());
         rnDocument.setRnTotal(rnTotal);
 
-        LocalDate date = LocalDate.now();
         String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
         Date dateAdded = java.sql.Date.valueOf(date.plusDays(1));
         rnDocument.setDateAdded(dateAdded);
