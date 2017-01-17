@@ -1,0 +1,11 @@
+<html>
+    <body>
+        <p>Dear ${document.owner},</p>
+        <br/>
+        <p>This is an automatic e-mail sent to you by the CWMD team.</p>
+        <p>We are hereby informing you that one of the documents that you've uploaded to our application, namely ${document.name}, on ${document.date}, has been removed from our system. We apologize for the inconvenience.</p>
+        <br />
+        <p>Best of luck,</p>
+        <p>The CWMD team</p>
+    </body>
+</html>

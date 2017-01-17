@@ -1,14 +1,16 @@
 package application.web.controller;
 
-import application.core.model.User;
 import application.core.model.dr.DRDocument;
 import application.core.service.DRDocumentService;
 import application.core.utils.UserUtil;
+import application.web.converter.DRDocumentConverter;
+import application.web.dto.DRDocumentDto;
 import application.web.misc.ViewPath;
 import com.aspose.words.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
-@RequestMapping("/document")
+@RequestMapping("/dr")
 @RestController
 // TODO: 03.12.2016 check how this works for angular and do necessary changes
 public class DRDocumentController {
@@ -31,14 +37,16 @@ public class DRDocumentController {
     @Autowired
     private DRDocumentService drDocumentService;
 
+    @Autowired
+    private DRDocumentConverter drDocumentConverter;
+
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String uploadDR() {
         return ViewPath.UPLOAD_DOCUMENT;
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public Integer uploadDR(@RequestParam("file") MultipartFile file) throws Exception {
-//    public Integer uploadDR(@RequestParam("file") MultipartFile file, @RequestParam(value = "documentId", required=false) Integer documentId) throws Exception {
+    public ResponseEntity<Integer> uploadDR(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws ParseException {
         Document document = null;
         Integer docId = null;
         try {
@@ -47,32 +55,54 @@ public class DRDocumentController {
             e.printStackTrace();
         }
 
-        drDocumentService.saveDocumentOnServer(document, file.getOriginalFilename());
-        if (documentId == null) {
-            documentId = drDocumentService.saveDocumentInDBFirstPart(document, file.getOriginalFilename());
-            docId = documentId;
-        } else {
-            drDocumentService.saveDocumentInDBSecondPart(document, documentId);
-            documentId = null;
-        }
+        LocalDate date = LocalDate.now();
 
-        return docId;
+        if (document != null) {
+            if (documentId == null) {
+                documentId = drDocumentService.saveDocumentInDBFirstPart(document, date, request);
+                drDocumentService.saveDocumentOnServer(document, date, documentId, "first", request);
+                docId = documentId;
+            } else {
+                drDocumentService.saveDocumentInDBSecondPart(document, documentId);
+                drDocumentService.saveDocumentOnServer(document, date, documentId, "second", request);
+                documentId = null;
+            }
+            return new ResponseEntity<>(docId, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<DRDocument> getDocuments() {
-        User currentUser = UserUtil.getCurrentUser();
+    public List<DRDocumentDto> getDocuments(HttpServletRequest request) {
+        List<DRDocument> documents;
 
-        List<DRDocument> documents = new ArrayList<>();
+        documents = drDocumentService.getDocumentsByUsername(UserUtil.getCurrentUsername(request));
 
-        if (currentUser != null) {
-            documents = drDocumentService.getDocuments(currentUser.getUsername());
-        }
-
-        return documents;
+        return drDocumentConverter.toDTOs(documents);
     }
 
-    @RequestMapping(value = "/downloadFirst", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    @RequestMapping(value = "/count",method = RequestMethod.GET)
+    public ResponseEntity<Integer> countDocuments() {
+        List<DRDocument> allDocuments = drDocumentService.getAllDocuments();
+        int size = allDocuments.size();
+        if (size == 0) {
+            return new ResponseEntity<>(size-1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/inFlow",method = RequestMethod.GET)
+    public ResponseEntity<Integer> countPartOfAFlowDocuments() {
+        int size = drDocumentService.getAllPartOfAFlowDocuments().size();
+        if (size == 0) {
+            return new ResponseEntity<>(size-1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/First_part_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     public ResponseEntity<InputStreamResource> downloadDRFirstPart()
             throws IOException {
 
@@ -82,11 +112,11 @@ public class DRDocumentController {
                 .ok()
                 .contentLength(file.contentLength())
                 .contentType(
-                        MediaType.parseMediaType("application/octet-stream"))
+                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
                 .body(new InputStreamResource(file.getInputStream()));
     }
 
-    @RequestMapping(value = "/downloadSecond", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    @RequestMapping(value = "/Second_part_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     public ResponseEntity<InputStreamResource> downloadDRSecondPart()
             throws IOException {
 
@@ -96,7 +126,25 @@ public class DRDocumentController {
                 .ok()
                 .contentLength(file.contentLength())
                 .contentType(
-                        MediaType.parseMediaType("application/octet-stream"))
+                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+                .body(new InputStreamResource(file.getInputStream()));
+    }
+
+    @RequestMapping(value = "/download", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam Integer documentId, @RequestParam String part, HttpServletRequest request) throws IOException {
+
+        DRDocument drDocument = drDocumentService.getDocument(documentId);
+        Date dateAdded = drDocument.getDateAdded();
+        LocalDate date = dateAdded.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
+        String username = UserUtil.getCurrentUsername(request);
+        ClassPathResource file = new ClassPathResource("files/" + username + "/dr" + documentId + "/DR " + part + " - " + dateString + ".docx");
+
+        return ResponseEntity
+                .ok()
+                .contentLength(file.contentLength())
+                .contentType(
+                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
                 .body(new InputStreamResource(file.getInputStream()));
     }
 }

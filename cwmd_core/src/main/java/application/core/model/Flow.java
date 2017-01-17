@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "flow")
@@ -12,23 +14,31 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
-public class Flow implements Serializable{
+public class Flow implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EntryID")
+    @Column(name = "FlowID")
     private Integer id;
 
-    // Could do: change to FetchType.LAZY
-    // FIXME: 15.11.2016 this column does not have a mapping in the Document entity. when fixed uncomment following lines
-//    @JsonIgnore
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "EntryID")
-//    private List<Document> userDocument;
+    @OneToMany(mappedBy = "flow", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<FlowDocument> flowDocuments = new ArrayList<>();
 
-    // Could do: change to FetchType.LAZY
-//    @JsonIgnore
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "EntryID")
-//    private List<Department> userDepartment;
+    @OneToMany(mappedBy = "flow", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<FlowPath> flowPath = new ArrayList<>();
+
+    @Column(name = "CurrentDepartment")
+    private Integer crtDepartment;
+
+    @Column(name = "Remarks")
+    private String remarks;
+
+    public void addFlowDocument(FlowDocument flowDoc) {
+        flowDocuments.add(flowDoc);
+    }
+
+    public void addFlowDepartment(FlowPath flowDept) {
+        flowPath.add(flowDept);
+    }
 }

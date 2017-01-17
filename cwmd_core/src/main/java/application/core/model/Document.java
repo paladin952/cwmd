@@ -18,23 +18,34 @@ import java.util.Date;
 @Builder
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Document implements Serializable {
-
     @Id
     @TableGenerator(name = "TABLE_GENERATOR", initialValue = 0, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GENERATOR")
-    @Column(name = "EntryID")
+    @Column(name = "DocumentID")
     private Integer id;
 
     @Column(name = "Name", length = 150, nullable = false)
     private String name;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "DateAdded", nullable = false)
     private Date dateAdded;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "Username", nullable = false)
     @JsonIgnore
     private User user;
 
-    //TODO: add a path field to store the path the document can be found on disk
+    @Column(name = "Status", nullable = false)
+    private Integer status;
+
+    // TODO: 20.12.2016 i think this should be a string
+    @Column(name = "Version", nullable = false)
+    private Float version;
+
+    @Column(name = "Path", nullable = false)
+    private String path;
+
+    @Column(name = "isPartOfFlow")
+    private Boolean isPartOfFlow;
 }

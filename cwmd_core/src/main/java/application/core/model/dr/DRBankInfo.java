@@ -3,6 +3,7 @@ package application.core.model.dr;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "drBankInfo")
-public class DRBankInfo {
+public class DRBankInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "drBankInfoId")

@@ -15,6 +15,7 @@
     <properties>
         <spring.version>4.2.5.RELEASE</spring.version>
         <myapp.version>0.1</myapp.version>
+        <aspose.version>16.11.0</aspose.version>
     </properties>
 
     <repositories>
@@ -91,8 +92,14 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-words</artifactId>
-            <version>16.11.0</version>
+            <version>${aspose.version}</version>
             <classifier>jdk16</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-cells</artifactId>
+            <version>${aspose.version}</version>
         </dependency>
     </dependencies>
 </project>

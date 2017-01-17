@@ -9,6 +9,7 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.ui.velocity.VelocityEngineFactory;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.Properties;
 @Import({JPAConfig.class})
 @PropertySources({@PropertySource(value = "classpath:local/db.properties"),
         @PropertySource(value = "classpath:local/email.properties")})
+@EnableScheduling
 public class AppLocalConfig {
     @Value("${email.address}")
     private String email;

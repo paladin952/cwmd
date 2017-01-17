@@ -7,13 +7,13 @@ angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate', 'n
                 url: '/login',
                 template: '<login></login>'
             })
-            .state('workingArea', {
-                url: '/workingArea',
-                template: '<working-area></working-area>'
-            })
             .state('home', {
                 url: '/home',
                 template: '<home-layout></home-layout>'
+            })
+            .state('workingArea', {
+                url: '/workingArea',
+                template: '<working-area></working-area>'
             })
             .state('openTasks', {
                 url: '/openTasks',
@@ -27,13 +27,25 @@ angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate', 'n
                 url: '/closedTasks',
                 template: '<closed-tasks></closed-tasks>'
             })
-            .state('home.addDr', {
+            .state('addDr', {
                 url: '/addDr',
                 template: '<add-dr></add-dr>'
             })
-            .state('home.downloadDr', {
+            .state('addRn', {
+                url: '/addRn',
+                template: '<add-rn></add-rn>'
+            })
+            .state('downloadDr', {
                 url: '/downloadDr',
                 template: '<download-dr></download-dr>'
+            })
+            .state('manageUsers', {
+                url: '/manageUsers',
+                template: '<manage-users></manage-users>'
+            })
+            .state('statistics', {
+                url: '/statistics',
+                template: '<statistics></statistics>'
             });
     })
     .run(function ($rootScope, $state) {

@@ -1,41 +1,54 @@
-(function (ng,  console) {
+(function (ng,  $, console) {
     'use strict';
 
-    ng.module('login')
-        .controller('loginCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', 'UserSrv',function ($root, $s, $http, $location, $route, userService) {
+    ng.module('cwmd')
+        .controller('loginCtrl', ['$rootScope', '$scope', '$state', '$window','UserSrv',function ($root, $s, $state, $window, userService) {
 
             $('#loginModal').modal('show');
-
-            $s.currentWantedPage = '';
 
             $s.showLoginFailedModal = function () {
                 $('#loginFailedModal').modal('show');
             };
 
             $s.showLoginModal = function () {
-                $route.reload();
+                $state.go("login");
+                $('#loginModal').modal('show');
             };
 
             $s.password = "";
             $s.username ="";
 
+                 var currentUser = {
+            username: "user",
+            password: "pass",
+            role: "ROLE_ADMIN"
+        };
+
             $s.login = function () {
                 if(!$s.username || !$s.password){
+                    $s.showLoginFailedModal();
                     return;
                 }
-                userService.login($s.username, $s.password)
-                    .then(function(){
-                        $location.path('/home');
-                    })
-                    .then(function(){
-                        showLoginFailedModal();
-                    });
-            }
 
+                $window.localStorage.setItem("currentUsername", currentUser.username);
+                $window.localStorage.setItem("currentUserRole", currentUser.role);
+
+                $state.go('workingArea');
+                // userService.login($s.username, $s.password)
+                //     .then(function (response) {
+                //         var user = response;
+                //         $('#loginModal').modal('hide');
+                //         if (!user){
+                //             $s.showLoginFailedModal();
+                //         } else{
+                //             $state.go('workingArea');
+                //         }
+                //     });
+            }
         }
 
 
 
 
 
-])})(this.angular, this.console);
+])})(this.angular, this.jQuery, this.console);

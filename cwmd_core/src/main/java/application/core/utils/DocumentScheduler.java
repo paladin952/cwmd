@@ -1,7 +1,9 @@
 package application.core.utils;
 
 import application.core.model.Document;
+import application.core.model.Flow;
 import application.core.repository.DocumentRepository;
+import application.core.repository.FlowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,32 +20,39 @@ public class DocumentScheduler {
     private String docSecondThresholdTemplateLocation = "/resources/velocity/doc_60_days_template.vm";
 
     @Autowired
-    private DocumentRepository docs;
+    private DocumentRepository documentRepository;
+    @Autowired
+    private FlowRepository flowRepository;
 
     @Autowired
     private DocumentMailer mailer;
 
     @Scheduled(fixedRate = 86400000L)
     public void checkDocumentStatus() {
-        List<Document> documents = docs.findAll();
+        final Integer dayDivider = 1000 * 60 * 60 * 24;
+        List<Document> documents = documentRepository.findAll();
+        List<Flow> flows = flowRepository.findAll();
 
         documents.forEach(document -> {
-            long crtDate = (new Date()).getTime();
-            long docDate = document.getDateAdded().getTime();
-            if (crtDate - docDate == docFirstThreshold) {
-                mailer.SetVelocityTemplateLocation(docFirstThresholdTemplateLocation);
-                mailer.SendMail(document);
-            }
-            else if (crtDate - docDate == docSecondThreshold) {
-                mailer.SetVelocityTemplateLocation(docSecondThresholdTemplateLocation);
-                mailer.SendMail(document);
+            if (flows.stream().noneMatch(flow -> flow.getFlowDocuments()
+                    .stream()
+                    .anyMatch(flowDocument -> flowDocument.getDocument().equals(document)))) { // if document not part of any flows
+                long crtDate = (new Date()).getTime();
+                long docDate = document.getDateAdded().getTime();
+                if ((crtDate - docDate) / dayDivider == docFirstThreshold) {
+                    mailer.SetVelocityTemplateLocation(docFirstThresholdTemplateLocation);
+                    mailer.SendMail(document);
+                } else if (crtDate - docDate == docSecondThreshold) {
+                    mailer.SetVelocityTemplateLocation(docSecondThresholdTemplateLocation);
+                    mailer.SendMail(document);
+                }
             }
         });
 
         List<Document> toBeDeleted = documents.stream()
-                .filter(document -> (new Date().getTime()) - document.getDateAdded().getTime() >= 60)
+                .filter(document -> ((((new Date().getTime() - document.getDateAdded().getTime()) / dayDivider) >= docSecondThreshold)))
                 .collect(Collectors.toList());
 
-        toBeDeleted.forEach(document -> docs.delete(document.getId()));
+        toBeDeleted.forEach(document -> documentRepository.delete(document.getId()));
     }
 }

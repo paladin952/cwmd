@@ -1,54 +1,76 @@
-angular.module('cwmd').service('UserSrv', function (Restangular) {
+angular.module('cwmd').service('UserSrv', function (Restangular, $window, $state) {
     var service = this;
-    var _currentUser = {
-        username : "Mock.username",
-        password: "Mock.password"
-    };
 
     service.getUsers = function () {
-        debugger;
-        return Restangular.all('user').getList();
+         return Restangular.all('user').getList();
     };
 
     service.login = function (username, password) {
         var _params = {
-            username: username ? username : '',
-            password: password ? password : ''
+            username: username,
+            password: password
         };
 
-        Restangular.all('login').post(_params)
+        return Restangular.all('login').post('login',_params)
             .then(function (response) {
-                _currentUser = response;
+                if (response != null) {
+                    $window.localStorage.setItem("currentUsername", response.username);
+                    $window.localStorage.setItem("currentUserRole", response.role);
+                }
+                return response;
             });
     };
 
+    service.createUser = function (user) {
+        var _params = {
+            username : user.username,
+            password: user.password,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            address: user.address,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            departmentChief: user.departmentChief,
+            department: user.department.name,
+            role: user.role,
+        };
+
+        return Restangular.all('user/create').post(_params);
+    };
+
     service.logout = function () {
-        _currentUser = {};
+        $window.localStorage.removeItem("currentUsername");
+        $window.localStorage.removeItem("currentUserRole");
+        $state.go("login");
         //TODO: call backend method to close the session or stuff
     };
 
     service.getUserRole = function () {
-        return _currentUser.User.role;
+        return $window.localStorage.getItem("currentUserRole");
     };
 
     service.getCurrentUser = function () {
-        return _currentUser;
+        return $window.localStorage.getItem("currentUsername");
     };
 
     service.isAdmin = function () {
-        return _currentUser.User.role == "ROLE_ADMIN";
+        var role = $window.localStorage.getItem("currentUserRole");
+        return role == "ROLE_ADMIN";
     };
 
     service.isManager = function () {
-        return _currentUser.User.role == "ROLE_MANAGER";
+        var role = $window.localStorage.getItem("currentUserRole");
+        return role == "ROLE_MANAGER";
     };
 
     service.isContributor = function () {
-        return _currentUser.User.role == "ROLE_CONTRIBUTOR";
+        var role = $window.localStorage.getItem("currentUserRole");
+        return role == "ROLE_CONTRIBUTOR";
     };
 
     service.isReader = function () {
-        return _currentUser.User.role == "ROLE_READER";
+        var role = $window.localStorage.getItem("currentUserRole");
+        return role == "ROLE_READER";
     };
 
 });
