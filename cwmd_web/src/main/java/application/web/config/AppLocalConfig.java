@@ -15,6 +15,9 @@ import org.springframework.ui.velocity.VelocityEngineFactory;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Local configuration class.
+ */
 @Configuration
 @ComponentScan("application.core")
 @Import({JPAConfig.class})
@@ -22,6 +25,7 @@ import java.util.Properties;
         @PropertySource(value = "classpath:local/email.properties")})
 @EnableScheduling
 public class AppLocalConfig {
+
     @Value("${email.address}")
     private String email;
 

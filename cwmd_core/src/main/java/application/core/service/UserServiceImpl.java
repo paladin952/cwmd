@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implementation of the {@link IUserService} interface.
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService {
@@ -23,6 +26,9 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserRepository userRepo;
 
+    /**
+     *  {@inheritDoc}
+     */
     @Override
     public User create(String username, String password, RoleType role, UserDetails userInfo) {
         try {
@@ -47,6 +53,9 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<User> read() {
         try {
@@ -56,6 +65,9 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User readOne(String username) {
         try {
@@ -65,6 +77,9 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User update(String username, String password, RoleType role, UserDetails userInfo) {
         try {
@@ -78,6 +93,9 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IUserService delete(String username) {
         try {

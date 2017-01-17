@@ -19,6 +19,9 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Service for {@link DRDocument}.
+ */
 @Service
 @Transactional
 public class DRDocumentService {
@@ -53,22 +56,47 @@ public class DRDocumentService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Returns all the documents for a username.
+     * @param username The username
+     * @return A list of {@link DRDocument} of the user
+     */
     public List<DRDocument> getDocumentsByUsername(String username) {
         return drDocumentRepository.findByUser_Username(username);
     }
 
+    /**
+     * Returns all the documents.
+     * @return A list of {@link DRDocument}.
+     */
     public List<DRDocument> getAllDocuments() {
         return drDocumentRepository.findAll();
     }
 
+    /**
+     * Returns all the documents that are part of a flow for a username.
+     * @param username The username.
+     * @return A list of {@link DRDocument}.
+     */
     public List<DRDocument> getPartOfAFlowDocumentsByUsername(String username) {
         return drDocumentRepository.findByUser_UsernameAndIsPartOfFlow(username, true);
     }
 
+    /**
+     * Returns all  the documents that are part of a flow
+     * @return A list of {@link DRDocument}.
+     */
     public List<DRDocument> getAllPartOfAFlowDocuments() {
         return drDocumentRepository.findByIsPartOfFlow(true);
     }
 
+    /**
+     * Saves a Document on the server with date, part and ID.
+     * @param document The document to be saved.
+     * @param date The date when the document was uploaded.
+     * @param documentId The ID of the document.
+     * @param part The part of the document.
+     */
     public void saveDocumentOnServer(Document document, LocalDate date, Integer documentId, String part, HttpServletRequest request) {
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         try {
@@ -81,6 +109,12 @@ public class DRDocumentService {
         }
     }
 
+    /**
+     * Saves the first part of a document
+     * @param document The first part to be saved.
+     * @param date The date when the document was uploaded.
+     * @return Returns the ID of the saved document.
+     */
     public Integer saveDocumentInDBFirstPart(Document document, LocalDate date, HttpServletRequest request) throws ParseException {
         NodeCollection shapes = document.getChildNodes(NodeType.SHAPE, true);
         System.out.println("shapes.getCount() = " + shapes.getCount());
@@ -179,6 +213,11 @@ public class DRDocumentService {
         return savedDocument.getId();
     }
 
+    /**
+     * Saves the second part of the document.
+     * @param document The document to be saved.
+     * @param documentId The ID of the document.
+     */
     public void saveDocumentInDBSecondPart(Document document, Integer documentId) {
         NodeCollection shapes = document.getChildNodes(NodeType.SHAPE, true);
         System.out.println("shapes.getCount() = " + shapes.getCount());
@@ -235,38 +274,83 @@ public class DRDocumentService {
         drDocumentRepository.save(drDocument);
     }
 
+    /**
+     * Returns a {@link DRDocument} with a given ID.
+     * @param id The ID of the document.
+     * @return The document with the given ID.
+     */
     public DRDocument getDocument(Integer id) {
         return drDocumentRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link DRBankInfo} with a given ID.
+     * @param id The id of the drBankInfo
+     * @return The DRBankInfo with the given ID.
+     */
     public DRBankInfo getDrBankInfo(Integer id) {
         return drBankInfoRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link DRDailyCosts} with a given ID.
+     * @param id The id of the DRDailyCosts
+     * @return The DRDailyCosts with the given ID.
+     */
     public DRDailyCosts getDrDailyCosts(Integer id) {
         return drDailyCostsRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link DRHousingCosts} with a given ID.
+     * @param id The id of the DRHousingCosts
+     * @return The DRHousingCosts with the given ID.
+     */
     public DRHousingCosts getDrHousingCosts(Integer id) {
         return drHousingCostsRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link DROtherCosts} with a given ID.
+     * @param id The id of the DROtherCosts
+     * @return The DROtherCosts with the given ID.
+     */
     public DROtherCosts getDrOtherCosts(Integer id) {
         return drOtherCostsRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link DRPersonInfo} with a given ID.
+     * @param id The id of the DRPersonInfo
+     * @return The DRPersonInfo with the given ID.
+     */
     public DRPersonInfo getDrPersonInfo(Integer id) {
         return drPersonInforRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link DRTotalCosts} with a given ID.
+     * @param id The id of the DRTotalCosts
+     * @return The DRTotalCosts with the given ID.
+     */
     public DRTotalCosts getDrTotalCosts(Integer id) {
         return drTotalCostsRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link DRTransportationCosts} with a given ID.
+     * @param id The id of the DRTransportationCosts
+     * @return The DRTransportationCosts with the given ID.
+     */
     public DRTransportationCosts getDrTransportationCosts(Integer id) {
         return drTransportationCostsRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link DRTravelInfo} with a given ID.
+     * @param id The id of the DRTravelInfo
+     * @return The DRTravelInfo with the given ID.
+     */
     public DRTravelInfo getDrTravelInfo(Integer id) {
         return drTravelInfoRepository.findOne(id);
     }

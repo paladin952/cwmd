@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service for {@link Flow}
+ */
 @Service
 @Transactional
 public class FlowServiceImpl implements IFlowService {
@@ -26,6 +29,12 @@ public class FlowServiceImpl implements IFlowService {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+    /**
+     * Starts a new Flow with the given documents for the given departments.
+     * @param documents The documents in the flow.
+     * @param departments The departments in the flow.
+     * @return the {@link Flow} created.
+     */
     @Override
     public Flow startFlow(List<Integer> documents, List<Integer> departments) {
         try {
@@ -71,11 +80,19 @@ public class FlowServiceImpl implements IFlowService {
         }
     }
 
+    /**
+     * Returns all the flows.
+     * @return A list of {@link Flow}.
+     */
     @Override
     public List<Flow> read() {
         return flowRepo.findAll();
     }
 
+    /**
+     * Returns all the active flows.
+     * @return A list of active {@link Flow}s.
+     */
     @Override
     public List<Flow> readActive() {
         return flowRepo.findAll()
@@ -84,6 +101,10 @@ public class FlowServiceImpl implements IFlowService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns all the finished flows.
+     * @return A list of finished {@link Flow}s.
+     */
     @Override
     public List<Flow> readFinished() {
         return flowRepo.findAll()
@@ -92,6 +113,11 @@ public class FlowServiceImpl implements IFlowService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns a Flow with the given ID.
+     * @param flowId the ID of the flow.
+     * @return The Flow with the given ID.
+     */
     @Override
     public Flow readOne(Integer flowId) {
         Flow flow = flowRepo.findOne(flowId);
@@ -106,6 +132,11 @@ public class FlowServiceImpl implements IFlowService {
         return flow;
     }
 
+    /**
+     * Goes to the next Department in the {@link Flow}
+     * @param flowId The ID of the flow.
+     * @return The new {@link Flow}.
+     */
     @Override
     public Flow goToNextDepartmentFor(Integer flowId) {
         Flow flow = flowRepo.findOne(flowId);
@@ -118,6 +149,12 @@ public class FlowServiceImpl implements IFlowService {
         return flowRepo.save(flow);
     }
 
+    /**
+     * Returns to the initial department for a {@link Flow} with a remark
+     * @param flowId The ID of the flow
+     * @param remark THe Remark of the return operation.
+     * @return The new {@link Flow}
+     */
     @Override
     public Flow returnToInitialDepartmentFor(Integer flowId, String remark) {
         Flow flow = flowRepo.findOne(flowId);
@@ -127,6 +164,11 @@ public class FlowServiceImpl implements IFlowService {
         return flowRepo.save(flow);
     }
 
+    /**
+     * Checks if a Flow is at the end
+     * @param flowId The ID of the flow.
+     * @return True if the {@link Flow} is at the end, False otherwise.
+     */
     @Override
     public Boolean isFlowAtEnd(Integer flowId) {
         Flow flow = flowRepo.findOne(flowId);
@@ -136,6 +178,11 @@ public class FlowServiceImpl implements IFlowService {
         return flow.getCrtDepartment() >= flow.getFlowPath().size();
     }
 
+    /**
+     * Returns the current Department for a {@link Flow}
+     * @param flowId The ID of the {@link Flow}.
+     * @return The current {@link Department} for the flow.
+     */
     @Override
     public Department getCurrentDepartmentFor(Integer flowId) {
         Flow flow = flowRepo.findOne(flowId);
@@ -150,6 +197,11 @@ public class FlowServiceImpl implements IFlowService {
         return departmentRepository.getOneSQL(tmp.getId());
     }
 
+    /**
+     * Updates a flow from a flow.
+     * @param updatedFlow The updated flow
+     * @return The new {@link Flow}
+     */
     @Override
     public Flow update(Flow updatedFlow) {
         Flow flow = flowRepo.findOne(updatedFlow.getId());
@@ -180,6 +232,10 @@ public class FlowServiceImpl implements IFlowService {
         return flowRepo.save(flow);
     }
 
+    /**
+     * Deletes a {@link Flow} with a given ID.
+     * @param flowId The ID of the {@link Flow}.
+     */
     @Override
     public void delete(Integer flowId) {
         flowRepo.delete(flowId);

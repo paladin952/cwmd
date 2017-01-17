@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * REST Controller for {@link Department}
+ */
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
@@ -22,6 +25,10 @@ public class DepartmentController {
     @Autowired
     private DepartmentConverter departmentConverter;
 
+    /**
+     * Returns a list containing all the departments.
+     * @return a list of {@link DepartmentDTO}
+     */
     @RequestMapping(method = RequestMethod.GET)
     public List<DepartmentDTO> getDepartments() {
         List<Department> departmentList = departmentService.getdepartments();

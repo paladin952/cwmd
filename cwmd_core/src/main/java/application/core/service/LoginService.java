@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Created by clapalucian on 12/7/16.
+ * Service for login
  */
 @Service
 @Transactional
@@ -17,6 +17,12 @@ public class LoginService {
     @Autowired
     private UserRepository userRepo;
 
+    /**
+     * Returns the user with given username and password or null otherwise
+     * @param username the username
+     * @param password the password
+     * @return The existing {@link User} or null otherwise.
+     */
     public User login(String username, String password) {
 
         List<User> users = userRepo.findAll();

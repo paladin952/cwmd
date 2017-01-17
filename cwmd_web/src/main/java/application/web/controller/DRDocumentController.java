@@ -27,6 +27,9 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * REST Controller for {@link DRDocument}.
+ */
 @RequestMapping("/dr")
 @RestController
 // TODO: 03.12.2016 check how this works for angular and do necessary changes
@@ -40,11 +43,20 @@ public class DRDocumentController {
     @Autowired
     private DRDocumentConverter drDocumentConverter;
 
+    /**
+     * Returns the path for the document upload.
+     * @return Returns a string representing the document upload path.
+     */
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String uploadDR() {
         return ViewPath.UPLOAD_DOCUMENT;
     }
 
+    /**
+     * Saves a document on the server.
+     * @param file The file to be uploaded.
+     * @return the ID of the uploaded document.
+     */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ResponseEntity<Integer> uploadDR(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws ParseException {
         Document document = null;
@@ -72,6 +84,10 @@ public class DRDocumentController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Returns the documents for the current user.
+     * @return A list of {@link DRDocumentDto}
+     */
     @RequestMapping(method = RequestMethod.GET)
     public List<DRDocumentDto> getDocuments(HttpServletRequest request) {
         List<DRDocument> documents;
@@ -81,6 +97,10 @@ public class DRDocumentController {
         return drDocumentConverter.toDTOs(documents);
     }
 
+    /**
+     * Returns the number of documents on the server.
+     * @return Integer value
+     */
     @RequestMapping(value = "/count",method = RequestMethod.GET)
     public ResponseEntity<Integer> countDocuments() {
         List<DRDocument> allDocuments = drDocumentService.getAllDocuments();
@@ -92,6 +112,10 @@ public class DRDocumentController {
         }
     }
 
+    /**
+     * Returns the number of documents in the flow
+     * @return Integer value
+     */
     @RequestMapping(value = "/inFlow",method = RequestMethod.GET)
     public ResponseEntity<Integer> countPartOfAFlowDocuments() {
         int size = drDocumentService.getAllPartOfAFlowDocuments().size();
@@ -102,6 +126,10 @@ public class DRDocumentController {
         }
     }
 
+    /**
+     * Downloads the first document template
+     * @return InputStreamResource corresponding to the first document template
+     */
     @RequestMapping(value = "/First_part_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     public ResponseEntity<InputStreamResource> downloadDRFirstPart()
             throws IOException {
@@ -116,6 +144,10 @@ public class DRDocumentController {
                 .body(new InputStreamResource(file.getInputStream()));
     }
 
+    /**
+     * Downloads the second document template
+     * @return InputStreamResource corresponding to the second document template
+     */
     @RequestMapping(value = "/Second_part_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     public ResponseEntity<InputStreamResource> downloadDRSecondPart()
             throws IOException {
@@ -130,6 +162,12 @@ public class DRDocumentController {
                 .body(new InputStreamResource(file.getInputStream()));
     }
 
+    /**
+     * Downloads a document based on the given ID and the given part
+     * @param documentId the ID of the document to be downloaded
+     * @param part the part of the document to be downloaded
+     * @return InputStreamResource corresponding to the document
+     */
     @RequestMapping(value = "/download", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     public ResponseEntity<InputStreamResource> downloadFile(@RequestParam Integer documentId, @RequestParam String part, HttpServletRequest request) throws IOException {
 

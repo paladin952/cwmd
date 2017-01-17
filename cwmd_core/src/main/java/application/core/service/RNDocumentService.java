@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Service for {@link RNDocument}.
+ */
 @Service
 @Transactional
 public class RNDocumentService {
@@ -47,22 +50,46 @@ public class RNDocumentService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Returns all the documents for a username.
+     * @param username The username
+     * @return A list of {@link RNDocument} of the user
+     */
     public List<RNDocument> getDocumentsByUsername(String username) {
         return rnDocumentRepository.findByUser_Username(username);
     }
 
+    /**
+     * Returns all the documents.
+     * @return A list of {@link RNDocument}.
+     */
     public List<RNDocument> getAllDocuments() {
         return rnDocumentRepository.findAll();
     }
 
+    /**
+     * Returns all the documents that are part of a flow for a username.
+     * @param username The username.
+     * @return A list of {@link RNDocument}.
+     */
     public List<RNDocument> getPartOfAFlowDocumentsByUsername(String username) {
         return rnDocumentRepository.findByUser_UsernameAndIsPartOfFlow(username, true);
     }
 
+    /**
+     * Returns all  the documents that are part of a flow
+     * @return A list of {@link RNDocument}.
+     */
     public List<RNDocument> getAllPartOfAFlowDocuments() {
         return rnDocumentRepository.findByIsPartOfFlow(true);
     }
 
+    /**
+     * Saves a document on the disk with date and ID.
+     * @param workbook the document to be saved.
+     * @param date The Date when the document was uploaded.
+     * @param documentId The ID of the document.
+     */
     public void saveDocumentOnDisk(Workbook workbook, LocalDate date, Integer documentId, HttpServletRequest request) {
         URL urlToResourses = RNDocumentService.class.getClassLoader().getResource("");
         try {
@@ -78,6 +105,12 @@ public class RNDocumentService {
         }
     }
 
+    /**
+     * Saves the document in the database
+     * @param workbook The document to be saved.
+     * @param date The Date when the document was uploaded.
+     * @return The ID of the document
+     */
     public Integer saveDocumentInDB(Workbook workbook, LocalDate date, HttpServletRequest request) throws ParseException {
         Cells cells = workbook.getWorksheets().get(0).getCells();
 
@@ -186,30 +219,66 @@ public class RNDocumentService {
         return savedDoc.getId();
     }
 
+    /**
+     * Returns a {@link RNDocument} with a given ID.
+     * @param id The ID of the document.
+     * @return The document with the given ID.
+     */
     public RNDocument getDocument(Integer id) {
         return rnDocumentRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link RNOthers} with a given ID.
+     * @param id The ID of the RNOthers.
+     * @return The RNOthers with the given ID.
+     */
     public RNOthers getRnOthers(Integer id) {
         return rnOthersRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link RNProduct} with a given ID.
+     * @param id The ID of the RNProduct.
+     * @return The RNProduct with the given ID.
+     */
     public RNProduct getRnProduct(Integer id) {
         return rnProductRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link RNResearch} with a given ID.
+     * @param id The ID of the RNResearch.
+     * @return The RNResearch with the given ID.
+     */
     public RNResearch getRnResearch(Integer id) {
         return rnResearchRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link RNSponsors} with a given ID.
+     * @param id The ID of the RNSponsors.
+     * @return The RNSponsors with the given ID.
+     */
     public RNSponsors getRnSponsors(Integer id) {
         return rnSponsorsRepository.findOne(id);
     }
 
+    /**
+     * Returns a {@link RNTotal} with a given ID.
+     * @param id The ID of the RNTotal.
+     * @return The RNTotal with the given ID.
+     */
     public RNTotal getRnTotal(Integer id) {
         return rnTotalRepository.findOne(id);
     }
 
+    /**
+     * Function to handle missing directories
+     * @param path the path to the directory
+     * @param username the username of the user
+     * @return True if the directories were successfully created, False otherwise
+     */
     private boolean handleMissingDirectories(String path, String username) {
         String pathname = path + "files";
         File filesDirectory = new File(pathname);
