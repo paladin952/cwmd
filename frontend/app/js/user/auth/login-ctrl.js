@@ -18,32 +18,26 @@
             $s.password = "";
             $s.username ="";
 
-                 var currentUser = {
-            username: "user",
-            password: "pass",
-            role: "ROLE_ADMIN"
-        };
-
             $s.login = function () {
                 if(!$s.username || !$s.password){
                     $s.showLoginFailedModal();
                     return;
                 }
 
-                $window.localStorage.setItem("currentUsername", currentUser.username);
-                $window.localStorage.setItem("currentUserRole", currentUser.role);
+                $window.localStorage.setItem("currentUsername", $s.username);
+                $window.localStorage.setItem("currentUserRole", $s.role);
 
                 $state.go('workingArea');
-                // userService.login($s.username, $s.password)
-                //     .then(function (response) {
-                //         var user = response;
-                //         $('#loginModal').modal('hide');
-                //         if (!user){
-                //             $s.showLoginFailedModal();
-                //         } else{
-                //             $state.go('workingArea');
-                //         }
-                //     });
+                userService.login($s.username, $s.password)
+                    .then(function (response) {
+                        var user = response;
+                        $('#loginModal').modal('hide');
+                        if (!user){
+                            $s.showLoginFailedModal();
+                        } else{
+                            $state.go('workingArea');
+                        }
+                    });
             }
         }
 

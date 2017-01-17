@@ -7,7 +7,8 @@
     </div>
     <br>
     <div class="row">
-        <button class="btn btn-success pull-left" ng-disabled="!$ctrl.canStartFlow"> Start Flow</button>
+        <button class="btn btn-success pull-left" ng-show="!$ctrl.canStartFlow" ng-click="$ctrl.canAddDocuments = true">Add documents</button>
+        <button class="btn btn-success pull-left" ng-disabled="!$ctrl.canAddDocuments" ng-show="$ctrl.canStartFlow" ng-click>Start flow</button>
     </div>
     <div ui-view></div>
     <div class="row">
@@ -16,7 +17,10 @@
             <div ng-repeat="document in $ctrl.drDocuments" class="col-xs-12 document">
                 <span>{{document.name}}</span>
                 <span class="caption pull-right">{{document.dateAdded | date: "yyyy-MM-dd"}}</span>
-                <button class="btn btn-primary" ng-click="$ctrl.addDocumentToFlow(document.id)">Add to flow</button>
+                <button class="btn btn-primary" ng-show="$ctrl.canAddDocuments" ng-click="$ctrl.addDocumentToFlow(document.id)">Add to flow</button>
+                <tags-input ng-show="$ctrl.canAddDocuments" ng-model="$ctrl.departmentsForFlow" display-property="name">
+                    <auto-complete source="$ctrl.getDepartments($query)"></auto-complete>
+                </tags-input>
             </div>
         </div>
         <div class="col-xs-6 documentList">
@@ -24,7 +28,7 @@
             <div ng-repeat="document in $ctrl.rnDocuments" class="col-xs-12 document">
                 <span>{{document.name}}</span>
                 <span class="caption pull-right">{{document.dateAdded | date: "yyyy-MM-dd"}}</span>
-                <button class="btn btn-primary" ng-click="$ctrl.addDocumentToFlow(document.id)">Add to flow</button>
+                <button class="btn btn-primary" ng-show="$ctrl.canAddDocuments" ng-click="$ctrl.addDocumentToFlow(document.id)">Add to flow</button>
             </div>
         </div>
 

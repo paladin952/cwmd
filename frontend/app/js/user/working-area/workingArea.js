@@ -5,6 +5,7 @@ angular.module('cwmd').component('workingArea', {
 
         $ctrl.rnDownloadLink = "http://localhost:8080/rn/RN_document_sample";
         $ctrl.canStartFlow = false;
+        $ctrl.canAddDocuments = false;
         $ctrl.documentsForFlow = null;
         $ctrl.departmentsForFlow = null;
 
@@ -32,14 +33,18 @@ angular.module('cwmd').component('workingArea', {
                 });
         };
 
+        $ctrl.getDepartments = function (query) {
+            return $ctrl.departments;
+        };
+
         $ctrl.addDocumentToFlow = function (id) {
             $ctrl.documentsForFlow.push(id);
-            $ctrl.canStartFlow = true;
+            $ctrl.canStartFlow = true
         };
 
         $ctrl.addDepartmentsToFlow = function (id) {
             $ctrl.departmentsForFlow.push(id);
-            $ctrl.canStartFlow = true;
+            $ctrl.canStartFlow = true
         };
 
         $ctrl.startFlow = function () {

@@ -25,7 +25,8 @@
     "restangular": "^1.5.2",
     "angular-file-saver": "^1.1.2",
     "angular-file-model": "^0.3.1",
-    "jquery": "^3.1.1"
+    "jquery": "^3.1.1",
+    "ng-tags-input": "3.1.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.7"
