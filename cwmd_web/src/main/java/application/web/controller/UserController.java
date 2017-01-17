@@ -6,7 +6,6 @@ import application.core.model.UserDetails;
 import application.core.service.DepartmentService;
 import application.core.service.DepartmentUserService;
 import application.core.service.IUserService;
-import application.core.utils.UserUtil;
 import application.core.utils.enums.RoleType;
 import application.core.utils.logging.Log;
 import application.web.converter.UserConverter;
@@ -15,10 +14,7 @@ import application.web.misc.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +89,7 @@ public class UserController {
         User user = userService.create(userDto.getUsername(), userDto.getPassword(), roleType, userDetails);
         Department department = departmentService.getDepartmentByName(userDto.getDepartment());
 
-        departmentUserService.addDepartmentUser(department, user);  
+        departmentUserService.addDepartmentUser(department, user);
 
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
