@@ -176,7 +176,7 @@ public class RNDocumentService {
         //// FIXME: 20.12.2016 set the correct status as soon as it known how the integer representation of the status is mapped
         rnDocument.setStatus(1);
         rnDocument.setVersion(0.1f);
-        rnDocument.setPartOfFlow(false);
+        rnDocument.setIsPartOfFlow(false);
 
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         rnDocument.setPath(urlToResourses.getPath() + "files/" + username + "/rn/" + "RN - " + dateString);

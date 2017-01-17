@@ -169,7 +169,7 @@ public class DRDocumentService {
         //// FIXME: 20.12.2016 set the correct status as soon as it known how the integer representation of the status is mapped
         drDocument.setStatus(1);
         drDocument.setVersion(0.1f);
-        drDocument.setPartOfFlow(false);
+        drDocument.setIsPartOfFlow(false);
 
         URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
         drDocument.setPath(urlToResourses.getPath() + "files/" + username + "/dr/" + "DR - " + dateString);
