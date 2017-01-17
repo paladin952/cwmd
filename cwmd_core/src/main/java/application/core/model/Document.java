@@ -47,5 +47,5 @@ public class Document implements Serializable {
     private String path;
 
     @Column(name = "isPartOfFlow")
-    private boolean isPartOfFlow;
+    private Boolean isPartOfFlow;
 }

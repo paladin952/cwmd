@@ -61,7 +61,7 @@ public class FlowServiceImpl implements IFlowService {
             for (Integer documentId : documents) {
                 Document dbDoc = documentRepository.findOne(documentId);
                 if (dbDoc != null) {
-                    dbDoc.setPartOfFlow(true);
+                    dbDoc.setIsPartOfFlow(true);
                 } else throw new RuntimeException("Document with id " + documentId + " was not found in the database");
             }
 
