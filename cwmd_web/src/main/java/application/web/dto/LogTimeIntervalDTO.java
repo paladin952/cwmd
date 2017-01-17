@@ -2,8 +2,9 @@ package application.web.dto;
 
 import lombok.*;
 
-import java.sql.Timestamp;
-
+/**
+ * DTO for {@link application.core.utils.logging.Log}
+ */
 @Getter
 @Setter
 @Builder

@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Controller that takes requests related with a RN doc
+ */
 @RequestMapping("/rn")
 @RestController
 public class RNDocumentController {
@@ -37,6 +40,11 @@ public class RNDocumentController {
     @Autowired
     private RNDocumentConverter rnDocumentConverter;
 
+    /**
+     * Get all RN docs
+     * @param request The servlet request
+     * @return The document
+     */
     @RequestMapping(method = RequestMethod.GET)
     public List<RNDocumentDto> getDocuments(HttpServletRequest request) {
         List<RNDocument> documents = new ArrayList<>();
@@ -46,6 +54,10 @@ public class RNDocumentController {
         return rnDocumentConverter.toDTOs(documents);
     }
 
+    /**
+     * Count the RN documents
+     * @return The integer value
+     */
     @RequestMapping(value = "/count",method = RequestMethod.GET)
     public ResponseEntity<Integer> countDocuments() {
         int size = rnDocumentService.getAllDocuments().size();
@@ -56,6 +68,10 @@ public class RNDocumentController {
         }
     }
 
+    /**
+     * Return the number of docs in flow
+     * @return Integer value
+     */
     @RequestMapping(value = "/inFlow",method = RequestMethod.GET)
     public ResponseEntity<Integer> countPartOfAFlowDocuments() {
         int size = rnDocumentService.getAllPartOfAFlowDocuments().size();
@@ -66,6 +82,13 @@ public class RNDocumentController {
         }
     }
 
+    /**
+     * Upload a new document
+     * @param file The file
+     * @param request The request
+     * @return Http code
+     * @throws Exception In case something went wrong
+     */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ResponseEntity<Integer> uploadRN(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         Workbook workbook = null;
@@ -90,6 +113,11 @@ public class RNDocumentController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * download a sample
+     * @return The document as stream of resource
+     * @throws IOException In case something is going wrong
+     */
     @RequestMapping(value = "/RN_document_sample", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     public ResponseEntity<InputStreamResource> downloadRNSample() throws IOException {
         ClassPathResource file = new ClassPathResource("sample-files/RN_info_sample.xlsx");
@@ -102,6 +130,13 @@ public class RNDocumentController {
                 .body(new InputStreamResource(file.getInputStream()));
     }
 
+    /**
+     * Download a document based on some criterias
+     * @param documentId Doc id
+     * @param request Request
+     * @return A doc as stream of resource
+     * @throws IOException Ib case something is going wrong
+     */
     @RequestMapping(value = "/download", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     public ResponseEntity<InputStreamResource> downloadFile(@RequestParam Integer documentId, HttpServletRequest request) throws IOException {
         RNDocument document = rnDocumentService.getDocument(documentId);

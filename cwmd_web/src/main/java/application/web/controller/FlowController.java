@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Controller for handling request related to Flow
+ */
 @RequestMapping("/flow")
 @RestController
 public class FlowController {
@@ -28,6 +31,12 @@ public class FlowController {
     @Autowired
     private IFlowService flowService;
 
+    /**
+     * Starting a flow
+     * @param documentIds The list of document's ids
+     * @param departmentIds The department's ids
+     * @return The flow dto
+     */
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public ResponseEntity<FlowDTO> startFlow(@RequestBody List<Integer> documentIds, @RequestBody List<Integer> departmentIds) {
         try {
@@ -38,6 +47,10 @@ public class FlowController {
         }
     }
 
+    /**
+     * Get all flows
+     * @return The list of flows
+     */
     @Transactional
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<FlowDTO>> getAll() {
@@ -49,6 +62,10 @@ public class FlowController {
         }
     }
 
+    /**
+     * Get the count of flows
+     * @return a integer values
+     */
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity<Integer> countAll() {
         int size = flowService.read().size();
@@ -59,6 +76,10 @@ public class FlowController {
         }
     }
 
+    /**
+     * get all active flows
+     * @return the list of active flow
+     */
     @Transactional
     @RequestMapping(value = "/all/active", method = RequestMethod.GET)
     public ResponseEntity<List<FlowDTO>> getActive() {
@@ -70,6 +91,10 @@ public class FlowController {
         }
     }
 
+    /**
+     * get the number of active flows
+     * @return integer value
+     */
     @RequestMapping(value = "/count/active", method = RequestMethod.GET)
     public ResponseEntity<Integer> countActive() {
         int size = flowService.readActive().size();
@@ -80,6 +105,10 @@ public class FlowController {
         }
     }
 
+    /**
+     * Get all finished flows
+     * @return the list of finished docs
+     */
     @Transactional
     @RequestMapping(value = "/all/finished", method = RequestMethod.GET)
     public ResponseEntity<List<FlowDTO>> getFinished() {
@@ -91,6 +120,10 @@ public class FlowController {
         }
     }
 
+    /**
+     * Get the number of all finished flows
+     * @return Integer value
+     */
     @RequestMapping(value = "/count/finished", method = RequestMethod.GET)
     public ResponseEntity<Integer> countFinished() {
         int size = flowService.readFinished().size();
@@ -101,6 +134,11 @@ public class FlowController {
         }
     }
 
+    /**
+     * Get a specific flow
+     * @param flowId The id of that doc
+     * @return The document
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<FlowDTO> getOne(@PathVariable("id") final Integer flowId) {
         try {
@@ -111,6 +149,11 @@ public class FlowController {
         }
     }
 
+    /**
+     * Checks if a document is in the last step
+     * @param flowId The id of that doc
+     * @return True if yes, false otherwise
+     */
     @RequestMapping(value = "/isAtEnd/{id}", method = RequestMethod.GET)
     public ResponseEntity<Boolean> isFlowAtEnd(@PathVariable("id") final Integer flowId) {
         try {
@@ -121,6 +164,11 @@ public class FlowController {
         }
     }
 
+    /**
+     * Get the current department for some id
+     * @param flowId the id
+     * @return Department dto
+     */
     @RequestMapping(value = "/currentDepartment/{id}", method = RequestMethod.GET)
     public ResponseEntity<DepartmentDTO> getCurrentDepartmentFor(@PathVariable("id") final Integer flowId) {
         try {
@@ -131,6 +179,11 @@ public class FlowController {
         }
     }
 
+    /**
+     * Go to next department
+     * @param flowId Flow's id
+     * @return The new dto for that flow
+     */
     @RequestMapping(value = "/goToNextDepartment/{id}", method = RequestMethod.GET)
     public ResponseEntity<FlowDTO> goToNextDepartmentFor(@PathVariable("id") final Integer flowId) {
         try {
@@ -141,6 +194,12 @@ public class FlowController {
         }
     }
 
+    /**
+     * Get a flow based on id and a flow
+     * @param flowId The id
+     * @param flow The flow
+     * @return The flow
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<FlowDTO> update(@PathVariable("id") final Integer flowId, @RequestBody Flow flow) {
         if (!flow.getId().equals(flowId)) { // can't modify someone else's flow using your current flow
@@ -155,6 +214,11 @@ public class FlowController {
         }
     }
 
+    /**
+     * GEt a flow based only on id
+     * @param flowId The id
+     * @return The flow
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> delete(@PathVariable("id") final Integer flowId) {
         try {

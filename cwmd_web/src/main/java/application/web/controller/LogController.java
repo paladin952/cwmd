@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * Controller that take request for logs
+ */
 @RequestMapping("/log")
 @RestController
 public class LogController {
@@ -27,6 +30,10 @@ public class LogController {
     @Autowired
     private LogItemConverter converter;
 
+    /**
+     * Get the list of all logs
+     * @return a list
+     */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getAll() {
         try {
@@ -38,6 +45,11 @@ public class LogController {
         }
     }
 
+    /**
+     * The list of all logs filtered by :
+     * @param filter The filter's texts
+     * @return a list
+     */
     @RequestMapping(value = "/all/filter", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getAll(@RequestBody String filter) {
         try {
@@ -50,6 +62,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Get the list of all filtered by timestamp
+     * @param logTimeIntervalDTO The interval
+     * @return a list
+     */
     @RequestMapping(value = "/all/timestamps", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getAll(@RequestBody LogTimeIntervalDTO logTimeIntervalDTO) {
         try {
@@ -64,6 +81,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Get all filtered
+     * @param data The data to be filtered on
+     * @return a list
+     */
     @RequestMapping(value = "/all/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getAll(@RequestBody LogFilterDataDTO data) {
         try {
@@ -78,6 +100,10 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter all debug logs
+     * @return a list
+     */
     @RequestMapping(value = "/debug", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getDebug() {
         try {
@@ -89,6 +115,10 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter all info logs
+     * @return a list
+     */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getInfo() {
         try {
@@ -100,6 +130,10 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter all warn logs
+     * @return a list
+     */
     @RequestMapping(value = "/warn", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getWarnings() {
         try {
@@ -111,6 +145,10 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter all error logs
+     * @return a list
+     */
     @RequestMapping(value = "/error", method = RequestMethod.GET)
     public ResponseEntity<List<LogItemDTO>> getErrors() {
         try {
@@ -122,6 +160,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter debug logs
+     * @param filter The filter
+     * @return a list
+     */
     @RequestMapping(value = "/debug/filter", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getDebug(@RequestBody String filter) {
         try {
@@ -133,6 +176,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter info logs
+     * @param filter the filter
+     * @return a list
+     */
     @RequestMapping(value = "/info/filter", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getInfo(@RequestBody String filter) {
         try {
@@ -144,6 +192,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter warn logs
+     * @param filter The filter
+     * @return a list
+     */
     @RequestMapping(value = "/warn/filter", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getWarnings(@RequestBody String filter) {
         try {
@@ -154,6 +207,12 @@ public class LogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Filter error logs
+     * @param filter The filter
+     * @return a list
+     */
 
     @RequestMapping(value = "/error/filter", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getErrors(@RequestBody String filter) {
@@ -166,6 +225,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Fitler debug logs based on timestamps
+     * @param timeIntervalDTO The interval
+     * @return a list
+     */
     @RequestMapping(value = "/debug/timestamps", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getDebug(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
         try {
@@ -180,6 +244,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter info based on timestamp
+     * @param timeIntervalDTO The time interval
+     * @return a list
+     */
     @RequestMapping(value = "/info/timestamps", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getInfo(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
         try {
@@ -193,6 +262,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter warn based on timestamp
+     * @param timeIntervalDTO The time interval
+     * @return a list
+     */
     @RequestMapping(value = "/warn/timestamps", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getWarnings(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
         try {
@@ -206,6 +280,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Filter error based on timestamp
+     * @param timeIntervalDTO The time interval
+     * @return a list
+     */
     @RequestMapping(value = "/error/timestamps", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getErrors(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
         try {
@@ -219,6 +298,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Get all filters from debug
+     * @param data The data to filter from
+     * @return a list
+     */
     @RequestMapping(value = "/debug/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getDebug(@RequestBody LogFilterDataDTO data) {
         try {
@@ -232,6 +316,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Get all filters from info
+     * @param data The data to filter from
+     * @return a list
+     */
     @RequestMapping(value = "/info/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getInfo(@RequestBody LogFilterDataDTO data) {
         try {
@@ -245,6 +334,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Get all filters from warn
+     * @param data The data to filter from
+     * @return a list
+     */
     @RequestMapping(value = "/warn/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getWarnings(@RequestBody LogFilterDataDTO data) {
         try {
@@ -258,6 +352,11 @@ public class LogController {
         }
     }
 
+    /**
+     * Get all filters from error
+     * @param data The data to filter from
+     * @return a list
+     */
     @RequestMapping(value = "/error/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getErrors(@RequestBody LogFilterDataDTO data) {
         try {

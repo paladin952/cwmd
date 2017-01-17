@@ -2,6 +2,10 @@ package application.web.dto;
 
 import lombok.*;
 
+
+/**
+ * Dto for {@link application.core.model.User}
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -10,6 +14,7 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class UserDto {
+
     private String username;
     private String password;
     private String firstName;

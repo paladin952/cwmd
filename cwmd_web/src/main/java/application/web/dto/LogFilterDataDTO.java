@@ -2,6 +2,9 @@ package application.web.dto;
 
 import lombok.*;
 
+/**
+ * DTO for filtering data of a log
+ */
 @Getter
 @Setter
 @AllArgsConstructor

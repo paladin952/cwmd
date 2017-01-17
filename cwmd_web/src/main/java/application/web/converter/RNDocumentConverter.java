@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+/**
+ * Converting {@link RNDocument} to {@link RNDocumentDto} or the other way around
+ */
 @Component
 public class RNDocumentConverter extends Converter<RNDocument, RNDocumentDto> {
 
@@ -19,6 +22,11 @@ public class RNDocumentConverter extends Converter<RNDocument, RNDocumentDto> {
     @Autowired
     private IUserService userService;
 
+    /**
+     * Converting a {@link RNDocument} to a {@link RNDocumentDto}
+     * @param rnDocument The document as input
+     * @return a new {@link RNDocumentDto}
+     */
     @Override
     public RNDocumentDto toDTO(RNDocument rnDocument) {
         return RNDocumentDto.builder()
@@ -36,6 +44,11 @@ public class RNDocumentConverter extends Converter<RNDocument, RNDocumentDto> {
                 .build();
     }
 
+    /**
+     * Converting a {@link RNDocumentDto} to a {@link RNDocument}
+     * @param rnDocumentDto The document dto as input
+     * @return a new {@link RNDocument}
+     */
     @Override
     public RNDocument fromDTO(RNDocumentDto rnDocumentDto) {
         RNDocument rnDocument = (RNDocument) RNDocument.builder()

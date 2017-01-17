@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * DTO for {@link application.core.model.Department}
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

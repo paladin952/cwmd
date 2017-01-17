@@ -5,8 +5,17 @@ import application.core.utils.enums.LogLevel;
 import application.web.dto.LogItemDTO;
 import org.springframework.stereotype.Component;
 
+/**
+ * Converting {@link LogItem} to {@link LogItemDTO} or the other way around
+ */
 @Component
 public class LogItemConverter extends Converter<LogItem, LogItemDTO> {
+
+    /**
+     * Converting a {@link LogItem} to a {@link LogItemDTO}
+     * @param logItem The LogItem as input
+     * @return a new {@link LogItemDTO}
+     */
     @Override
     public LogItemDTO toDTO(LogItem logItem) {
         return LogItemDTO.builder()
@@ -21,6 +30,11 @@ public class LogItemConverter extends Converter<LogItem, LogItemDTO> {
                 .build();
     }
 
+    /**
+     * Converting a {@link LogItemDTO} to a {@link LogItem}
+     * @param logItemDTO The LogItemDto as input
+     * @return a new {@link LogItem}
+     */
     @Override
     @Deprecated
     public LogItem fromDTO(LogItemDTO logItemDTO) {

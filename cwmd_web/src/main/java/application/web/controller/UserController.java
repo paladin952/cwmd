@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controler for User related stuff
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -37,6 +40,10 @@ public class UserController {
     @Autowired
     private Log log;
 
+    /**
+     * Get all users
+     * @return The list of users
+     */
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.JSON_API)
     public ResponseEntity<List<UserDto>> getAll() {
         try {
@@ -57,6 +64,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Add a new user
+     * @param userDto The user data
+     * @return True is it is created, false otherwise
+     */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Boolean> createUser(@RequestBody UserDto userDto) {
         RoleType roleType;

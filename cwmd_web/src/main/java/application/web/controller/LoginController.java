@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Controller for login requests
+ */
 @RestController
 @CrossOrigin
 public class LoginController {
@@ -20,6 +23,13 @@ public class LoginController {
     @Autowired
     private LightUserConverter lightUserConverter;
 
+    /**
+     * Logs in a user based on:
+     * @param username The username
+     * @param password The password
+     * @param response The response Servlet
+     * @return The user dto
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LightUserDto login(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
         User loggedUser = loginService.login(username, password);

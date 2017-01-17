@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * DTO for starting a flow
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

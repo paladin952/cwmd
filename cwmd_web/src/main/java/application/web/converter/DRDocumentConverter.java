@@ -7,6 +7,9 @@ import application.web.dto.DRDocumentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Converting {@link DRDocument} to {@link DRDocumentDto} or the other way around
+ */
 @Component
 public class DRDocumentConverter extends Converter<DRDocument, DRDocumentDto> {
 
@@ -16,7 +19,11 @@ public class DRDocumentConverter extends Converter<DRDocument, DRDocumentDto> {
     @Autowired
     private IUserService userService;
 
-
+    /**
+     * Converting a {@link DRDocument} to a {@link DRDocumentDto}
+     * @param drDocument The document as input
+     * @return a new {@link DRDocumentDto}
+     */
     @Override
     public DRDocumentDto toDTO(DRDocument drDocument) {
         return DRDocumentDto.builder()
@@ -35,6 +42,11 @@ public class DRDocumentConverter extends Converter<DRDocument, DRDocumentDto> {
                 .build();
     }
 
+    /**
+     * Converting a {@link DRDocumentDto} to a {@link DRDocument}
+     * @param drDocumentDto The documentDto as input
+     * @return a new {@link DRDocument}
+     */
     @Override
     public DRDocument fromDTO(DRDocumentDto drDocumentDto) {
         DRDocument drDocument = (DRDocument) DRDocument.builder()

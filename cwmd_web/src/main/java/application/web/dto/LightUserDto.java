@@ -2,6 +2,9 @@ package application.web.dto;
 
 import lombok.*;
 
+/**
+ * DTO for a light {@link application.core.model.User} that has only some fields
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

@@ -9,11 +9,19 @@ import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+/**
+ * Converting {@link Flow} to {@link FlowDTO} or the other way around
+ */
 @Component
 public class FlowConverter extends Converter<Flow, FlowDTO> {
     @Autowired
     private DepartmentConverter departmentConverter;
 
+    /**
+     * Converting a {@link Flow} to a {@link FlowDTO}
+     * @param obj The flow as input
+     * @return a new {@link FlowDTO}
+     */
     @Override
     public FlowDTO toDTO(Flow obj) {
         return FlowDTO.builder()
@@ -29,6 +37,11 @@ public class FlowConverter extends Converter<Flow, FlowDTO> {
                 .build();
     }
 
+    /**
+     * Converting a {@link FlowDTO} to a {@link Flow}
+     * @param flowDTO The flowDto as input
+     * @return a new {@link Flow}
+     */
     @Override
     public Flow fromDTO(FlowDTO flowDTO) {
         Flow tmp = Flow.builder()

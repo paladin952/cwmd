@@ -7,9 +7,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+/**
+ * Converting {@link Department} to {@link DepartmentDTO} or the other way around
+ */
 @Component
 public class DepartmentConverter extends Converter<Department, DepartmentDTO> {
 
+    /**
+     * Converting a {@link Department} to a {@link DepartmentDTO}
+     * @param obj The department as input
+     * @return a new {@link Department}
+     */
     @Override
     public DepartmentDTO toDTO(Department obj) {
         if (obj == null)
@@ -23,6 +31,11 @@ public class DepartmentConverter extends Converter<Department, DepartmentDTO> {
                 .build();
     }
 
+    /**
+     * Converting a {@link DepartmentDTO} to a {@link Department}
+     * @param departmentDTO The department dto as input
+     * @return a new {@link Department}
+     */
     @Override
     public Department fromDTO(DepartmentDTO departmentDTO) {
         Department tmp = Department.builder()
@@ -37,6 +50,11 @@ public class DepartmentConverter extends Converter<Department, DepartmentDTO> {
         return tmp;
     }
 
+    /**
+     * Converting a {@link Department} to a {@link DepartmentDTO}  that has also a {@link application.core.model.User}
+     * @param department The department as input
+     * @return a new {@link Department}
+     */
     public DepartmentDTO toDtoWithoutUsers(Department department) {
         if (department == null)
             return new DepartmentDTO();

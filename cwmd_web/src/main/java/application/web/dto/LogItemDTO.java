@@ -3,6 +3,9 @@ package application.web.dto;
 
 import lombok.*;
 
+/**
+ * DTO for {@link application.core.model.logging.LogItem}
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

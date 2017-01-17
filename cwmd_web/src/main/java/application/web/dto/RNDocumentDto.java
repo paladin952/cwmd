@@ -5,6 +5,9 @@ import lombok.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * DTO for {@link application.core.model.rn.RNDocument}
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

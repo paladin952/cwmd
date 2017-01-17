@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.util.Date;
 
+/**
+ * DTO for {@link application.core.model.dr.DRDocument}
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

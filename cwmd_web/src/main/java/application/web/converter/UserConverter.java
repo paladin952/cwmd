@@ -8,6 +8,9 @@ import application.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Converting {@link User} to {@link UserDto} or the other way around
+ */
 @Component
 public class UserConverter extends Converter<User, UserDto> {
 
@@ -17,6 +20,11 @@ public class UserConverter extends Converter<User, UserDto> {
     @Autowired
     private DepartmentUserService departmentUserService;
 
+    /**
+     * Converting to DTO
+     * @param user The user
+     * @return a new DTO object
+     */
     @Override
     public UserDto toDTO(User user) {
         String departmentName = departmentUserService.getUserDepartmentName(user);
@@ -35,6 +43,11 @@ public class UserConverter extends Converter<User, UserDto> {
                 .build();
     }
 
+    /**
+     * Converting to User object
+     * @param userDto The DTO as input
+     * @return a new User Object
+     */
     @Override
     public User fromDTO(UserDto userDto) {
         return userService.readOne(userDto.getUsername());
