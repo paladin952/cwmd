@@ -34,6 +34,10 @@ public class Flow implements Serializable {
     @Column(name = "Remarks")
     private String remarks;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Username", nullable = false)
+    private User user;
+
     public void addFlowDocument(FlowDocument flowDoc) {
         flowDocuments.add(flowDoc);
     }

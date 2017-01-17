@@ -42,4 +42,7 @@ public class User implements Serializable {
 //     TODO fix this. userRepo.finAll() java.sql.SQLSyntaxErrorException: Table 'cwmd_db.drdocument' doesn't exist
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<Document> documents;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Flow> flows;
 }

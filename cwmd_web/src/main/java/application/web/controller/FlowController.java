@@ -2,6 +2,7 @@ package application.web.controller;
 
 import application.core.model.Flow;
 import application.core.service.IFlowService;
+import application.core.utils.UserUtil;
 import application.web.converter.DepartmentConverter;
 import application.web.converter.FlowConverter;
 import application.web.converter.LightUserConverter;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -32,9 +34,10 @@ public class FlowController {
     private IFlowService flowService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
-    public ResponseEntity<FlowDTO> startFlow(@RequestBody FlowStartDTO flowStartDTO) {
+    public ResponseEntity<FlowDTO> startFlow(@RequestBody FlowStartDTO flowStartDTO, HttpServletRequest request) {
         try {
-            return new ResponseEntity<>(flowConverter.toDTO(flowService.startFlow(flowStartDTO.getDocumentIds(), flowStartDTO.getDepartmentIds())), HttpStatus.OK);
+            String username = UserUtil.getCurrentUsername(request);
+            return new ResponseEntity<>(flowConverter.toDTO(flowService.startFlow(flowStartDTO.getDocumentIds(), flowStartDTO.getDepartmentIds(), username)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -64,9 +67,20 @@ public class FlowController {
 
     @Transactional
     @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<FlowDTO>> getAllByUsername(HttpServletRequest request) {
+        String username = UserUtil.getCurrentUsername(request);
+        try {
+            return new ResponseEntity<>(flowConverter.toDTOs(flowService.read(username)), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
     public ResponseEntity<List<FlowDTO>> getAll() {
         try {
-            return new ResponseEntity<>(flowConverter.toDTOs(flowService.read()), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTOs(flowService.readAll()), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -74,8 +88,9 @@ public class FlowController {
     }
 
     @RequestMapping(value = "/count", method = RequestMethod.GET)
-    public ResponseEntity<Integer> countAll() {
-        int size = flowService.read().size();
+    public ResponseEntity<Integer> countAll(HttpServletRequest request) {
+        String username = UserUtil.getCurrentUsername(request);
+        int size = flowService.read(username).size();
         if (size == 0) {
             return new ResponseEntity<>(size-1, HttpStatus.OK);
         } else {
@@ -85,9 +100,10 @@ public class FlowController {
 
     @Transactional
     @RequestMapping(value = "/all/active", method = RequestMethod.GET)
-    public ResponseEntity<List<FlowDTO>> getActive() {
+    public ResponseEntity<List<FlowDTO>> getActive(HttpServletRequest request) {
+        String username = UserUtil.getCurrentUsername(request);
         try {
-            return new ResponseEntity<>(flowConverter.toDTOs(flowService.readActive()), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTOs(flowService.readActive(username)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -95,8 +111,9 @@ public class FlowController {
     }
 
     @RequestMapping(value = "/count/active", method = RequestMethod.GET)
-    public ResponseEntity<Integer> countActive() {
-        int size = flowService.readActive().size();
+    public ResponseEntity<Integer> countActive(HttpServletRequest request) {
+        String username = UserUtil.getCurrentUsername(request);
+        int size = flowService.readActive(username).size();
         if (size == 0) {
             return new ResponseEntity<>(size-1, HttpStatus.OK);
         } else {
@@ -106,9 +123,10 @@ public class FlowController {
 
     @Transactional
     @RequestMapping(value = "/all/finished", method = RequestMethod.GET)
-    public ResponseEntity<List<FlowDTO>> getFinished() {
+    public ResponseEntity<List<FlowDTO>> getFinished(HttpServletRequest request) {
+        String username = UserUtil.getCurrentUsername(request);
         try {
-            return new ResponseEntity<>(flowConverter.toDTOs(flowService.readFinished()), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTOs(flowService.readFinished(username)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -116,8 +134,9 @@ public class FlowController {
     }
 
     @RequestMapping(value = "/count/finished", method = RequestMethod.GET)
-    public ResponseEntity<Integer> countFinished() {
-        int size = flowService.readFinished().size();
+    public ResponseEntity<Integer> countFinished(HttpServletRequest request) {
+        String username = UserUtil.getCurrentUsername(request);
+        int size = flowService.readFinished(username).size();
         if (size == 0) {
             return new ResponseEntity<>(size-1, HttpStatus.OK);
         } else {

@@ -7,10 +7,11 @@ import application.core.model.User;
 import java.util.List;
 
 public interface IFlowService {
-    Flow startFlow(List<Integer> documents, List<Integer> departments);
-    List<Flow> read();
-    List<Flow> readActive();
-    List<Flow> readFinished();
+    Flow startFlow(List<Integer> documents, List<Integer> departments, String username);
+    List<Flow> readAll();
+    List<Flow> read(String username);
+    List<Flow> readActive(String username);
+    List<Flow> readFinished(String username);
     Flow readOne(Integer flowId);
     Flow goToNextDepartmentFor(Integer flowId);
     Flow returnToInitialDepartmentFor(Integer flowId, String remark);

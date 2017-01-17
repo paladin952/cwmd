@@ -27,21 +27,26 @@ public class FlowServiceImpl implements IFlowService {
     private DocumentRepository documentRepository;
     @Autowired
     private DepartmentRepository departmentRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private FlowMailer flowMailer;
 
     @Override
-    public Flow startFlow(List<Integer> documents, List<Integer> departments) {
+    public Flow startFlow(List<Integer> documents, List<Integer> departments, String username) {
+        User user = userRepository.findOne(username);
+
         try {
             Flow flow = Flow.builder()
                     .crtDepartment(0)
+                    .user(user)
                     .remarks("")
                     .flowPath(new ArrayList<>())
                     .flowDocuments(new ArrayList<>())
                     .build();
 
-            flow = flowRepo.saveAndFlush(flow);
+            flow = flowRepo.saveAndFlush(flow); // TODO: shouldn't this be done at the end?
             for (Integer documentId : documents) {
                 Document dbDoc = documentRepository.findOne(documentId);
                 if (dbDoc != null) {
@@ -77,21 +82,26 @@ public class FlowServiceImpl implements IFlowService {
     }
 
     @Override
-    public List<Flow> read() {
+    public List<Flow> read(String username) {
+        return flowRepo.findByUser_Username(username);
+    }
+
+    @Override
+    public List<Flow> readAll() {
         return flowRepo.findAll();
     }
 
     @Override
-    public List<Flow> readActive() {
-        return flowRepo.findAll()
+    public List<Flow> readActive(String username) {
+        return flowRepo.findByUser_Username(username)
                 .stream()
                 .filter(flow -> flow.getCrtDepartment() < flow.getFlowPath().size())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Flow> readFinished() {
-        return flowRepo.findAll()
+    public List<Flow> readFinished(String username) {
+        return flowRepo.findByUser_Username(username)
                 .stream()
                 .filter(flow -> flow.getCrtDepartment() >= flow.getFlowPath().size())
                 .collect(Collectors.toList());
