@@ -65,24 +65,20 @@ CREATE TABLE IF NOT EXISTS `document` (
   `DocumentID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(150) NOT NULL,
   `DateAdded` date NOT NULL,
-  `user_id` varchar(50) NOT NULL,
   `Status` int(11) NOT NULL DEFAULT '0',
   `Version` float NOT NULL,
   `Path` varchar(255) NOT NULL,
-  `Owner` varchar(60) NOT NULL,
   `Username` varchar(60) NOT NULL,
+  `isPartOfFlow` bit(1) DEFAULT NULL,
   PRIMARY KEY (`DocumentID`),
-  KEY `FK54bckn7stqnapx9l837ufqdqm` (`user_id`),
-  KEY `FKlcoro0vc6c48aegbimextvf24` (`Owner`),
   KEY `FKh2xnpiuqw33vcb6llvn8dt9cn` (`Username`),
-  CONSTRAINT `FK_DocumentOwner` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKh2xnpiuqw33vcb6llvn8dt9cn` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`),
-  CONSTRAINT `FKjhdxdv9sijhujiynqbb5jc010` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`),
-  CONSTRAINT `FKlcoro0vc6c48aegbimextvf24` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `FKh2xnpiuqw33vcb6llvn8dt9cn` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.document: ~0 rows (approximately)
+-- Dumping data for table cwmd_db.document: ~1 rows (approximately)
 /*!40000 ALTER TABLE `document` DISABLE KEYS */;
+INSERT INTO `document` (`DocumentID`, `Name`, `DateAdded`, `Status`, `Version`, `Path`, `Username`, `isPartOfFlow`) VALUES
+	(2, 'asda', '2017-01-12', 0, 0.1, '1', 'asdf', NULL);
 /*!40000 ALTER TABLE `document` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.drbankinfo
@@ -128,7 +124,6 @@ CREATE TABLE IF NOT EXISTS `drdocument` (
   `DocumentID` int(11) NOT NULL,
   `DateAdded` datetime NOT NULL,
   `Name` varchar(150) NOT NULL,
-  `user_id` varchar(50) NOT NULL,
   `Status` int(11) NOT NULL DEFAULT '0',
   `Version` float NOT NULL,
   `Path` varchar(255) NOT NULL,
@@ -140,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `drdocument` (
   `drTotalCosts_drTotalCostsId` int(11) DEFAULT NULL,
   `drTransportationCosts_drTransportationCostsId` int(11) DEFAULT NULL,
   `drTravelInfo_drTravelInfoId` int(11) DEFAULT NULL,
-  `Owner` varchar(60) NOT NULL,
   `Username` varchar(60) NOT NULL,
+  `isPartOfFlow` bit(1) DEFAULT NULL,
   PRIMARY KEY (`DocumentID`),
   KEY `FK5lmm2lh036nfm7x6yann31cgh` (`drBankInfo_drBankInfoId`),
   KEY `FK105edkqrpfxj876hygl9aos2` (`drDailyCosts_drDailyCostsId`),
@@ -151,17 +146,12 @@ CREATE TABLE IF NOT EXISTS `drdocument` (
   KEY `FKam39xbwe6f1gavtnxknb2se5a` (`drTotalCosts_drTotalCostsId`),
   KEY `FK308fko1dpth31flg4fdqu7x38` (`drTransportationCosts_drTransportationCostsId`),
   KEY `FK6or6c5it2qao4iehsv0ybnnbj` (`drTravelInfo_drTravelInfoId`),
-  KEY `FK_prwm5udbj2xc9kwxdogs9bvdp` (`user_id`),
-  KEY `FK_isoyvk8gfq8p8nx9858qceq77` (`Owner`),
   KEY `FK_6ry8xs477d7484h51wy0npuqs` (`Username`),
   CONSTRAINT `FK105edkqrpfxj876hygl9aos2` FOREIGN KEY (`drDailyCosts_drDailyCostsId`) REFERENCES `drdailycosts` (`drDailyCostsId`),
   CONSTRAINT `FK308fko1dpth31flg4fdqu7x38` FOREIGN KEY (`drTransportationCosts_drTransportationCostsId`) REFERENCES `drtransportationcosts` (`drTransportationCostsId`),
   CONSTRAINT `FK5lmm2lh036nfm7x6yann31cgh` FOREIGN KEY (`drBankInfo_drBankInfoId`) REFERENCES `drbankinfo` (`drBankInfoId`),
   CONSTRAINT `FK6or6c5it2qao4iehsv0ybnnbj` FOREIGN KEY (`drTravelInfo_drTravelInfoId`) REFERENCES `drtravelinfo` (`drTravelInfoId`),
   CONSTRAINT `FK_6ry8xs477d7484h51wy0npuqs` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`),
-  CONSTRAINT `FK_Owner` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`),
-  CONSTRAINT `FK_isoyvk8gfq8p8nx9858qceq77` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`),
-  CONSTRAINT `FK_prwm5udbj2xc9kwxdogs9bvdp` FOREIGN KEY (`user_id`) REFERENCES `user` (`Username`),
   CONSTRAINT `FKam39xbwe6f1gavtnxknb2se5a` FOREIGN KEY (`drTotalCosts_drTotalCostsId`) REFERENCES `drtotalcosts` (`drTotalCostsId`),
   CONSTRAINT `FKf2yocl90wp3xpw9whjjrxpn5a` FOREIGN KEY (`drOtherCosts_drOtherCostsId`) REFERENCES `drothercosts` (`drOtherCostsId`),
   CONSTRAINT `FKn2g4piekywfy9phvkubuvs0bn` FOREIGN KEY (`drHousingCosts_drHousingCostsId`) REFERENCES `drhousingcosts` (`drHousingCostsId`),
@@ -362,16 +352,17 @@ CREATE TABLE IF NOT EXISTS `log` (
   `Message` varchar(255) NOT NULL,
   `Exception` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`EntryID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.log: ~5 rows (approximately)
+-- Dumping data for table cwmd_db.log: ~4 rows (approximately)
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
 INSERT INTO `log` (`EntryID`, `Level`, `Timestamp`, `Tag`, `User`, `Department`, `DocumentType`, `Message`, `Exception`) VALUES
 	(1, 1, '2017-01-11 13:30:03', 'UserController', NULL, NULL, NULL, 'Retrieving all users', NULL),
 	(2, 1, '2017-01-11 13:30:43', 'UserController', NULL, NULL, NULL, 'Retrieving all users', NULL),
 	(3, 1, '2017-01-11 13:32:22', 'UserController', NULL, NULL, NULL, 'Retrieving all users', NULL),
 	(4, 3, '2017-01-11 14:35:10', 'LogController', NULL, NULL, NULL, 'Error while retrieving application log', 'org.hibernate.InstantiationException: No default constructor for entity:  : application.core.model.logging.LogItem'),
-	(5, 1, '2017-01-11 14:54:08', 'UserController', NULL, NULL, NULL, 'Retrieving the user list', NULL);
+	(5, 1, '2017-01-11 14:54:08', 'UserController', NULL, NULL, NULL, 'Retrieving the user list', NULL),
+	(6, 3, '2017-01-12 12:13:53', 'LogController', NULL, NULL, NULL, 'Error while retrieving application log', 'Unparseable date: "2017-01-09"');
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.rndocument
@@ -382,7 +373,6 @@ CREATE TABLE IF NOT EXISTS `rndocument` (
   `Path` varchar(255) NOT NULL,
   `Status` int(11) NOT NULL,
   `Version` float NOT NULL,
-  `Owner` varchar(60) NOT NULL,
   `budget` float DEFAULT NULL,
   `personalFunds` float DEFAULT NULL,
   `rnOthers_rnOthersId` int(11) DEFAULT NULL,
@@ -390,16 +380,15 @@ CREATE TABLE IF NOT EXISTS `rndocument` (
   `rnSponsors_rnSponsorsId` int(11) DEFAULT NULL,
   `rnTotal_rnTotalId` int(11) DEFAULT NULL,
   `Username` varchar(60) NOT NULL,
+  `isPartOfFlow` bit(1) DEFAULT NULL,
   PRIMARY KEY (`DocumentID`),
   KEY `FK1bjqpc37c5dwhu8lf3gdl2199` (`rnOthers_rnOthersId`),
   KEY `FKnpnvai2txm0tv0aea611ukq08` (`rnResearch_rnResearchId`),
   KEY `FKi025k7hxkqwfjwwqt3xiolo5k` (`rnSponsors_rnSponsorsId`),
   KEY `FKi6j8pcdapvidrq9o16v6vq6e6` (`rnTotal_rnTotalId`),
-  KEY `FK_ec4msvbjjq1eitlft8kmux4ni` (`Owner`),
   KEY `FK_6xvpd8rklbm6f8bxxbxnxhi5g` (`Username`),
   CONSTRAINT `FK1bjqpc37c5dwhu8lf3gdl2199` FOREIGN KEY (`rnOthers_rnOthersId`) REFERENCES `rnothers` (`rnOthersId`),
   CONSTRAINT `FK_6xvpd8rklbm6f8bxxbxnxhi5g` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`),
-  CONSTRAINT `FK_ec4msvbjjq1eitlft8kmux4ni` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`),
   CONSTRAINT `FKi025k7hxkqwfjwwqt3xiolo5k` FOREIGN KEY (`rnSponsors_rnSponsorsId`) REFERENCES `rnsponsors` (`rnSponsorsId`),
   CONSTRAINT `FKi6j8pcdapvidrq9o16v6vq6e6` FOREIGN KEY (`rnTotal_rnTotalId`) REFERENCES `rntotal` (`rnTotalId`),
   CONSTRAINT `FKnpnvai2txm0tv0aea611ukq08` FOREIGN KEY (`rnResearch_rnResearchId`) REFERENCES `rnresearch` (`rnResearchId`)
