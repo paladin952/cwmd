@@ -6,6 +6,9 @@ import lombok.Setter;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+/**
+ * Base class for custom repository
+ */
 @Getter
 @Setter
 public abstract class CustomRepositorySupport<ID, T> {

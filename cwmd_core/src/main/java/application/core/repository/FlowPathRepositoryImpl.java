@@ -6,16 +6,21 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.jpa.HibernateEntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+/**
+ * Flow path repo implementation
+ */
 public class FlowPathRepositoryImpl extends CustomRepositorySupport<FlowPathPK, FlowPath> implements FlowPathRepositoryCustom {
 
     public FlowPathRepositoryImpl() {
         super(FlowPath.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<FlowPath> getAllSQL() {
@@ -36,6 +41,9 @@ public class FlowPathRepositoryImpl extends CustomRepositorySupport<FlowPathPK, 
         return (List<FlowPath>) flowPaths;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public FlowPath getOneSQL(Integer flowId, Integer departmentId) {
@@ -64,6 +72,9 @@ public class FlowPathRepositoryImpl extends CustomRepositorySupport<FlowPathPK, 
         return dept;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<FlowPath> getSomeSQL(Integer flowId) {

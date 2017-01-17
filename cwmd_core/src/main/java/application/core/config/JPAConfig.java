@@ -22,6 +22,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Handling main configuration for JPa
+ */
 @Configuration
 @EnableJpaRepositories("application.core.repository")
 @EnableTransactionManagement
@@ -41,6 +44,10 @@ public class JPAConfig {
     @Value("${db.generateDDL}")
     private Boolean generateDDL;
 
+    /**
+     * Setting the data source
+     * @return The data source
+     */
     @Bean
     public DataSource dataSource() {
         MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
@@ -50,6 +57,10 @@ public class JPAConfig {
         return dataSource;
     }
 
+    /**
+     * Factory for mysql setup
+     * @return The EntityManagerFactory
+     */
     @Bean
     public EntityManagerFactory entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -65,11 +76,19 @@ public class JPAConfig {
         return factory.getObject();
     }
 
+    /**
+     * Getting the entity manager
+     * @return the manager
+     */
     @Bean
     public EntityManager entityManager() {
         return entityManagerFactory().createEntityManager();
     }
 
+    /**
+     * Setting the transation manager
+     * @return The manager
+     */
     @Bean
     PlatformTransactionManager transactionManager() {
         JpaTransactionManager manager = new JpaTransactionManager();
@@ -77,11 +96,19 @@ public class JPAConfig {
         return manager;
     }
 
+    /**
+     * Getting a hibernate exception translate
+     * @return the translator
+     */
     @Bean
     public HibernateExceptionTranslator hibernateExceptionTranslator() {
         return new HibernateExceptionTranslator();
     }
 
+    /**
+     * Setting the cache manager
+     * @return The new cache managers
+     */
     @Bean
     public CacheManager cacheManager() {
         GuavaCacheManager guavaCacheManager = new GuavaCacheManager();

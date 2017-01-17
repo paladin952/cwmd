@@ -5,5 +5,8 @@ import application.core.model.PKs.FlowDocumentPK;
 
 import javax.transaction.Transactional;
 
+/**
+ * Repo for {@link FlowDocument}
+ */
 @Transactional
 public interface FlowDocumentRepository extends CWMDRepository<FlowDocumentPK, FlowDocument> {}

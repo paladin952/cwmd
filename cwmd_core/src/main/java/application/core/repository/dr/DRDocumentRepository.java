@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 
+/**
+ * Repository for {@link DRDocument}
+ */
 @Transactional
 public interface DRDocumentRepository extends CWMDRepository<Integer, DRDocument> {
 

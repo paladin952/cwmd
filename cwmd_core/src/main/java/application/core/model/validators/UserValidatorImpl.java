@@ -3,6 +3,9 @@ package application.core.model.validators;
 import application.core.model.User;
 import application.core.model.validators.exceptions.ValidatorException;
 
+/**
+ * Implementation for user validator
+ */
 public class UserValidatorImpl implements IValidator<User> {
     @Override
     public IValidator<User> validate(User entity) throws ValidatorException {

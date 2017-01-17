@@ -8,11 +8,17 @@ import org.hibernate.jpa.HibernateEntityManager;
 
 import java.util.List;
 
+/**
+ * Custom repo for {@link Department}
+ */
 public class DepartmentRepositoryImpl extends CustomRepositorySupport<Integer, Department> implements DepartmentRepositoryCustom {
     public DepartmentRepositoryImpl() {
         super(Department.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<Department> getAllSQL() {
@@ -33,6 +39,9 @@ public class DepartmentRepositoryImpl extends CustomRepositorySupport<Integer, D
         return (List<Department>) departments;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Department getOneSQL(Integer id) {
         HibernateEntityManager manager = getEntityManager().unwrap(HibernateEntityManager.class);

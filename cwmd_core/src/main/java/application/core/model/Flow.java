@@ -34,10 +34,18 @@ public class Flow implements Serializable {
     @Column(name = "Remarks")
     private String remarks;
 
+    /**
+     * Add a flow documment to this flow
+     * @param flowDoc The flow document to be added
+     */
     public void addFlowDocument(FlowDocument flowDoc) {
         flowDocuments.add(flowDoc);
     }
 
+    /**
+     * Add a flow department to this flow
+     * @param flowDept The flow department
+     */
     public void addFlowDepartment(FlowPath flowDept) {
         flowPath.add(flowDept);
     }

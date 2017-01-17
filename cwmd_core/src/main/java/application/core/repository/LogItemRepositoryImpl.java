@@ -16,6 +16,9 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
         super(LogItem.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     private List<LogItem> oneGetToRuleThemAll(LogLevel loglevel, Timestamp from, Timestamp to, String filter)
     {
@@ -57,123 +60,192 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
         return (List<LogItem>) logs;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getAll(String filter) {
         return oneGetToRuleThemAll(LogLevel.LOG_ALL, null, null, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getAll(Timestamp from, Timestamp to) {
         return oneGetToRuleThemAll(LogLevel.LOG_ALL, from, to, null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getAll(Timestamp from, Timestamp to, String filter) {
         return oneGetToRuleThemAll(LogLevel.LOG_ALL, from, to, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getFor(LogLevel level) {
         return oneGetToRuleThemAll(level, null, null, null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getDebug() {
         return getFor(LogLevel.LOG_DEBUG);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getInfo() {
         return getFor(LogLevel.LOG_INFO);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getWarnings() {
         return getFor(LogLevel.LOG_WARN);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getErrors() {
         return getFor(LogLevel.LOG_ERROR);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getFor(LogLevel level, Timestamp from, Timestamp to) {
         return oneGetToRuleThemAll(level, from, to, null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getDebug(Timestamp from, Timestamp to) {
         return getFor(LogLevel.LOG_DEBUG, from, to);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getInfo(Timestamp from, Timestamp to) {
         return getFor(LogLevel.LOG_INFO, from, to);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getWarnings(Timestamp from, Timestamp to) {
         return getFor(LogLevel.LOG_WARN, from, to);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getErrors(Timestamp from, Timestamp to) {
         return getFor(LogLevel.LOG_ERROR, from, to);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getFor(LogLevel level, String filter) {
         return oneGetToRuleThemAll(level, null, null, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getDebug(String filter) {
         return getFor(LogLevel.LOG_DEBUG, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getInfo(String filter) {
         return getFor(LogLevel.LOG_INFO, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getWarnings(String filter) {
         return getFor(LogLevel.LOG_WARN, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getErrors(String filter) {
         return getFor(LogLevel.LOG_ERROR, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<LogItem> getFor(LogLevel level, Timestamp from, Timestamp to, String filter) {
         return oneGetToRuleThemAll(level, from, to, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getDebug(Timestamp from, Timestamp to, String filter) {
         return getFor(LogLevel.LOG_DEBUG, from, to, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getInfo(Timestamp from, Timestamp to, String filter) {
         return getFor(LogLevel.LOG_INFO, from, to, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getWarnings(Timestamp from, Timestamp to, String filter) {
         return getFor(LogLevel.LOG_WARN, from, to, filter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<LogItem> getErrors(Timestamp from, Timestamp to, String filter) {
         return getFor(LogLevel.LOG_ERROR, from, to, filter);

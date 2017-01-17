@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.io.Serializable;
 
+/**
+ * MySql primary key for {@link application.core.model.DepartmentUser}
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode

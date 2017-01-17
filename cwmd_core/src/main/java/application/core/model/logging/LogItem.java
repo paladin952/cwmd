@@ -37,6 +37,10 @@ public class LogItem implements Serializable {
     @Column(name = "Exception")
     private String exception;
 
+    /**
+     * A nice representation of this model
+     * @return a string
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

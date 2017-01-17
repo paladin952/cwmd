@@ -3,6 +3,9 @@ package application.core.model.validators;
 import application.core.model.Department;
 import application.core.model.validators.exceptions.ValidatorException;
 
+/**
+ * Implementation for department validator
+ */
 public class DepartmentValidatorImpl implements IValidator<Department> {
     @Override
     public IValidator<Department> validate(Department entity) throws ValidatorException {
