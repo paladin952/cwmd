@@ -4,10 +4,8 @@ import application.core.model.Flow;
 import application.core.service.IFlowService;
 import application.web.converter.DepartmentConverter;
 import application.web.converter.FlowConverter;
-import application.web.dto.DepartmentDTO;
-import application.web.dto.FlowDTO;
-import application.web.dto.FlowRemarksDTO;
-import application.web.dto.FlowStartDTO;
+import application.web.converter.LightUserConverter;
+import application.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +26,9 @@ public class FlowController {
     private DepartmentConverter departmentConverter;
 
     @Autowired
+    private LightUserConverter lightUserConverter;
+
+    @Autowired
     private IFlowService flowService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
@@ -45,6 +46,16 @@ public class FlowController {
         try {
             flowService.addRemarks(flowId, flowRemarksDTO.getRemarks());
             return new ResponseEntity<>(OK_MSG, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<LightUserDto>> getUsersFor(@PathVariable("id") Integer flowId) {
+        try {
+            return new ResponseEntity<>(lightUserConverter.toDTOs(flowService.getUsersFromCurrentDepartmentFor(flowId)), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

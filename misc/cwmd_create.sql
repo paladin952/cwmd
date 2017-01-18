@@ -20,26 +20,26 @@ USE `cwmd_db`;
 CREATE TABLE IF NOT EXISTS `department` (
   `DepartmentID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
+  `IsUserGroup` bit(1) NOT NULL,
   PRIMARY KEY (`DepartmentID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.department: ~14 rows (approximately)
+-- Dumping data for table cwmd_db.department: ~13 rows (approximately)
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
-INSERT INTO `department` (`DepartmentID`, `Name`) VALUES
-	(2, 'MI'),
-	(3, 'Rector Office'),
-	(4, 'Dean Office'),
-	(5, 'Faculty of Mathematics'),
-	(6, 'Faculty of Computer Science'),
-	(7, 'Faculty of Physics'),
-	(8, 'Faculty of Chemistry'),
-	(9, 'Faculty of Physical Education and Sport'),
-	(10, 'Management Center for Scientific Research'),
-	(11, 'CFO'),
-	(12, 'Grants'),
-	(13, 'Public Procurement Service'),
-	(14, 'International Cooperation Center'),
-	(15, 'Chief Operating Officer');
+INSERT INTO `department` (`DepartmentID`, `Name`, `IsUserGroup`) VALUES
+	(3, 'Rector Office', b'0'),
+	(4, 'Dean Office', b'0'),
+	(5, 'Faculty of Mathematics', b'0'),
+	(6, 'Faculty of Computer Science', b'0'),
+	(7, 'Faculty of Physics', b'0'),
+	(8, 'Faculty of Chemistry', b'0'),
+	(9, 'Faculty of Physical Education and Sport', b'0'),
+	(10, 'Management Center for Scientific Research', b'0'),
+	(11, 'CFO', b'0'),
+	(12, 'Grants', b'0'),
+	(13, 'Public Procurement Service', b'0'),
+	(14, 'International Cooperation Center', b'0'),
+	(15, 'Chief Operating Officer', b'0');
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.department_user
@@ -54,10 +54,11 @@ CREATE TABLE IF NOT EXISTS `department_user` (
   CONSTRAINT `FKse13yqj157p3iy977u2m7ui2k` FOREIGN KEY (`DepartmentID`) REFERENCES `department` (`DepartmentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of users assigned to a department';
 
--- Dumping data for table cwmd_db.department_user: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.department_user: ~2 rows (approximately)
 /*!40000 ALTER TABLE `department_user` DISABLE KEYS */;
 INSERT INTO `department_user` (`DepartmentID`, `Username`) VALUES
-	(2, 'asdf');
+	(5, 'admin'),
+	(5, 'asdf');
 /*!40000 ALTER TABLE `department_user` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.document
@@ -73,12 +74,12 @@ CREATE TABLE IF NOT EXISTS `document` (
   PRIMARY KEY (`DocumentID`),
   KEY `FKh2xnpiuqw33vcb6llvn8dt9cn` (`Username`),
   CONSTRAINT `FKh2xnpiuqw33vcb6llvn8dt9cn` FOREIGN KEY (`Username`) REFERENCES `user` (`Username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.document: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.document: ~2 rows (approximately)
 /*!40000 ALTER TABLE `document` DISABLE KEYS */;
 INSERT INTO `document` (`DocumentID`, `Name`, `DateAdded`, `Status`, `Version`, `Path`, `Username`, `isPartOfFlow`) VALUES
-	(2, 'asda', '2017-01-12', 0, 0.1, '1', 'asdf', NULL);
+	(1, 'Bob\'s adventures', '2017-01-18', 0, 0.1, 'N/A', 'radu', b'1');
 /*!40000 ALTER TABLE `document` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.drbankinfo
@@ -287,13 +288,14 @@ CREATE TABLE IF NOT EXISTS `flow` (
   `CurrentDepartment` int(11) NOT NULL DEFAULT '0',
   `Remarks` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`FlowID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.flow: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.flow: ~3 rows (approximately)
 /*!40000 ALTER TABLE `flow` DISABLE KEYS */;
 INSERT INTO `flow` (`FlowID`, `CurrentDepartment`, `Remarks`) VALUES
 	(1, 0, 'asdadadadad'),
-	(2, 0, 'asd');
+	(2, 0, 'asd'),
+	(4, 0, 'THIS WORKS, DUDE');
 /*!40000 ALTER TABLE `flow` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.flow_document
@@ -309,6 +311,8 @@ CREATE TABLE IF NOT EXISTS `flow_document` (
 
 -- Dumping data for table cwmd_db.flow_document: ~1 rows (approximately)
 /*!40000 ALTER TABLE `flow_document` DISABLE KEYS */;
+INSERT INTO `flow_document` (`FlowID`, `DocumentID`) VALUES
+	(4, 1);
 /*!40000 ALTER TABLE `flow_document` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.flow_path
@@ -323,10 +327,12 @@ CREATE TABLE IF NOT EXISTS `flow_path` (
   CONSTRAINT `FKjlxasdf2b4nuplik3djyjg56q` FOREIGN KEY (`DepartmentID`) REFERENCES `department` (`DepartmentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table cwmd_db.flow_path: ~1 rows (approximately)
+-- Dumping data for table cwmd_db.flow_path: ~3 rows (approximately)
 /*!40000 ALTER TABLE `flow_path` DISABLE KEYS */;
 INSERT INTO `flow_path` (`FlowID`, `DepartmentID`) VALUES
-	(1, 2);
+	(4, 3),
+	(1, 5),
+	(4, 5);
 /*!40000 ALTER TABLE `flow_path` ENABLE KEYS */;
 
 -- Dumping structure for table cwmd_db.hibernate_sequence

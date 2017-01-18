@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -155,6 +156,27 @@ public class FlowServiceImpl implements IFlowService {
 
         Department tmp = flow.getFlowPath().get(crt).getDepartment();
         return departmentRepository.getOneSQL(tmp.getId());
+    }
+
+    @Override
+    public List<User> getUsersFromCurrentDepartmentFor(Integer flowId) {
+        Department dept = getCurrentDepartmentFor(flowId);
+        List<User> users = new ArrayList<>();
+        if (dept.getIsUserGroup()) {
+            users = dept.getUserList().stream()
+                .map(DepartmentUser::getUser)
+                .collect(Collectors.toList());
+        }
+        else {
+            Optional<User> chief = dept.getUserList().stream()
+                    .filter(departmentUser -> departmentUser.getUser().getUserInfo().getIsDepartmentChief())
+                    .map(DepartmentUser::getUser)
+                    .findFirst();
+            if (!chief.isPresent()) throw new ServiceException("Could not get users for current department because the department has no chief");
+            users.add(chief.get());
+        }
+
+        return users;
     }
 
     @Override
