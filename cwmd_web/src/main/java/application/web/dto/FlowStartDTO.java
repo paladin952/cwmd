@@ -1,7 +1,5 @@
 package application.web.dto;
 
-import application.core.model.Department;
-import application.core.model.Document;
 import lombok.*;
 
 import java.util.List;
@@ -12,6 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class FlowStartDTO {
-    private List<Document> documents;
-    private List<Department> path;
+    private List<Integer> documentIds;
+    private List<Integer> departmentIds;
 }

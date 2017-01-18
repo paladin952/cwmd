@@ -4,6 +4,7 @@ import application.core.model.*;
 import application.core.model.PKs.FlowDocumentPK;
 import application.core.repository.*;
 import application.core.service.exceptions.ServiceException;
+import application.core.utils.FlowMailer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ public class FlowServiceImpl implements IFlowService {
     private DocumentRepository documentRepository;
     @Autowired
     private DepartmentRepository departmentRepository;
+
+    @Autowired
+    private FlowMailer flowMailer;
 
     @Override
     public Flow startFlow(List<Integer> documents, List<Integer> departments) {
@@ -94,14 +98,14 @@ public class FlowServiceImpl implements IFlowService {
 
     @Override
     public Flow readOne(Integer flowId) {
-        Flow flow = flowRepo.findOne(flowId);
+        Flow flow = flowRepo.getOneSQL(flowId);
         if (flow == null)
             return null;
-
-        flow.setFlowPath(flowPathRepo.getSomeSQL(flow.getId()));
-        for (FlowPath path : flow.getFlowPath()) {
-            path.setDepartment(departmentRepository.getOneSQL(path.getDepartment().getId()));
-        }
+//
+//        flow.setFlowPath(flowPathRepo.getSomeSQL(flow.getId()));
+//        for (FlowPath path : flow.getFlowPath()) {
+//            path.setDepartment(departmentRepository.getOneSQL(path.getDepartment().getId()));
+//        }
 
         return flow;
     }
@@ -114,8 +118,11 @@ public class FlowServiceImpl implements IFlowService {
 
         int crt = flow.getCrtDepartment();
         flow.setCrtDepartment(crt == flow.getFlowPath().size() - 1 ? crt : crt + 1); // stop going further once we're at the end of the road
+        flowRepo.save(flow);
 
-        return flowRepo.save(flow);
+        flowMailer.SendMail(flow);
+
+        return flow;
     }
 
     @Override
@@ -178,6 +185,13 @@ public class FlowServiceImpl implements IFlowService {
         flow.setFlowDocuments(dbFlowDocs);
 
         return flowRepo.save(flow);
+    }
+
+    @Override
+    public void addRemarks(Integer flowId, String remarks) {
+        Flow flow = flowRepo.findOne(flowId);
+        flow.setRemarks(remarks);
+        flowRepo.save(flow);
     }
 
     @Override

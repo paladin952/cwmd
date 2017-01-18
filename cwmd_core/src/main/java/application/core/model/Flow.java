@@ -22,7 +22,7 @@ public class Flow implements Serializable {
     @Column(name = "FlowID")
     private Integer id;
 
-    @OneToMany(mappedBy = "flow", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "flow", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FlowDocument> flowDocuments = new ArrayList<>();
 
     @OneToMany(mappedBy = "flow", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

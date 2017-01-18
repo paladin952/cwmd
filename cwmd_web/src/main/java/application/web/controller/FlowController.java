@@ -6,6 +6,8 @@ import application.web.converter.DepartmentConverter;
 import application.web.converter.FlowConverter;
 import application.web.dto.DepartmentDTO;
 import application.web.dto.FlowDTO;
+import application.web.dto.FlowRemarksDTO;
+import application.web.dto.FlowStartDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +31,20 @@ public class FlowController {
     private IFlowService flowService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
-    public ResponseEntity<FlowDTO> startFlow(@RequestBody List<Integer> documentIds, @RequestBody List<Integer> departmentIds) {
+    public ResponseEntity<FlowDTO> startFlow(@RequestBody FlowStartDTO flowStartDTO) {
         try {
-            return new ResponseEntity<>(flowConverter.toDTO(flowService.startFlow(documentIds, departmentIds)), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTO(flowService.startFlow(flowStartDTO.getDocumentIds(), flowStartDTO.getDepartmentIds())), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/remarks/{id}", method = RequestMethod.POST)
+    public ResponseEntity<String> addRemarks(@PathVariable("id") Integer flowId, @RequestBody FlowRemarksDTO flowRemarksDTO) {
+        try {
+            flowService.addRemarks(flowId, flowRemarksDTO.getRemarks());
+            return new ResponseEntity<>(OK_MSG, HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -142,13 +155,13 @@ public class FlowController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<FlowDTO> update(@PathVariable("id") final Integer flowId, @RequestBody Flow flow) {
+    public ResponseEntity<FlowDTO> update(@PathVariable("id") final Integer flowId, @RequestBody FlowDTO flow) {
         if (!flow.getId().equals(flowId)) { // can't modify someone else's flow using your current flow
             return new ResponseEntity<>(flowConverter.toDTO(new Flow()), HttpStatus.BAD_REQUEST);
         }
 
         try {
-            return new ResponseEntity<>(flowConverter.toDTO(flowService.update(flow)), HttpStatus.OK);
+            return new ResponseEntity<>(flowConverter.toDTO(flowService.update(flowConverter.fromDTO(flow))), HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

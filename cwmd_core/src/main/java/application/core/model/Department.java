@@ -29,4 +29,7 @@ public class Department implements Serializable {
 
     @Column(name = "Name", length = 60, nullable = false)
     private String name;
+
+    @Column(name = "IsUserGroup", nullable = false)
+    private Boolean isUserGroup;
 }

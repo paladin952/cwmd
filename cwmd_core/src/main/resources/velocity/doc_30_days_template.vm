@@ -3,6 +3,8 @@
         <p>Dear ${document.owner},</p>
         <br/>
         <p>This is an automatic e-mail sent to you by the CWMD team.</p>
+        <br/>
+        <br/>
         <p>Please note that the document you have uploaded to our application, namely ${document.name}, on ${document.date}, has been in our system for 30 days, and is currently not in use.</p>
         <p>If you do not include the document in a flow within the next 30 days, it will be permanently removed from our system.</p>
         <br />

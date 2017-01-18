@@ -16,5 +16,6 @@ public interface IFlowService {
     Boolean isFlowAtEnd(Integer flowId);
     Department getCurrentDepartmentFor(Integer flowId);
     Flow update(Flow flow);
+    void addRemarks(Integer flowId, String remarks);
     void delete(Integer flowId);
 }

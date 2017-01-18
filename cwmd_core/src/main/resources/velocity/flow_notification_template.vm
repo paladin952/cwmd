@@ -1,0 +1,21 @@
+<html>
+    <body>
+        <br/>
+        <p>This is an automatic e-mail sent to you by the CWMD team.</p>
+        <br/>
+        <p>A new flow of documents is awaiting your approval.</p>
+        <p>The documents in question are: </p>
+        <br/>
+        <p>
+            ${flow.documents}
+        </p>
+        <br />
+        <p>
+            ${flow.remarks}
+        </p>
+        <br/>
+        <br/>
+        <p>Have a good one!</p>
+        <p>The CWMD team</p>
+    </body>
+</html>

@@ -14,15 +14,18 @@ public class FlowConverter extends Converter<Flow, FlowDTO> {
     @Autowired
     private DepartmentConverter departmentConverter;
 
+    @Autowired
+    private LightDocumentConverter documentConverter;
+
     @Override
     public FlowDTO toDTO(Flow obj) {
         return FlowDTO.builder()
                 .id(obj.getId())
                 .flowDocuments(obj.getFlowDocuments().stream()
-                    .map(FlowDocument::getDocument)
+                    .map(flowDocument -> documentConverter.toDTO(flowDocument.getDocument()))
                     .collect(Collectors.toList()))
                 .flowPath(obj.getFlowPath().stream()
-                    .map(flowPath -> departmentConverter.toDTO(flowPath.getDepartment()))
+                    .map(flowPath -> departmentConverter.toDtoWithoutUsers(flowPath.getDepartment()))
                     .collect(Collectors.toList()))
                 .crtDepartment(obj.getCrtDepartment())
                 .remarks(obj.getRemarks())
@@ -38,7 +41,7 @@ public class FlowConverter extends Converter<Flow, FlowDTO> {
                 .build();
 
         tmp.setFlowDocuments(flowDTO.getFlowDocuments().stream()
-            .map(document -> new FlowDocument(tmp, document))
+            .map(documentDTO -> new FlowDocument(tmp, documentConverter.fromDTO(documentDTO)))
             .collect(Collectors.toList()));
 
         tmp.setFlowPath(flowDTO.getFlowPath().stream()
