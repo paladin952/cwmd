@@ -6,8 +6,8 @@ angular.module('cwmd').component('workingArea', {
         $ctrl.rnDownloadLink = "http://localhost:8080/rn/RN_document_sample";
         $ctrl.canStartFlow = false;
         $ctrl.canAddDocuments = false;
-        $ctrl.documentsForFlow = null;
-        $ctrl.departmentsForFlow = null;
+        $ctrl.documentsForFlow = [];
+        $ctrl.departmentsForFlow = [];
 
         $ctrl.$onInit = function () {
             DRDocumentSrv.getDocumentsByUser()
@@ -25,7 +25,7 @@ angular.module('cwmd').component('workingArea', {
                     console.log(response);
                 });
             DepartmentSrv.getDepartments()
-                .then(function (reponse) {
+                .then(function (response) {
                     $ctrl.departments = response;
                 })
                 .catch(function (response) {
@@ -57,8 +57,10 @@ angular.module('cwmd').component('workingArea', {
                 return;
             }
 
-            FlowSrv.startFlow($trl.documentsForFlow, $ctrl.departmentsForFlow)
-                .then(function (reponse) {
+            var departmentIds = _.map($ctrl.departmentsForFlow, 'id');
+
+            FlowSrv.startFlow($ctrl.documentsForFlow, departmentIds)
+                .then(function (response) {
                     alert("Flow with id" + response + "started!");
                 })
                 .catch(function (response) {

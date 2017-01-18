@@ -8,7 +8,7 @@
     <br>
     <div class="row">
         <button class="btn btn-success pull-left" ng-show="!$ctrl.canStartFlow" ng-click="$ctrl.canAddDocuments = true">Add documents</button>
-        <button class="btn btn-success pull-left" ng-disabled="!$ctrl.canAddDocuments" ng-show="$ctrl.canStartFlow" ng-click>Start flow</button>
+        <button class="btn btn-success pull-left" ng-disabled="!$ctrl.canAddDocuments" ng-show="$ctrl.canStartFlow" ng-click="$ctrl.startFlow()">Start flow</button>
     </div>
     <div ui-view></div>
     <div class="row">
@@ -29,6 +29,12 @@
                 <span>{{document.name}}</span>
                 <span class="caption pull-right">{{document.dateAdded | date: "yyyy-MM-dd"}}</span>
                 <button class="btn btn-primary" ng-show="$ctrl.canAddDocuments" ng-click="$ctrl.addDocumentToFlow(document.id)">Add to flow</button>
+                <tags-input ng-show="$ctrl.canAddDocuments" ng-model="$ctrl.departmentsForFlow" display-property="name">
+                    <auto-complete
+                            source="$ctrl.getDepartments($query)"
+                            minLength="1">
+                    </auto-complete>
+                </tags-input>
             </div>
         </div>
 

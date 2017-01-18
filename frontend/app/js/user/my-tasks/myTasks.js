@@ -1,6 +1,6 @@
 angular.module('cwmd').component('myTasks', {
     templateUrl: 'app/js/user/my-tasks/myTasks.html',
-    controller: function (FlowSrv) {
+    controller: function (FlowSrv, $window) {
         var $ctrl = this;
         $ctrl.flows = null;
 

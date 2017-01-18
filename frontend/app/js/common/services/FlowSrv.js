@@ -2,7 +2,11 @@ angular.module('cwmd').service('FlowSrv', function (Restangular) {
     var service = this;
 
     service.startFlow = function(documentIds, departmentIds){
-        return Restangular.all('flow/start').post(documentIds, departmentIds);
+        var _params = {
+            documentIds : documentIds,
+            departmentIds :  departmentIds
+        };
+        return Restangular.all('flow/start').post(_params);
     };
 
     service.getFlows = function () {

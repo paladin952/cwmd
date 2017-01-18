@@ -28,6 +28,7 @@ module.exports = function(config) {
       'bower_components/file-saver.js/FileSaver.js',
       'bower_components/angular-file-saver/dist/angular-file-saver.bundle.js',
       'bower_components/angular-file-model/angular-file-model.js',
+      'bower_components/ng-tags-input/ng-tags-input.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower //
       'app/index.js',
