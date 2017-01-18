@@ -1,5 +1,8 @@
 package application.core.utils.enums;
 
+/**
+ * Enum for log level
+ */
 public enum LogLevel {
     LOG_DEBUG,
     LOG_INFO,
