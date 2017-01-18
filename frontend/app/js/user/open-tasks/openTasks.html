@@ -1,28 +1,51 @@
 <div class="container">
     <div ui-view></div>
     <div class="row">
-        <div class="col-xs-6 documentList">
-            <h3>Open tasks</h3>
-            <div ng-show="$ctrl.flows" ng-repeat="flow in $ctrl.flows" class="col-xs-12 flow">
+        <div class="col-xs-12 documentList">
+            <h3>Opened tasks</h3>
+            <div ng-repeat="flow in $ctrl.flows" class="col-xs-12 flow">
                 <span>Flow in department {{flow.crtDepartment}}</span>
-                <span>Documents:</span>
+                <div>Documents:</div>
                 <table class="table-condensed">
-                    <tr ng-repeat="document in flow.flowDocuments" class="col-xs-14 document">
+                    <tr ng-repeat="document in flow.flowDocuments" class="col-xs-12 document">
                         <td><span>{{document.name}}</span></td>
                         <td><button ng-click="">Download</button><td>
                         <td><button ng-click="">Upload revised</button><td>
-                        <td><button ng-click="$ctrl.sendToNextDepartment(flow.id)">Send to next department</button><td>
-                        <td><button ng-click="$ctrl.sentToInitial(flow.id)">Send to initial department</button><td>
                     </tr>
                 </table>
-                <span>Path:</span>
-                <div ng-repeat="path in flow.flowPath" class="col-xs-14 document">
-                    <span>{{path.department.name}}</span>
-                </div>
+                <span class="col-xs-12 path">Path:
+                    <span ng-repeat="path in flow.flowPath">
+                        <span class="tag" ng-class="{'current-department' : $index === flow.crtDepartment, 'tag' : $index !== flow.crtDepartment}">{{path.name}}</span>
+                        <span ng-if="!$last" class="arrow"> -> </span>
+                    </span>
+                </span>
             </div>
-            <div ng-hide="$ctrl.flows">
-                    There are no flows assigned for you!
+            <div ng-hide="$ctrl.flows.length != 0">
+                You haven't started any flows yet!
             </div>
         </div>
     </div>
+</div>
+
+
+
+<div ng-repeat="flow in $ctrl.flows" class="col-xs-12 flow">
+    <span>Flow in department {{flow.crtDepartment}}</span>
+    <div>Documents:</div>
+    <table class="table-condensed">
+        <tr ng-repeat="document in flow.flowDocuments" class="col-xs-12 document">
+            <td><span>{{document.name}}</span></td>
+            <td><button ng-click="">Download</button><td>
+            <td><button ng-click="">Upload revised</button><td>
+        </tr>
+    </table>
+    <span class="col-xs-12 path">Path:
+                    <span ng-repeat="path in flow.flowPath">
+                        <span class="tag" ng-class="{'current-department' : $index === flow.crtDepartment, 'tag' : $index !== flow.crtDepartment}">{{path.name}}</span>
+                        <span ng-if="!$last" class="arrow"> -> </span>
+                    </span>
+                </span>
+</div>
+<div ng-hide="$ctrl.flows.length != 0">
+    You haven't started any flows yet!
 </div>

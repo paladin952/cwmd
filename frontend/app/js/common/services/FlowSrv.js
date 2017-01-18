@@ -41,10 +41,8 @@ angular.module('cwmd').service('FlowSrv', function (Restangular) {
         return Restangular.one(path).get(flowId);
     };
 
-    service.getFlowsStartedByCurrentUser = function(username){
-        // var path = 'flow/forUser/' + username;
-
-        return Restangular.all(path).getList();
+    service.getFlowsStartedByCurrentUser = function(){
+        return Restangular.all('flow').getList();
     };
 
     service.getFlowsAssignedToCurrentUser = function(username){

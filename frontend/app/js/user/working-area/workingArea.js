@@ -1,6 +1,6 @@
 angular.module('cwmd').component('workingArea', {
     templateUrl: 'app/js/user/working-area/workingArea.html',
-    controller: function (DRDocumentSrv, RNDocumentSrv, FlowSrv, DepartmentSrv, $window) {
+    controller: function (DRDocumentSrv, RNDocumentSrv, FlowSrv, DepartmentSrv, $state) {
         var $ctrl = this;
 
         $ctrl.rnDownloadLink = "http://localhost:8080/rn/RN_document_sample";
@@ -61,7 +61,8 @@ angular.module('cwmd').component('workingArea', {
 
             FlowSrv.startFlow($ctrl.documentsForFlow, departmentIds)
                 .then(function (response) {
-                    alert("Flow with id" + response + "started!");
+                    // alert("Flow with id" + response + "started!");
+                    $state.go("openTasks");
                 })
                 .catch(function (response) {
                     console.log(response);
