@@ -1,18 +1,27 @@
 package application.core.repository;
 
-import application.core.model.Flow;
-import application.core.model.FlowPath;
+import application.core.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.jpa.HibernateEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Component
 public class FlowRepositoryImpl extends CustomRepositorySupport<Integer, Flow> implements FlowRepositoryCustom {
     @Autowired
     private DepartmentRepository departmentRepository;
+
+    @Autowired
+    private FlowPathRepository flowPathRepository;
+
+    @Autowired
+    private FlowDocumentRepository flowDocumentRepository;
 
     public FlowRepositoryImpl() {
         super(Flow.class);
@@ -31,7 +40,7 @@ public class FlowRepositoryImpl extends CustomRepositorySupport<Integer, Flow> i
                 .addEntity("F", Flow.class)
                 .addJoin("FP", "F.flowPath")
                 .addJoin("FD", "F.flowDocuments")
-                .addEntity("F", Flow.class) // intended. need to add the entity again after the joins, otherwise we get a list of users instead of departments
+                .addEntity("F", Flow.class)
                 .setInteger("flow_id", id)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List flows = select.list();
@@ -45,5 +54,29 @@ public class FlowRepositoryImpl extends CustomRepositorySupport<Integer, Flow> i
         }
 
         return flow;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Flow> getAllSQL() {
+        HibernateEntityManager manager = getEntityManager().unwrap(HibernateEntityManager.class);
+        Session session = manager.getSession();
+        String sql = "SELECT DISTINCT * " +
+                "FROM cwmd_db.flow F " +
+                "LEFT JOIN cwmd_db.flow_path FP ON FP.FlowID = F.FlowID " +
+                "LEFT JOIN cwmd_db.flow_document FD ON FD.FlowID = F.FlowID";
+        Query select = session.createSQLQuery(sql)
+                .addEntity("F", Flow.class)
+                .addJoin("FP", "F.flowPath")
+                .addJoin("FD", "F.flowDocuments")
+                .addEntity("F", Flow.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Flow> flows = (List<Flow>) select.list();
+        for (Flow flow : flows) {
+            flow.setFlowPath(flowPathRepository.getSomeSQL(flow.getId()));
+            flow.setFlowDocuments(flowDocumentRepository.getSomeSQL(flow.getId()));
+        }
+
+        return flows;
     }
 }

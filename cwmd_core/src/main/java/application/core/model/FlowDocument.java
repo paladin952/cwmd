@@ -10,7 +10,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "flow_document")
 @IdClass(FlowDocumentPK.class)
-@ToString
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,4 +27,9 @@ public class FlowDocument implements Serializable {
     @OneToOne
     @JoinColumn(name = "DocumentID", unique = true, nullable = false)
     private Document document;
+
+    @Override
+    public String toString() {
+        return "FlowDocument = { flow: " + flow.getId() + ", document: " + document.getId() + " }";
+    }
 }

@@ -31,6 +31,8 @@ public class FlowServiceImpl implements IFlowService {
     private UserRepository userRepository;
 
     @Autowired
+    private DepartmentUserRepository departmentUserRepository;
+    @Autowired
     private FlowMailer flowMailer;
 
     @Override
@@ -93,7 +95,15 @@ public class FlowServiceImpl implements IFlowService {
 
     @Override
     public List<Flow> readActive(String username) {
-        return flowRepo.findByUser_Username(username)
+        return flowRepo.findByUser_Username(username);
+    }
+
+    private List<Flow> read() {
+        return flowRepo.getAllSQL();
+    }
+
+    private List<Flow> readActive() {
+        return read()
                 .stream()
                 .filter(flow -> flow.getCrtDepartment() < flow.getFlowPath().size())
                 .collect(Collectors.toList());
@@ -101,7 +111,11 @@ public class FlowServiceImpl implements IFlowService {
 
     @Override
     public List<Flow> readFinished(String username) {
-        return flowRepo.findByUser_Username(username)
+        return flowRepo.findByUser_Username(username);
+    }
+
+    private List<Flow> readFinished() {
+        return read()
                 .stream()
                 .filter(flow -> flow.getCrtDepartment() >= flow.getFlowPath().size())
                 .collect(Collectors.toList());
@@ -109,16 +123,7 @@ public class FlowServiceImpl implements IFlowService {
 
     @Override
     public Flow readOne(Integer flowId) {
-        Flow flow = flowRepo.getOneSQL(flowId);
-        if (flow == null)
-            return null;
-//
-//        flow.setFlowPath(flowPathRepo.getSomeSQL(flow.getId()));
-//        for (FlowPath path : flow.getFlowPath()) {
-//            path.setDepartment(departmentRepository.getOneSQL(path.getDepartment().getId()));
-//        }
-
-        return flow;
+        return flowRepo.getOneSQL(flowId);
     }
 
     @Override
@@ -187,6 +192,24 @@ public class FlowServiceImpl implements IFlowService {
         }
 
         return users;
+    }
+
+    @Override
+    public List<Flow> getFlowsForDepartment(Integer departmentId) {
+        List<Flow> flows = readActive();
+        return flows.stream()
+                .filter(flow -> flow.getFlowPath().get(flow.getCrtDepartment()).getDepartment().getId().equals(departmentId))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Flow> getFlowsForUser(String username) {
+        DepartmentUser deptUser = departmentUserRepository.getDepartmentUserForUserSQL(username);
+        if (!deptUser.getUser().getUserInfo().getIsDepartmentChief() &&
+                !deptUser.getDepartment().getIsUserGroup()) // only department chiefs or people from user groups have flows to approve
+            return new ArrayList<>();
+
+        return getFlowsForDepartment(deptUser.getDepartment().getId());
     }
 
     @Override

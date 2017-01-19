@@ -208,4 +208,24 @@ public class FlowController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @RequestMapping(value = "/forUser/{username}", method = RequestMethod.GET)
+    public ResponseEntity<List<FlowDTO>> getFlowsForUser(@PathVariable("username") final String username) {
+        try {
+            return new ResponseEntity<>(flowConverter.toDTOs(flowService.getFlowsForUser(username)), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "forDepartment/{departmentId}", method = RequestMethod.GET)
+    public ResponseEntity<List<FlowDTO>> getFlowsForDepartment(@PathVariable("departmentId") final Integer deptId) {
+        try {
+            return new ResponseEntity<>(flowConverter.toDTOs(flowService.getFlowsForDepartment(deptId)), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

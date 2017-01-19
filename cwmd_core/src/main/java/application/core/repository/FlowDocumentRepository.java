@@ -6,4 +6,4 @@ import application.core.model.PKs.FlowDocumentPK;
 import javax.transaction.Transactional;
 
 @Transactional
-public interface FlowDocumentRepository extends CWMDRepository<FlowDocumentPK, FlowDocument> {}
+public interface FlowDocumentRepository extends CWMDRepository<FlowDocumentPK, FlowDocument>, FlowDocumentRepositoryCustom {}
