@@ -13,7 +13,6 @@ angular.module('cwmd').component('statistics', {
         $ctrl.$onInit = function () {
             RNDocumentSrv.getAllDocumentCount()
                 .then(function (response) {
-                    debugger;
                     if (response == -1) {
                         $ctrl.rnDocumentCount = $ctrl.handleZeroValue();
                     } else if (response) {
@@ -26,7 +25,6 @@ angular.module('cwmd').component('statistics', {
 
             RNDocumentSrv.getAllPartOfAFlowDocumentCount()
                 .then(function (response) {
-                    debugger;
                     if (response == -1) {
                         $ctrl.rnPartOfAFlowDocumentCount = $ctrl.handleZeroValue();
                     } else if (response) {
@@ -39,7 +37,6 @@ angular.module('cwmd').component('statistics', {
 
             DRDocumentSrv.getAllDocumentCount()
                 .then(function (response) {
-                    debugger;
                     if (response == -1) {
                         $ctrl.drDocumentCount = $ctrl.handleZeroValue();
                     } else if (response) {
@@ -52,7 +49,6 @@ angular.module('cwmd').component('statistics', {
 
             DRDocumentSrv.getAllPartOfAFlowDocumentCount()
                 .then(function (response) {
-                    debugger;
                     if (response == -1) {
                         $ctrl.drPartOfAFlowDocumentCount = $ctrl.handleZeroValue();
                     } else if (response) {

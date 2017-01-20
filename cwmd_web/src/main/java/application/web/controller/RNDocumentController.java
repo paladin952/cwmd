@@ -10,21 +10,19 @@ import com.aspose.cells.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RequestMapping("/rn")
@@ -46,21 +44,21 @@ public class RNDocumentController {
         return rnDocumentConverter.toDTOs(documents);
     }
 
-    @RequestMapping(value = "/count",method = RequestMethod.GET)
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity<Integer> countDocuments() {
         int size = rnDocumentService.getAllDocuments().size();
         if (size == 0) {
-            return new ResponseEntity<>(size-1, HttpStatus.OK);
+            return new ResponseEntity<>(size - 1, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(size, HttpStatus.OK);
         }
     }
 
-    @RequestMapping(value = "/inFlow",method = RequestMethod.GET)
+    @RequestMapping(value = "/inFlow", method = RequestMethod.GET)
     public ResponseEntity<Integer> countPartOfAFlowDocuments() {
         int size = rnDocumentService.getAllPartOfAFlowDocuments().size();
         if (size == 0) {
-            return new ResponseEntity<>(size-1, HttpStatus.OK);
+            return new ResponseEntity<>(size - 1, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(size, HttpStatus.OK);
         }
@@ -102,21 +100,17 @@ public class RNDocumentController {
                 .body(new InputStreamResource(file.getInputStream()));
     }
 
-    @RequestMapping(value = "/download", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam Integer documentId, HttpServletRequest request) throws IOException {
-        RNDocument document = rnDocumentService.getDocument(documentId);
-        Date dateAdded = document.getDateAdded();
-        LocalDate date = dateAdded.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
-        String username = UserUtil.getCurrentUsername(request);
-        ClassPathResource file = new ClassPathResource("files/" + username + "/rn/" + documentId + "/RN - " + dateString + ".xlsx");
+    @RequestMapping(value = "/download/{id}", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable Integer id) throws IOException {
+        RNDocument rnDocument = rnDocumentService.getDocument(id);
+        InputStream in = new FileInputStream(rnDocument.getPath());
 
-        return ResponseEntity
-                .ok()
-                .contentLength(file.contentLength())
-                .contentType(
-                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-                .body(new InputStreamResource(file.getInputStream()));
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        header.set("Content-Disposition", "inline; filename=" + rnDocument.getName() + ".xlsx");
+        header.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
+        return new ResponseEntity<InputStreamResource>(new InputStreamResource(in), header, HttpStatus.OK);
     }
+
 }

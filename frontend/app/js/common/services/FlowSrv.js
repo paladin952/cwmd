@@ -1,4 +1,4 @@
-angular.module('cwmd').service('FlowSrv', function (Restangular) {
+angular.module('cwmd').service('FlowSrv', function (Restangular, UserSrv) {
     var service = this;
 
     service.startFlow = function(documentIds, departmentIds){
@@ -44,7 +44,8 @@ angular.module('cwmd').service('FlowSrv', function (Restangular) {
         return Restangular.all('flow').getList();
     };
 
-    service.getFlowsAssignedToCurrentUser = function(username){
+    service.getFlowsAssignedToCurrentUser = function(){
+        var username = UserSrv.getCurrentUser();
         var path = 'flow/forUser/' + username;
 
         return Restangular.all(path).getList();

@@ -9,9 +9,10 @@
                 <table class="table-condensed">
                     <tr ng-repeat="document in flow.flowDocuments" class="col-xs-12 document">
                         <td><span>{{document.name}}</span></td>
-                        <td><button ng-click="">Download</button></td>
-                        <td><button ng-click="">Upload revised</button></td>
-                        <td><button ng-click="$ctrl.sendToNextDepartment(flow.id)">Send to next department</button></td>
+                        <td><a class="btn btn-default" ng-if="document.type === 'DR'" target="_blank" ng-href="{{'http://localhost:8080/dr/download/' + document.id + '?part=first'}}">Download first part</a><td>
+                        <td><a class="btn btn-default" ng-if="document.type === 'DR'" target="_blank" ng-href="{{'http://localhost:8080/dr/download/' + document.id + '?part=second'}}">Download second part</a><td>
+                        <td><a class="btn btn-default" ng-if="document.type === 'RN'" target="_blank" ng-href="{{'http://localhost:8080/rn/download/' + document.id}}">Download</a><td>
+                        <td><button class="btn btn-default" ng-click="$ctrl.sendToNextDepartment(flow.id)">Send to next department</button><td>
                         <td>
                             <form class="form col-md-12 center-block">
                                 <div class="form-group">
@@ -22,13 +23,14 @@
                                 </div>
                             </form>
                         </td>
+                        <td><button class="btn btn-danger" ng-click="">Reject</button><td>
                     </tr>
                 </table>
                 <span class="col-xs-12 path">Path:
                     <span ng-repeat="path in flow.flowPath">
-                        <span class="tag">{{path.name}}</span>
-                <span ng-if="!$last" class="arrow"> -> </span>
-                </span>
+                        <span ng-class="{'current-department' : $index === flow.crtDepartment, 'tag' : $index !== flow.crtDepartment}">{{path.name}}</span>
+                        <span ng-if="!$last" class="arrow"> -> </span>
+                    </span>
                 </span>
             </div>
             <div ng-hide="$ctrl.flows">

@@ -220,7 +220,7 @@ public class FlowServiceImpl implements IFlowService {
     @Override
     public List<Flow> getFlowsForUser(String username) {
         DepartmentUser deptUser = departmentUserRepository.getDepartmentUserForUserSQL(username);
-        if (!deptUser.getUser().getUserInfo().getIsDepartmentChief() &&
+         if (!deptUser.getUser().getUserInfo().getIsDepartmentChief() &&
                 !deptUser.getDepartment().getIsUserGroup()) // only department chiefs or people from user groups have flows to approve
             return new ArrayList<>();
 

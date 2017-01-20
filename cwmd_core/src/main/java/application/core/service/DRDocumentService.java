@@ -170,13 +170,14 @@ public class DRDocumentService {
         drDocument.setStatus(1);
         drDocument.setVersion(0.1f);
         drDocument.setIsPartOfFlow(false);
-
-        URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
-        drDocument.setPath(urlToResourses.getPath() + "files/" + username + "/dr/" + "DR - " + dateString);
+        drDocument.setType("DR");
 
         DRDocument savedDocument = drDocumentRepository.save(drDocument);
 
-        return savedDocument.getId();
+        Integer documentId = savedDocument.getId();
+        URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
+        drDocument.setPath(urlToResourses.getPath() + "files/" + username + "/dr/" + documentId + "/DR " + dateString + ".docx");
+        return documentId;
     }
 
     public void saveDocumentInDBSecondPart(Document document, Integer documentId) {

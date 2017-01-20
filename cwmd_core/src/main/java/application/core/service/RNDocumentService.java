@@ -69,7 +69,7 @@ public class RNDocumentService {
             String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
             String username = UserUtil.getCurrentUsername(request);
             String path = urlToResourses.getPath();
-            boolean save = handleMissingDirectories(path, username);
+            boolean save = handleMissingDirectories(path, username, documentId);
             if (save) {
                 workbook.save(path + "files/" + username + "/rn/" + documentId + "/RN - " + dateString + ".xlsx", SaveFormat.XLSX);
             }
@@ -177,13 +177,14 @@ public class RNDocumentService {
         rnDocument.setStatus(1);
         rnDocument.setVersion(0.1f);
         rnDocument.setIsPartOfFlow(false);
-
-        URL urlToResourses = DRDocumentService.class.getClassLoader().getResource("");
-        rnDocument.setPath(urlToResourses.getPath() + "files/" + username + "/rn/" + "RN - " + dateString);
+        rnDocument.setType("RN");
 
         RNDocument savedDoc = rnDocumentRepository.save(rnDocument);
 
-        return savedDoc.getId();
+        Integer documentId = savedDoc.getId();
+        URL urlToResourses = RNDocumentService.class.getClassLoader().getResource("");
+        rnDocument.setPath(urlToResourses.getPath() + "files/" + username + "/rn/" + documentId + "/RN - " + dateString + ".xlsx");
+        return documentId;
     }
 
     public RNDocument getDocument(Integer id) {
@@ -210,7 +211,7 @@ public class RNDocumentService {
         return rnTotalRepository.findOne(id);
     }
 
-    private boolean handleMissingDirectories(String path, String username) {
+    private boolean handleMissingDirectories(String path, String username, Integer documentId) {
         String pathname = path + "files";
         File filesDirectory = new File(pathname);
         boolean ok = filesDirectory.exists();
@@ -227,6 +228,14 @@ public class RNDocumentService {
         }
         if (ok) {
             pathname = pathname + "/rn";
+            File rnDirectory = new File(pathname);
+            ok = rnDirectory.exists();
+            if (!ok) {
+                ok = rnDirectory.mkdir();
+            }
+        }
+        if (ok) {
+            pathname = pathname + "/" + documentId;
             File rnDirectory = new File(pathname);
             ok = rnDirectory.exists();
             if (!ok) {

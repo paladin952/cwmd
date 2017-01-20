@@ -10,21 +10,19 @@ import com.aspose.words.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 @RequestMapping("/dr")
@@ -130,21 +128,18 @@ public class DRDocumentController {
                 .body(new InputStreamResource(file.getInputStream()));
     }
 
-    @RequestMapping(value = "/download", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam Integer documentId, @RequestParam String part, HttpServletRequest request) throws IOException {
+    @RequestMapping(value = "/download/{id}", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable Integer id, @RequestParam String part) throws IOException {
+        DRDocument drDocument = drDocumentService.getDocument(id);
+        String path = drDocument.getPath();
+        String newPath = path.replace("DR", "DR " + part + " -");
+        InputStream in = new FileInputStream(newPath);
 
-        DRDocument drDocument = drDocumentService.getDocument(documentId);
-        Date dateAdded = drDocument.getDateAdded();
-        LocalDate date = dateAdded.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        String dateString = date.getDayOfMonth() + "." + date.getMonthValue() + "." + date.getYear();
-        String username = UserUtil.getCurrentUsername(request);
-        ClassPathResource file = new ClassPathResource("files/" + username + "/dr" + documentId + "/DR " + part + " - " + dateString + ".docx");
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        header.set("Content-Disposition", "inline; filename=" + drDocument.getName() + " " + part + ".docx");
+        header.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-        return ResponseEntity
-                .ok()
-                .contentLength(file.contentLength())
-                .contentType(
-                        MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
-                .body(new InputStreamResource(file.getInputStream()));
+        return new ResponseEntity<>(new InputStreamResource(in), header, HttpStatus.OK);
     }
 }

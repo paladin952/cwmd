@@ -32,7 +32,7 @@ angular.module('cwmd').service('UserSrv', function (Restangular, $window, $state
             phoneNumber: user.phoneNumber,
             departmentChief: user.departmentChief,
             department: user.department.name,
-            role: user.role,
+            role: user.role? "ROLE_" + user.role : ""
         };
 
         return Restangular.all('user/create').post(_params);

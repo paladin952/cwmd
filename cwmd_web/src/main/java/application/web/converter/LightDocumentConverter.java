@@ -18,6 +18,8 @@ public class LightDocumentConverter extends Converter<Document, LightDocumentDTO
                 .name(document.getName())
                 .dateAdded(document.getDateAdded())
                 .username(document.getUser().getUsername())
+                .type(document.getType())
+                .path(document.getPath())
                 .build();
     }
 

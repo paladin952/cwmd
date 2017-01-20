@@ -18,7 +18,7 @@
 .current-department {
     font-size: 14pt;
     display: inline-block;
-    background-color: #d96b64;
+    background-color: #45c642;
     color: white;
     border-radius: 2em;
     margin: 5px;
@@ -27,6 +27,7 @@
 
 .flow {
     margin-bottom: 15px;
+    border-bottom: 1px #afafaf;
 }
 
 .path {

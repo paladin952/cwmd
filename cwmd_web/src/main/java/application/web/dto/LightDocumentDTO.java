@@ -16,4 +16,6 @@ public class LightDocumentDTO {
     private String name;
     private Date dateAdded;
     private String username;
+    private String type;
+    private String path;
 }

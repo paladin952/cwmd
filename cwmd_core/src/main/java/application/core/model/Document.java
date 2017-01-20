@@ -43,9 +43,12 @@ public class Document implements Serializable {
     @Column(name = "Version", nullable = false)
     private Float version;
 
-    @Column(name = "Path", nullable = false)
+    @Column(name = "Path")
     private String path;
 
     @Column(name = "isPartOfFlow")
     private Boolean isPartOfFlow;
+
+    @Column(name = "type")
+    private String type;
 }
