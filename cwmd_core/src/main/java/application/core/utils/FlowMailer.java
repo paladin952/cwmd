@@ -31,7 +31,7 @@ public class FlowMailer implements ICWMDMailer {
     @Value("${email.address}")
     private String from;
 
-    private String velocityTemplateLocation = "/resources/velocity/flow_notification_template.vm";
+    private String velocityTemplateLocation = "/resources/velocity/flow_at_dept_template.vm";
 
     @Autowired
     private JavaMailSender mailSender;
@@ -40,33 +40,33 @@ public class FlowMailer implements ICWMDMailer {
     private VelocityEngine velocityEngine;
 
     @Override
-    public ICWMDMailer SetMailSender(JavaMailSender sender) {
+    public ICWMDMailer setMailSender(JavaMailSender sender) {
         mailSender = sender;
 
         return this;
     }
 
     @Override
-    public ICWMDMailer SetVelocityEngine(VelocityEngine engine) {
+    public ICWMDMailer setVelocityEngine(VelocityEngine engine) {
         velocityEngine = engine;
 
         return this;
     }
 
     @Override
-    public String GetVelocityTemplateLocation() {
+    public String getVelocityTemplateLocation() {
         return velocityTemplateLocation;
     }
 
     @Override
-    public ICWMDMailer SetVelocityTemplateLocation(String velocityTemplateLocation) {
+    public ICWMDMailer setVelocityTemplateLocation(String velocityTemplateLocation) {
         this.velocityTemplateLocation = velocityTemplateLocation;
 
         return this;
     }
 
     @Override
-    public ICWMDMailer SendMail(Object obj) {
+    public ICWMDMailer sendMail(Object obj) {
         Flow flow = (Flow) obj;
 
         MimeMessagePreparator preparator = getMessagePreparator(flow);
@@ -77,6 +77,35 @@ public class FlowMailer implements ICWMDMailer {
         }
 
         return this;
+    }
+
+    public FlowMailer sendMailToInitiator(Flow flow) {
+        MimeMessagePreparator preparator = getUserMessagePreparator(flow);
+        try {
+            mailSender.send(preparator);
+        } catch (MailException e) {
+            throw new ServiceException("Error occurred while sending e-mail", e);
+        }
+
+        return this;
+    }
+
+    private MimeMessagePreparator getUserMessagePreparator(Flow flow) {
+        return mimeMessage -> {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+            helper.setSubject("[CWMD] Flow status has been updated");
+            helper.setFrom(from);
+                User user = flow.getUser();
+                    helper.setTo(user.getUserInfo().getEmail());
+
+            Map<String, Object> model = new HashMap<>();
+            model.put(FLOW_TOKEN, flow);
+
+            String msg = getVelocityTemplateContent(model);
+
+            helper.setText(msg, true);
+        };
     }
 
     private MimeMessagePreparator getMessagePreparator(Flow flow) {

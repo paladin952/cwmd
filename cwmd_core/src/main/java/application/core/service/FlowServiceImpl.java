@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class FlowServiceImpl implements IFlowService {
+    private final String VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC = "/resources/velocity/flow_at_dept_template.vm";
+    private final String VELOCITY_FLOW_REJECTED_TEMPLATE_LOC      = "/resources/velocity/flow_rejected_template.vm";
+
     @Autowired
     private FlowRepository flowRepo;
     @Autowired
@@ -90,7 +93,7 @@ public class FlowServiceImpl implements IFlowService {
 
     @Override
     public List<Flow> readAll() {
-        return flowRepo.findAll();
+        return flowRepo.getAllSQL();
     }
 
     @Override
@@ -136,17 +139,20 @@ public class FlowServiceImpl implements IFlowService {
         flow.setCrtDepartment(crt == flow.getFlowPath().size() - 1 ? crt : crt + 1); // stop going further once we're at the end of the road
         flowRepo.save(flow);
 
-        flowMailer.SendMail(flow);
+        flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC);
+        flowMailer.sendMail(flow);
 
         return flow;
     }
 
     @Override
     public Flow returnToInitialDepartmentFor(Integer flowId, String remark) {
-        Flow flow = flowRepo.findOne(flowId);
+        Flow flow = flowRepo.getOneSQL(flowId);
         flow.setCrtDepartment(0);
         flow.setRemarks(remark);
 
+        flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_REJECTED_TEMPLATE_LOC);
+        flowMailer.sendMailToInitiator(flow);
         return flowRepo.save(flow);
     }
 

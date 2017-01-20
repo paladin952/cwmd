@@ -21,17 +21,21 @@ import java.util.List;
 public class FlowController {
     private final static String OK_MSG = "OK";
 
-    @Autowired
-    private FlowConverter flowConverter;
+    private final FlowConverter flowConverter;
+
+    private final DepartmentConverter departmentConverter;
+
+    private final LightUserConverter lightUserConverter;
+
+    private final IFlowService flowService;
 
     @Autowired
-    private DepartmentConverter departmentConverter;
-
-    @Autowired
-    private LightUserConverter lightUserConverter;
-
-    @Autowired
-    private IFlowService flowService;
+    public FlowController(FlowConverter flowConverter, DepartmentConverter departmentConverter, LightUserConverter lightUserConverter, IFlowService flowService) {
+        this.flowConverter = flowConverter;
+        this.departmentConverter = departmentConverter;
+        this.lightUserConverter = lightUserConverter;
+        this.flowService = flowService;
+    }
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public ResponseEntity<FlowDTO> startFlow(@RequestBody FlowStartDTO flowStartDTO, HttpServletRequest request) {

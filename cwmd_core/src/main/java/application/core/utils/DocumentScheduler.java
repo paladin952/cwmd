@@ -40,11 +40,11 @@ public class DocumentScheduler {
                 long crtDate = (new Date()).getTime();
                 long docDate = document.getDateAdded().getTime();
                 if ((crtDate - docDate) / dayDivider == docFirstThreshold) {
-                    mailer.SetVelocityTemplateLocation(docFirstThresholdTemplateLocation);
-                    mailer.SendMail(document);
+                    mailer.setVelocityTemplateLocation(docFirstThresholdTemplateLocation);
+                    mailer.sendMail(document);
                 } else if (crtDate - docDate == docSecondThreshold) {
-                    mailer.SetVelocityTemplateLocation(docSecondThresholdTemplateLocation);
-                    mailer.SendMail(document);
+                    mailer.setVelocityTemplateLocation(docSecondThresholdTemplateLocation);
+                    mailer.sendMail(document);
                 }
             }
         });

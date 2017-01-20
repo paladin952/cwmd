@@ -42,33 +42,33 @@ public class DocumentMailer implements ICWMDMailer {
     private VelocityEngine velocityEngine;
 
     @Override
-    public ICWMDMailer SetMailSender(JavaMailSender sender) {
+    public ICWMDMailer setMailSender(JavaMailSender sender) {
         mailSender = sender;
 
         return this;
     }
 
     @Override
-    public ICWMDMailer SetVelocityEngine(VelocityEngine engine) {
+    public ICWMDMailer setVelocityEngine(VelocityEngine engine) {
         velocityEngine = engine;
 
         return this;
     }
 
     @Override
-    public String GetVelocityTemplateLocation() {
+    public String getVelocityTemplateLocation() {
         return velocityTemplateLocation;
     }
 
     @Override
-    public ICWMDMailer SetVelocityTemplateLocation(String velocityTemplateLocation) {
+    public ICWMDMailer setVelocityTemplateLocation(String velocityTemplateLocation) {
         this.velocityTemplateLocation = velocityTemplateLocation;
 
         return this;
     }
 
     @Override
-    public ICWMDMailer SendMail(Object obj) {
+    public ICWMDMailer sendMail(Object obj) {
         Document doc = (Document) obj;
 
         MimeMessagePreparator preparator = getMessagePreparator(doc);
