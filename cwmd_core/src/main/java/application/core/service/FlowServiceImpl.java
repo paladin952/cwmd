@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class FlowServiceImpl implements IFlowService {
+    private final static String TAG = FlowServiceImpl.class.getSimpleName();
     private final String VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC = "/velocity/flow_at_dept_template.vm";
     private final String VELOCITY_FLOW_REJECTED_TEMPLATE_LOC      = "/velocity/flow_rejected_template.vm";
 
@@ -29,12 +30,10 @@ public class FlowServiceImpl implements IFlowService {
     private final UserRepository userRepository;
     private final DepartmentUserRepository departmentUserRepository;
     private final FlowMailer flowMailer;
-
-    @Autowired
     private Log log;
 
     @Autowired
-    public FlowServiceImpl(FlowRepository flowRepo, FlowPathRepository flowPathRepo, FlowDocumentRepository flowDocumentRepo, DocumentRepository documentRepository, DepartmentRepository departmentRepository, UserRepository userRepository, DepartmentUserRepository departmentUserRepository, FlowMailer flowMailer) {
+    public FlowServiceImpl(FlowRepository flowRepo, FlowPathRepository flowPathRepo, FlowDocumentRepository flowDocumentRepo, DocumentRepository documentRepository, DepartmentRepository departmentRepository, UserRepository userRepository, DepartmentUserRepository departmentUserRepository, FlowMailer flowMailer, Log log) {
         this.flowRepo = flowRepo;
         this.flowPathRepo = flowPathRepo;
         this.flowDocumentRepo = flowDocumentRepo;
@@ -43,11 +42,13 @@ public class FlowServiceImpl implements IFlowService {
         this.userRepository = userRepository;
         this.departmentUserRepository = departmentUserRepository;
         this.flowMailer = flowMailer;
+        this.log = log;
     }
 
     @Override
     public Flow startFlow(List<Integer> documents, List<Integer> departments, String username) {
         User user = userRepository.findOne(username);
+        log.info(TAG, "Starting a new flow for user", username);
         try {
             Flow flow = Flow.builder()
                     .crtDepartment(0)
@@ -99,11 +100,13 @@ public class FlowServiceImpl implements IFlowService {
 
     @Override
     public List<Flow> read(String username) {
+        log.info(TAG, "Retrieving list of flows for user", username);
         return flowRepo.findByUser_Username(username);
     }
 
     @Override
     public List<Flow> readAll() {
+        log.info(TAG, "Retrieving list of flows");
         return flowRepo.getAllSQL();
     }
 
@@ -120,6 +123,7 @@ public class FlowServiceImpl implements IFlowService {
     }
 
     public List<Flow> readActive() {
+        log.info(TAG, "Retrieving list of active flows");
         return read()
                 .stream()
                 .filter(flow -> flow.getCrtDepartment() < flow.getFlowPath().size())
@@ -135,6 +139,7 @@ public class FlowServiceImpl implements IFlowService {
     }
 
     public List<Flow> readFinished() {
+        log.info(TAG, "Retrieving list of finished flows");
         return read()
                 .stream()
                 .filter(flow -> flow.getCrtDepartment() >= flow.getFlowPath().size())
@@ -152,6 +157,7 @@ public class FlowServiceImpl implements IFlowService {
         if (flow == null)
             throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
 
+        log.info(TAG, "Moving to the next department for flow ID " + flowId);
         int crt = flow.getCrtDepartment();
         flow.setCrtDepartment(crt >= flow.getFlowPath().size() ? crt : crt + 1); // stop going further once we're at the end of the road
         flowRepo.save(flow);
@@ -177,6 +183,9 @@ public class FlowServiceImpl implements IFlowService {
 
         flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_REJECTED_TEMPLATE_LOC);
         flowMailer.sendMailToInitiator(flow);
+
+        log.info(TAG, "Returning flow ID " + flowId + "to the starting point and notifying the flow initiator", flow.getUser().getUsername());
+
         return flowRepo.save(flow);
     }
 
@@ -185,6 +194,8 @@ public class FlowServiceImpl implements IFlowService {
         Flow flow = flowRepo.findOne(flowId);
         if (flow == null)
             throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
+
+        log.info(TAG, "Checking if flow ID " + flowId + " is at the end");
 
         return flow.getCrtDepartment() >= flow.getFlowPath().size();
     }
@@ -200,7 +211,11 @@ public class FlowServiceImpl implements IFlowService {
             return null;
 
         Department tmp = flow.getFlowPath().get(crt).getDepartment();
-        return departmentRepository.getOneSQL(tmp.getId());
+        tmp = departmentRepository.getOneSQL(tmp.getId());
+
+        log.info(TAG, "Retrieved current department for flow ID " + flowId, "", tmp.getName());
+
+        return tmp;
     }
 
     @Override
@@ -221,19 +236,26 @@ public class FlowServiceImpl implements IFlowService {
             users.add(chief.get());
         }
 
+        log.info(TAG, "Retrieved user list from current department of flow ID " + flowId, "", dept.getName());
+
         return users;
     }
 
     @Override
     public List<Flow> getFlowsForDepartment(Integer departmentId) {
         List<Flow> flows = readActive();
-        return flows.stream()
+        flows = flows.stream()
                 .filter(flow -> flow.getFlowPath().get(flow.getCrtDepartment()).getDepartment().getId().equals(departmentId))
                 .collect(Collectors.toList());
+
+        log.info(TAG, "Retrieving flows for department", "", flows.isEmpty() ? "" : flows.get(0).getFlowPath().get(0).getDepartment().getName());
+
+        return flows;
     }
 
     @Override
     public List<Flow> getFlowsForUser(String username) {
+        log.info(TAG, "Retrieving flows for user", username);
         DepartmentUser deptUser = departmentUserRepository.getDepartmentUserForUserSQL(username);
          if (!deptUser.getUser().getUserInfo().getIsDepartmentChief() &&
                 !deptUser.getDepartment().getIsUserGroup()) // only department chiefs or people from user groups have flows to approve
@@ -269,21 +291,35 @@ public class FlowServiceImpl implements IFlowService {
         flow.setFlowPath(dbFlowPath);
         flow.setFlowDocuments(dbFlowDocs);
 
-        return flowRepo.save(flow);
+        flow = flowRepo.save(flow);
+
+        log.info(TAG, "Updated flow ID " + flow.getId());
+
+        return flow;
     }
 
     @Override
     public void addRemarks(Integer flowId, String remarks) {
-        Flow flow = flowRepo.findOne(flowId);
+        Flow flow = flowRepo.getOneSQL(flowId);
         flow.setRemarks(remarks);
         flowRepo.save(flow);
+        Department crt = null;
+        if (flow.getCrtDepartment() < flow.getFlowPath().size())
+            crt = flow.getFlowPath().get(flow.getCrtDepartment()).getDepartment();
+        String crtDepartment = crt != null ? crt.getName() : "";
+        log.info(TAG, "Added remarks to flow ID " + flowId, "", crtDepartment);
     }
 
     @Override
     public void rejectFlow(Integer flowId) {
         Flow flow = flowRepo.findOne(flowId);
         List<FlowPath> flowPath = flowPathRepo.getSomeSQL(flowId);
+        Department crt = null;
+        if (flow.getCrtDepartment() < flow.getFlowPath().size())
+            crt = flow.getFlowPath().get(flow.getCrtDepartment()).getDepartment();
         flow.setCrtDepartment(flowPath.size());
+        String crtDepartment = crt != null ? crt.getName() : "";
+        log.info(TAG, "Rejected flow ID " + flowId, "", crtDepartment);
     }
 
     @Override
