@@ -1,8 +1,9 @@
 angular.module('cwmd').component('openTasks', {
     templateUrl: 'app/js/user/open-tasks/openTasks.html',
-    controller: function (FlowSrv) {
+    controller: function (FlowSrv, DepartmentSrv) {
         var $ctrl = this;
-        $ctrl.flows = [];
+        $ctrl.flows = null;
+        $ctrl.departments = null;
 
         $ctrl.$onInit = function () {
             // var currentUser = $window.localStorage.currentUser;
@@ -13,6 +14,11 @@ angular.module('cwmd').component('openTasks', {
                 .catch(function (response) {
                     console.log(response);
                 });
+
+            DepartmentSrv.getDepartments()
+                .then(function (response) {
+                    $ctrl.departments = response;
+                })
         };
     }
 });

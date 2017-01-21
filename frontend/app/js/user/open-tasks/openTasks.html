@@ -4,7 +4,7 @@
         <div class="col-xs-12 documentList">
             <h3>Opened tasks</h3>
             <div ng-repeat="flow in $ctrl.flows" class="col-xs-12 flow">
-                <span>Flow in department {{flow.crtDepartment}}</span>
+                <span>Flow in department {{$ctrl.departments[flow.crtDepartment]}}</span>
                 <div>Documents:</div>
                 <table class="table-condensed">
                     <tr ng-repeat="document in flow.flowDocuments" class="col-xs-12 document">

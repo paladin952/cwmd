@@ -28,14 +28,21 @@ angular.module('cwmd').component('myTasks', {
                 });
         };
 
-        $ctrl.sentToInitial = function (id) {
-            FlowSrv.goToInitialDepartment(id, $ctrl.remark)
+        $ctrl.reject = function (id) {
+            FlowSrv.addRemark(id, $ctrl.remark)
                 .then(function (response) {
-                    alert("Flow " + response + " was sent to the initial department");
+                    FlowSrv.rejectFlow(id)
+                        .then(function (response) {
+                            alert("Flow " + response + " was sent to the initial department");
+                        })
+                        .catch(function (response) {
+                            console.log(response);
+                        });
                 })
                 .catch(function (response) {
                     console.log(response);
                 });
+
         };
 
         $ctrl.reject = function (flowId) {

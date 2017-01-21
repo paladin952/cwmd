@@ -46,10 +46,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <th class="col-xs-3">Level</th>
-                                <th class="col-xs-3">Timestamp</th>
-                                <th class="col-xs-3">Tag</th>
-                                <th class="col-xs-3">User</th>
+                                <th class="col-xs-1">Level</th>
+                                <th class="col-xs-2">Timestamp</th>
+                                <th class="col-xs-1">Tag</th>
+                                <th class="col-xs-1">User</th>
                                 <th class="col-xs-3">Department</th>
                                 <th class="col-xs-3">Document Type</th>
                                 <th class="col-xs-3">Message</th>
@@ -57,10 +57,10 @@
                         </thead>
                         <tbody>
                             <tr ng-show="$ctrl.logs" ng-repeat="log in $ctrl.logs">
-                                <td class="col-xs-3">{{log.level}}</td>
-                                <td class="col-xs-3">{{log.timestamp}}</td>
-                                <td class="col-xs-3">{{log.tag}}</td>
-                                <td class="col-xs-3">{{log.user}}</td>
+                                <td class="col-xs-1">{{log.level}}</td>
+                                <td class="col-xs-2">{{log.timestamp}}</td>
+                                <td class="col-xs-1">{{log.tag}}</td>
+                                <td class="col-xs-1">{{log.user}}</td>
                                 <td class="col-xs-3">{{log.department}}</td>
                                 <td class="col-xs-3">{{log.documentType}}</td>
                                 <td class="col-xs-3">{{log.msg}}</td>

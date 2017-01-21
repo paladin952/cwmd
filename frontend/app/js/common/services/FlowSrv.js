@@ -25,13 +25,16 @@ angular.module('cwmd').service('FlowSrv', function (Restangular, UserSrv) {
         return Restangular.one(path).get();
     };
 
-    service.goToInitialDepartment = function (flowId, remark) {
-        var parameters = {
-            flowId: flowId,
-            remark: remark
-        };
+    service.rejectFlow = function (flowId) {
+        var path = 'flow/reject/' + flowId;
 
-        return Restangular.all('flow').post(parameters);
+        return Restangular.all(path).post();
+    };
+
+    service.addRemark = function(flowId, remark){
+        var path = 'flow/remarks/' + flowId;
+
+        return Restangular.all(path).post(remark);
     };
 
     service.isFlowAtEnd = function (flowId) {
