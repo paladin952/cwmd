@@ -32,7 +32,6 @@ angular.module('cwmd').service('FlowSrv', function (Restangular) {
         };
 
         return Restangular.all('flow').post(parameters);
-
     };
 
     service.isFlowAtEnd = function (flowId) {
@@ -46,7 +45,7 @@ angular.module('cwmd').service('FlowSrv', function (Restangular) {
     };
 
     service.getFlowsAssignedToCurrentUser = function(username){
-        // var path = 'flow/forUser/' + username;
+        var path = 'flow/forUser/' + username;
 
         return Restangular.all(path).getList();
     };

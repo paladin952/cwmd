@@ -46,6 +46,10 @@ angular.module('cwmd', ['restangular', 'ui.router', 'pascalprecht.translate', 'n
             .state('statistics', {
                 url: '/statistics',
                 template: '<statistics></statistics>'
+            })
+            .state('logs', {
+                url: '/logs',
+                template: '<logs></logs>'
             });
     })
     .run(function ($rootScope, $state) {

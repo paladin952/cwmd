@@ -8,7 +8,7 @@ angular.module('cwmd').component('menu', {
             $ctrl.isAdmin = UserSrv.isAdmin;
             $ctrl.isManager = UserSrv.isManager;
         };
-
+        console.log($ctrl.isAdmin);
         $ctrl.logout = function () {
             UserSrv.logout();
             $state.go('login');

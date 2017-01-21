@@ -1,0 +1,53 @@
+<div class="container">
+    <div ui-view></div>
+    <div class="row">
+        <div class="col-xs-12 documentList">
+            <h3>Logs</h3>
+            <br>
+            <h4>Filters:<h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-xs-3">Log type</th>
+                        <th class="col-xs-3">Filter type</th>
+                        <th class="col-xs-3" >Seach word</th>
+                        <th class="col-xs-3" ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[1]) > -1">From</th>
+                        <th class="col-xs-3" ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[1]) > -1">To</th>
+                        <th class="col-xs-3"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="col-xs-3">
+                        <select ng-model="$ctrl.log">
+                            <option ng-repeat="log in $ctrl.logTypes">{{log}}</option>
+                        </select>
+                    </td>
+                    <td class="col-xs-3">
+                        <select ng-model="$ctrl.filters" multiple>
+                            <option ng-repeat="filter in $ctrl.filterTypes">{{filter}}</option>
+                        </select>
+                    </td>
+                    <td class="col-xs-3">
+                        <input ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[0]) > -1" ng-model="$ctrl.filterValue"/>
+                    </td>
+                    <td class="col-xs-3">                        
+                        <input ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[1]) > -1" ng-model="$ctrl.from" type="datetime-local"/>
+                    </td>
+                    <td class="col-xs-3">                       
+                        <input ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[1]) > -1" ng-model="$ctrl.to" type="datetime-local"/>
+                    </td>
+                    <td><button class="btn btn-info" ng-click="$ctrl.search()">Search</button></td>
+                </tr>
+                </tbody>
+            </table>
+            <div ng-show="$ctrl.logs" ng-repeat="log in $ctrl.logs" class="col-xs-12 flow">
+                
+            </div>
+            <br>
+            <div ng-hide="$ctrl.logs">
+                There are no flows in the app yet!
+            </div>
+        </div>
+    </div>
+</div>
