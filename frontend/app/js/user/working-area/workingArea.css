@@ -1,7 +1,3 @@
-working-area .documentList {
-    margin-top: 15px;
-}
-
 working-area .document :first-child {
     line-height: 40px;
     font-style: italic;

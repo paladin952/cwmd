@@ -2,13 +2,14 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     var service = this;
 
     service.getAllLogs = function () {
-        return Restangular.all('log').getList();
+        var path = "log/all/"
+        return Restangular.all(path).getList();
     };
 
     service.getAllLogsWithFilter = function (filter) {
         var path = "log/all/filter";
 
-        return Restangular.all(path).getList(filter);
+        return Restangular.all(path).post(filter);
     };
 
     service.getAllLogsWithTimestamp = function (from, to) {
@@ -17,7 +18,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             from: from,
             to: to
         };
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).post(timestamp);
     };
 
     service.getAllLogsWithAllFilters = function (filter, from, to) {
@@ -31,7 +32,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all('log').post(parameters);
     };
 
     service.getAllDebugLogs = function () {
@@ -43,7 +44,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     service.getAllDebugLogsWithFilter = function (filter) {
         var path = "log/debug/filter";
 
-        return Restangular.all(path).getList(filter);
+        return Restangular.all(path).post(filter);
     };
 
     service.getAllDebugLogsWithTimestamp = function (from, to) {
@@ -53,7 +54,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             to: to
         };
 
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).post(timestamp);
     };
 
     service.getAllDebugLogsWithAllFilters = function (filter, from, to) {
@@ -67,7 +68,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all('log').post(parameters);
     };
 
     service.getAllInfoLogs = function () {
@@ -79,7 +80,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     service.getAllInfoLogsWithFilter = function (filter) {
         var path = "log/info/filter";
 
-        return Restangular.all(path).getList(filter);
+        return Restangular.all(path).post(filter);
     };
 
     service.getAllInfoLogsWithTimestamp = function (from, to) {
@@ -89,7 +90,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             to: to
         };
 
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).post(timestamp);
     };
 
     service.getAllInfoLogsWithAllFilters = function (filter, from, to) {
@@ -103,7 +104,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all('log').post(parameters);
     };
 
     service.getAllWarnLogs = function () {
@@ -115,7 +116,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     service.getAllWarnLogsWithFilter = function (filter) {
         var path = "log/warn/filter";
 
-        return Restangular.all(path).getList(filter);
+        return Restangular.all(path).post(filter);
     };
 
     service.getAllWarnLogsWithTimestamp = function (from, to) {
@@ -125,7 +126,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             to: to
         };
 
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).post(timestamp);
     };
 
     service.getAllWarnLogsWithAllFilters = function (filter, from, to) {
@@ -139,7 +140,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all('log').post(parameters);
     };
 
     service.getAllErrorLogs = function () {
@@ -151,7 +152,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     service.getAllErrorLogsWithFilter = function (filter) {
         var path = "log/error/filter";
 
-        return Restangular.all(path).getList(filter);
+        return Restangular.all(path).post(filter);
     };
 
     service.getAllErrorLogsWithTimestamp = function (from, to) {
@@ -161,7 +162,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             to: to
         };
 
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).post(timestamp);
     };
 
     service.getAllErrorLogsWithAllFilters = function (filter, from, to) {
@@ -175,7 +176,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all('log').post(parameters);
     };
 
 });
