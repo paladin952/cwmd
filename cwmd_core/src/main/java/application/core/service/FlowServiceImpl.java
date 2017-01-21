@@ -93,7 +93,7 @@ public class FlowServiceImpl implements IFlowService {
                     flowMailer.sendMail(flow);
                 } catch (RuntimeException e) {
                     e.printStackTrace();
-                    log.error(TAG, "Failed to send email for 'flow at department", flow.getUser().getUsername(), e);
+                    log.error(FlowServiceImpl.class.getSimpleName(), "Failed to send email for 'flow at department", flow.getUser().getUsername());
                 }
             }
             return flow;
@@ -172,7 +172,7 @@ public class FlowServiceImpl implements IFlowService {
                 flowMailer.sendMail(flow);
             } catch (RuntimeException e) {
                 e.printStackTrace();
-                log.error(TAG, "Failed to send email for 'flow at department", flow.getUser().getUsername(), e);
+                log.error(FlowServiceImpl.class.getSimpleName(), "Failed to send email for 'flow at department", flow.getUser().getUsername());
             }
         }
 
