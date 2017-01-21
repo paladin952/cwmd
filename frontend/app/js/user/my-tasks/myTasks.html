@@ -9,17 +9,26 @@
                 <table class="table-condensed">
                     <tr ng-repeat="document in flow.flowDocuments" class="col-xs-12 document">
                         <td><span>{{document.name}}</span></td>
-                        <td><button ng-click="">Download</button><td>
-                        <td><button ng-click="">Upload revised</button><td>
-                        <td><button ng-click="$ctrl.sendToNextDepartment(flow.id)">Send to next department</button><td>
-                        <td><button ng-click="$ctrl.sentToInitial(flow.id)">Send to initial department</button><td>
+                        <td><button ng-click="">Download</button></td>
+                        <td><button ng-click="">Upload revised</button></td>
+                        <td><button ng-click="$ctrl.sendToNextDepartment(flow.id)">Send to next department</button></td>
+                        <td>
+                            <form class="form col-md-12 center-block">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-lg" placeholder="Remark" ng-model="$ctrl.remark" required>
+                                </div>
+                                <div class="form-group">
+                                    <button ng-disabled="!$ctrl.remark" ng-click="$ctrl.sentToInitial(flow.id)">Send to initial department</button>
+                                </div>
+                            </form>
+                        </td>
                     </tr>
                 </table>
                 <span class="col-xs-12 path">Path:
                     <span ng-repeat="path in flow.flowPath">
                         <span class="tag">{{path.name}}</span>
-                        <span ng-if="!$last" class="arrow"> -> </span>
-                    </span>
+                <span ng-if="!$last" class="arrow"> -> </span>
+                </span>
                 </span>
             </div>
             <div ng-hide="$ctrl.flows">
