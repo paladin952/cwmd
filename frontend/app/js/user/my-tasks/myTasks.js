@@ -29,24 +29,19 @@ angular.module('cwmd').component('myTasks', {
         };
 
         $ctrl.reject = function (id) {
-            var remarkCall = false;
             FlowSrv.addRemark(id, $ctrl.remark)
                 .then(function (response) {
-                    remarkCall = true;
+                    FlowSrv.rejectFlow(id)
+                        .then(function (response) {
+                            alert("Flow " + response + " was sent to the initial department");
+                        })
+                        .catch(function (response) {
+                            console.log(response);
+                        });
                 })
                 .catch(function (response) {
                     console.log(response);
                 });
-            if (remarkCall) {
-                FlowSrv.rejectFlow(id)
-                    .then(function (response) {
-                        alert("Flow " + response + " was sent to the initial department");
-                    })
-                    .catch(function (response) {
-                        console.log(response);
-                    });
-            }
-
         };
     }
 });

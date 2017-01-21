@@ -32,16 +32,12 @@ angular.module('cwmd').service('FlowSrv', function (Restangular, UserSrv) {
     };
 
     service.addRemark = function(flowId, remark){
-        var path = 'flow/remarks/';
+        var path = 'flow/remarks/' + flowId;
         var rem = {
             remarks: remark
         }
-        var parameters = {
-            flowId: flowId,
-            flowRemarksDTO: rem
-        };
 
-        return Restangular.all(path).post(parameters);
+        return Restangular.all(path).post(rem);
     };
 
     service.isFlowAtEnd = function (flowId) {
