@@ -26,14 +26,16 @@
                 <li ng-if="$ctrl.isAdmin()">
                     <a ui-sref="manageUsers">Add users</a>
                 </li>
-
                 <li ng-if="$ctrl.isManager()">
                     <a ui-sref="statistics">Statistics</a>
+                </li>
+                <li ng-if="$ctrl.isAdmin()">
+                    <a ui-sref="logs">App logs</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#" ng-click="$ctrl.logout()">Logout</a>
+                    <a ui-sref="login" ng-click="$ctrl.logout()">Logout</a>
                 </li>
             </ul>
         </div>

@@ -1,11 +1,12 @@
 angular.module('cwmd').component('myTasks', {
     templateUrl: 'app/js/user/my-tasks/myTasks.html',
-    controller: function (FlowSrv) {
+    controller: function ($window, FlowSrv) {
         var $ctrl = this;
         $ctrl.flows = null;
 
         $ctrl.$onInit = function () {
-            FlowSrv.getFlowsAssignedToCurrentUser()
+            var username = $window.localStorage.getItem("currentUsername");
+            FlowSrv.getFlowsAssignedToCurrentUser(username)
                 .then(function (response) {
                     $ctrl.flows = response;
                 })
