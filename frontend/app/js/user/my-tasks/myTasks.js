@@ -48,15 +48,5 @@ angular.module('cwmd').component('myTasks', {
             }
 
         };
-
-        $ctrl.reject = function (flowId) {
-            FlowSrv.rejectFlow(flowId)
-                .then(function () {
-                    _.remove($ctrl.flows, function (flow) {
-                        return flow.id === flowId;
-                    });
-                });
-        };
-
     }
 });
