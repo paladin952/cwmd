@@ -11,7 +11,7 @@
                             <tr>
                                 <th class="col-xs-3">Log type</th>
                                 <th class="col-xs-3">Filter type</th>
-                                <th class="col-xs-3">Seach word</th>
+                                <th class="col-xs-3" ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[0]) > -1">Seach word</th>
                                 <th class="col-xs-3" ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[1]) > -1">From</th>
                                 <th class="col-xs-3" ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[1]) > -1">To</th>
                                 <th class="col-xs-3"></th>
@@ -29,8 +29,8 @@
                                         <option ng-repeat="filter in $ctrl.filterTypes">{{filter}}</option>
                                     </select>
                                 </td>
-                                <td class="col-xs-3">
-                                    <input ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[0]) > -1" ng-model="$ctrl.filterValue" />
+                                <td class="col-xs-3" ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[0]) > -1">
+                                    <input ng-model="$ctrl.filterValue" />
                                 </td>
                                 <td class="col-xs-3">
                                     <input ng-show="$ctrl.filters.indexOf($ctrl.filterTypes[1]) > -1" ng-model="$ctrl.from" type="datetime-local" />
@@ -68,8 +68,8 @@
                         </tbody>
                     </table>
                     <br>
-                    <div ng-hide="$ctrl.logs">
-                        There are no flows in the app yet!
+                    <div ng-hide="$ctrl.logs.length != 0">
+                        There are no logs to display!
                     </div>
         </div>
     </div>

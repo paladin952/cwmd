@@ -2,36 +2,37 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     var service = this;
 
     service.getAllLogs = function () {
-        return Restangular.all('log').getList();
+        return Restangular.all('log/all').getList();
     };
 
     service.getAllLogsWithFilter = function (filter) {
         var path = "log/all/filter";
 
-        return Restangular.all(path).getList(filter);
+        var _params = {
+            filter: filter
+        };
+
+        return Restangular.all(path).getList(_params);
     };
 
     service.getAllLogsWithTimestamp = function (from, to) {
         var path = "log/all/timestamps";
-        var timestamp = {
+        var logTimeIntervalDTO = {
             from: from,
             to: to
         };
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).getList(logTimeIntervalDTO);
     };
 
     service.getAllLogsWithAllFilters = function (filter, from, to) {
         var path = "log/all/all_filters";
-        var timestamp = {
+        var parameters = {
+            filter: filter,
             from: from,
             to: to
         };
-        var parameters = {
-            filer: filter,
-            timestamp: timestamp
-        };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all(path).getList(parameters);
     };
 
     service.getAllDebugLogs = function () {
@@ -43,31 +44,32 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     service.getAllDebugLogsWithFilter = function (filter) {
         var path = "log/debug/filter";
 
-        return Restangular.all(path).getList(filter);
+        var _params = {
+            filter: filter
+        };
+
+        return Restangular.all(path).getList(_params);
     };
 
     service.getAllDebugLogsWithTimestamp = function (from, to) {
         var path = "log/debug/timestamps";
-        var timestamp = {
+        var logTimeIntervalDTO = {
             from: from,
             to: to
         };
 
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).getList(logTimeIntervalDTO);
     };
 
     service.getAllDebugLogsWithAllFilters = function (filter, from, to) {
         var path = "log/debug/all_filters";
-        var timestamp = {
+        var parameters = {
+            filter: filter,
             from: from,
             to: to
         };
-        var parameters = {
-            filer: filter,
-            timestamp: timestamp
-        };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all(path).getList(parameters);
     };
 
     service.getAllInfoLogs = function () {
@@ -79,31 +81,33 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     service.getAllInfoLogsWithFilter = function (filter) {
         var path = "log/info/filter";
 
-        return Restangular.all(path).getList(filter);
+        var _params = {
+            filter: filter
+        };
+
+        return Restangular.all(path).getList(_params);
     };
 
     service.getAllInfoLogsWithTimestamp = function (from, to) {
         var path = "log/info/timestamps";
-        var timestamp = {
+        var logTimeIntervalDTO = {
             from: from,
             to: to
         };
 
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).getList(logTimeIntervalDTO);
     };
 
     service.getAllInfoLogsWithAllFilters = function (filter, from, to) {
         var path = "log/info/all_filters";
-        var timestamp = {
+        var interval = {};
+        var parameters = {
+            filter: filter,
             from: from,
             to: to
         };
-        var parameters = {
-            filer: filter,
-            timestamp: timestamp
-        };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all(path).getList(parameters);
     };
 
     service.getAllWarnLogs = function () {
@@ -115,31 +119,32 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     service.getAllWarnLogsWithFilter = function (filter) {
         var path = "log/warn/filter";
 
-        return Restangular.all(path).getList(filter);
+        var _params = {
+            filter: filter
+        };
+
+        return Restangular.all(path).getList(_params);
     };
 
     service.getAllWarnLogsWithTimestamp = function (from, to) {
         var path = "log/warn/timestamps";
-        var timestamp = {
+        var logTimeIntervalDTO = {
             from: from,
             to: to
         };
 
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).getList(logTimeIntervalDTO);
     };
 
     service.getAllWarnLogsWithAllFilters = function (filter, from, to) {
         var path = "log/warn/all_filters";
-        var timestamp = {
+        var parameters = {
+            filter: filter,
             from: from,
             to: to
         };
-        var parameters = {
-            filer: filter,
-            timestamp: timestamp
-        };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all(path).getList(parameters);
     };
 
     service.getAllErrorLogs = function () {
@@ -151,31 +156,32 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
     service.getAllErrorLogsWithFilter = function (filter) {
         var path = "log/error/filter";
 
-        return Restangular.all(path).getList(filter);
+        var _params = {
+            filter: filter
+        };
+
+        return Restangular.all(path).getList(_params);
     };
 
     service.getAllErrorLogsWithTimestamp = function (from, to) {
         var path = "log/error/timestamps";
-        var timestamp = {
+        var logTimeIntervalDTO = {
             from: from,
             to: to
         };
 
-        return Restangular.all(path).getList(timestamp);
+        return Restangular.all(path).getList(logTimeIntervalDTO);
     };
 
     service.getAllErrorLogsWithAllFilters = function (filter, from, to) {
         var path = "log/error/all_filters";
-        var timestamp = {
+        var parameters = {
+            filter: filter,
             from: from,
             to: to
         };
-        var parameters = {
-            filer: filter,
-            timestamp: timestamp
-        };
 
-        return Restangular.all('log').getList(parameters);
+        return Restangular.all(path).getList(parameters);
     };
 
 });

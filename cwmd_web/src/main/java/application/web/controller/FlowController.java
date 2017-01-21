@@ -91,9 +91,7 @@ public class FlowController {
 
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity<Integer> countAll(HttpServletRequest request) {
-//        String username = UserUtil.getCurrentUsername(request);
         int size = flowService.readAll().size();
-//        int size = flowService.read(username).size();
         if (size == 0) {
             return new ResponseEntity<>(size-1, HttpStatus.OK);
         } else {
@@ -115,9 +113,7 @@ public class FlowController {
 
     @RequestMapping(value = "/count/active", method = RequestMethod.GET)
     public ResponseEntity<Integer> countActive(HttpServletRequest request) {
-//        String username = UserUtil.getCurrentUsername(request);
         int size = flowService.readActive().size();
-//        int size = flowService.readActive(username).size();
         if (size == 0) {
             return new ResponseEntity<>(size-1, HttpStatus.OK);
         } else {
@@ -139,9 +135,7 @@ public class FlowController {
 
     @RequestMapping(value = "/count/finished", method = RequestMethod.GET)
     public ResponseEntity<Integer> countFinished(HttpServletRequest request) {
-//        String username = UserUtil.getCurrentUsername(request);
         int size = flowService.readFinished().size();
-//        int size = flowService.readFinished(username).size();
         if (size == 0) {
             return new ResponseEntity<>(size-1, HttpStatus.OK);
         } else {

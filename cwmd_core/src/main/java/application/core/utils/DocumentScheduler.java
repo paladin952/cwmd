@@ -4,6 +4,7 @@ import application.core.model.Document;
 import application.core.model.Flow;
 import application.core.repository.DocumentRepository;
 import application.core.repository.FlowRepository;
+import application.core.utils.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,9 @@ public class DocumentScheduler {
     private DocumentRepository documentRepository;
     private FlowRepository flowRepository;
     private DocumentMailer mailer;
+
+    @Autowired
+    private Log log;
 
     @Autowired
     public DocumentScheduler(DocumentRepository documentRepository, FlowRepository flowRepository, DocumentMailer mailer) {
@@ -43,11 +47,21 @@ public class DocumentScheduler {
                 long crtDate = (new Date()).getTime();
                 long docDate = document.getDateAdded().getTime();
                 if ((crtDate - docDate) / dayDivider == docFirstThreshold) {
-                    mailer.setVelocityTemplateLocation(docFirstThresholdTemplateLocation);
-                    mailer.sendMail(document);
+                    try {
+                        mailer.setVelocityTemplateLocation(docFirstThresholdTemplateLocation);
+                        mailer.sendMail(document);
+                    } catch (RuntimeException e) {
+                        e.printStackTrace();
+                        log.error(DocumentScheduler.class.getSimpleName(), "Failed to send email for 'flow at department", document.getUser().getUsername());
+                    }
                 } else if (crtDate - docDate == docSecondThreshold) {
-                    mailer.setVelocityTemplateLocation(docSecondThresholdTemplateLocation);
-                    mailer.sendMail(document);
+                    try {
+                        mailer.setVelocityTemplateLocation(docSecondThresholdTemplateLocation);
+                        mailer.sendMail(document);
+                    } catch (RuntimeException e) {
+                        e.printStackTrace();
+                        log.error(DocumentScheduler.class.getSimpleName(), "Failed to send email for 'flow at department", document.getUser().getUsername());
+                    }
                 }
             }
         });

@@ -7,7 +7,7 @@
     </div>
     <br>
     <div class="row">
-        <button class="btn btn-success pull-left" ng-show="!$ctrl.canStartFlow" ng-click="$ctrl.canAddDocuments = true">Add documents</button>
+        <button class="btn btn-success pull-left" ng-show="!$ctrl.canStartFlow" ng-click="$ctrl.canAddDocuments = true">Create flow</button>
         <button class="btn btn-success pull-left" ng-disabled="!$ctrl.canAddDocuments" ng-show="$ctrl.canStartFlow" ng-click="$ctrl.startFlow()">Start flow</button>
     </div>
     <div ui-view></div>

@@ -37,7 +37,7 @@ public class LogItemRepositoryImpl extends CustomRepositorySupport<Long, LogItem
                 if ((loglevel != LogLevel.LOG_ALL || filter != null) && (from != null && to != null))
                     sql += " AND ";
                 if (from != null && to != null)
-                    sql += "L.Timestamp BETWEEN DATE(:date_from) AND DATE(:date_to)";
+                    sql += "L.Timestamp BETWEEN :date_from AND :date_to";
                 break;
         }
 
