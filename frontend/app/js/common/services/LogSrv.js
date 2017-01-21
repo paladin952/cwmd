@@ -32,7 +32,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').post(parameters);
+        return Restangular.all(path).post(parameters);
     };
 
     service.getAllDebugLogs = function () {
@@ -68,7 +68,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').post(parameters);
+        return Restangular.all(path).post(parameters);
     };
 
     service.getAllInfoLogs = function () {
@@ -104,7 +104,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').post(parameters);
+        return Restangular.all(path).post(parameters);
     };
 
     service.getAllWarnLogs = function () {
@@ -140,7 +140,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').post(parameters);
+        return Restangular.all(path).post(parameters);
     };
 
     service.getAllErrorLogs = function () {
@@ -176,7 +176,7 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             timestamp: timestamp
         };
 
-        return Restangular.all('log').post(parameters);
+        return Restangular.all(path).post(parameters);
     };
 
 });
