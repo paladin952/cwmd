@@ -223,10 +223,21 @@ public class FlowController {
         }
     }
 
-    @RequestMapping(value = "forDepartment/{departmentId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/forDepartment/{departmentId}", method = RequestMethod.GET)
     public ResponseEntity<List<FlowDTO>> getFlowsForDepartment(@PathVariable("departmentId") final Integer deptId) {
         try {
             return new ResponseEntity<>(flowConverter.toDTOs(flowService.getFlowsForDepartment(deptId)), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/reject/{id}", method = RequestMethod.POST)
+    public ResponseEntity<String> rejectFlow(@PathVariable("id") final Integer flowId) {
+        try {
+            flowService.rejectFlow(flowId);
+            return new ResponseEntity<>(OK_MSG, HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

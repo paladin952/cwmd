@@ -22,5 +22,6 @@ public interface IFlowService {
     List<Flow> getFlowsForUser(String username);
     Flow update(Flow flow);
     void addRemarks(Integer flowId, String remarks);
+    void rejectFlow(Integer flowId);
     void delete(Integer flowId);
 }

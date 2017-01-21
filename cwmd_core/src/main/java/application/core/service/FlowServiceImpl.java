@@ -265,6 +265,13 @@ public class FlowServiceImpl implements IFlowService {
     }
 
     @Override
+    public void rejectFlow(Integer flowId) {
+        Flow flow = flowRepo.findOne(flowId);
+        List<FlowPath> flowPath = flowPathRepo.getSomeSQL(flowId);
+        flow.setCrtDepartment(flowPath.size());
+    }
+
+    @Override
     public void delete(Integer flowId) {
         flowRepo.delete(flowId);
     }
