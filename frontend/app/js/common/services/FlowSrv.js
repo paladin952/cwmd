@@ -20,9 +20,9 @@ angular.module('cwmd').service('FlowSrv', function (Restangular, UserSrv) {
     };
 
     service.goToNextDepartment = function (flowId) {
-        var path = 'flow/goToNextDepartment/';
+        var path = 'flow/goToNextDepartment/' + flowId;
 
-        return Restangular.one(path).get(flowId);
+        return Restangular.one(path).get();
     };
 
     service.goToInitialDepartment = function (flowId, remark) {

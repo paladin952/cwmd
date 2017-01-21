@@ -10,7 +10,6 @@ angular.module('cwmd').component('myTasks', {
             FlowSrv.getFlowsAssignedToCurrentUser(username)
                 .then(function (response) {
                     $ctrl.flows = response;
-                    debugger;
                 })
                 .catch(function (response) {
                     console.log(response);
