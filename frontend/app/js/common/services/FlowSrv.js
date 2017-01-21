@@ -83,4 +83,9 @@ angular.module('cwmd').service('FlowSrv', function (Restangular, UserSrv) {
         return Restangular.one('flow/count/finished').get();
     };
 
+    service.rejectFlow = function (flowId) {
+        var path = 'flow/reject/' + flowId;
+        return Restangular.one(path).post();
+    };
+
 });

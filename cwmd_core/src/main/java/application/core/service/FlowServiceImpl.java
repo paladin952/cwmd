@@ -5,6 +5,7 @@ import application.core.model.PKs.FlowDocumentPK;
 import application.core.repository.*;
 import application.core.service.exceptions.ServiceException;
 import application.core.utils.FlowMailer;
+import application.core.utils.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,9 @@ public class FlowServiceImpl implements IFlowService {
     private final UserRepository userRepository;
     private final DepartmentUserRepository departmentUserRepository;
     private final FlowMailer flowMailer;
+
+    @Autowired
+    private Log log;
 
     @Autowired
     public FlowServiceImpl(FlowRepository flowRepo, FlowPathRepository flowPathRepo, FlowDocumentRepository flowDocumentRepo, DocumentRepository documentRepository, DepartmentRepository departmentRepository, UserRepository userRepository, DepartmentUserRepository departmentUserRepository, FlowMailer flowMailer) {
@@ -105,14 +109,17 @@ public class FlowServiceImpl implements IFlowService {
 
     @Override
     public List<Flow> readActive(String username) {
-        return flowRepo.findByUser_Username(username);
+        return flowRepo.findByUser_Username(username)
+                .stream()
+                .filter(flow -> flow.getCrtDepartment() < flow.getFlowPath().size())
+                .collect(Collectors.toList());
     }
 
-    private List<Flow> read() {
+    public List<Flow> read() {
         return flowRepo.getAllSQL();
     }
 
-    private List<Flow> readActive() {
+    public List<Flow> readActive() {
         return read()
                 .stream()
                 .filter(flow -> flow.getCrtDepartment() < flow.getFlowPath().size())
@@ -121,10 +128,13 @@ public class FlowServiceImpl implements IFlowService {
 
     @Override
     public List<Flow> readFinished(String username) {
-        return flowRepo.findByUser_Username(username);
+        return flowRepo.findByUser_Username(username)
+                .stream()
+                .filter(flow -> flow.getCrtDepartment() >= flow.getFlowPath().size())
+                .collect(Collectors.toList());
     }
 
-    private List<Flow> readFinished() {
+    public List<Flow> readFinished() {
         return read()
                 .stream()
                 .filter(flow -> flow.getCrtDepartment() >= flow.getFlowPath().size())
@@ -147,8 +157,13 @@ public class FlowServiceImpl implements IFlowService {
         flowRepo.save(flow);
 
         if (crt < flow.getFlowPath().size()) {
-            flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC);
-            flowMailer.sendMail(flow);
+            try {
+                flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC);
+                flowMailer.sendMail(flow);
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                log.error(FlowServiceImpl.class.getSimpleName(), "Failed to send email for 'flow at department", flow.getUser().getUsername());
+            }
         }
 
         return flow;

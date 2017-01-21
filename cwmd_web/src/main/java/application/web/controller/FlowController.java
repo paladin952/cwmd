@@ -19,8 +19,6 @@ import java.util.List;
 @RequestMapping("/flow")
 @RestController
 public class FlowController {
-    private final static String OK_MSG = "OK";
-
     private final FlowConverter flowConverter;
 
     private final DepartmentConverter departmentConverter;
@@ -49,10 +47,10 @@ public class FlowController {
     }
 
     @RequestMapping(value = "/remarks/{id}", method = RequestMethod.POST)
-    public ResponseEntity<String> addRemarks(@PathVariable("id") Integer flowId, @RequestBody FlowRemarksDTO flowRemarksDTO) {
+    public ResponseEntity addRemarks(@PathVariable("id") Integer flowId, @RequestBody FlowRemarksDTO flowRemarksDTO) {
         try {
             flowService.addRemarks(flowId, flowRemarksDTO.getRemarks());
-            return new ResponseEntity<>(OK_MSG, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -93,8 +91,9 @@ public class FlowController {
 
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity<Integer> countAll(HttpServletRequest request) {
-        String username = UserUtil.getCurrentUsername(request);
-        int size = flowService.read(username).size();
+//        String username = UserUtil.getCurrentUsername(request);
+        int size = flowService.readAll().size();
+//        int size = flowService.read(username).size();
         if (size == 0) {
             return new ResponseEntity<>(size-1, HttpStatus.OK);
         } else {
@@ -116,8 +115,9 @@ public class FlowController {
 
     @RequestMapping(value = "/count/active", method = RequestMethod.GET)
     public ResponseEntity<Integer> countActive(HttpServletRequest request) {
-        String username = UserUtil.getCurrentUsername(request);
-        int size = flowService.readActive(username).size();
+//        String username = UserUtil.getCurrentUsername(request);
+        int size = flowService.readActive().size();
+//        int size = flowService.readActive(username).size();
         if (size == 0) {
             return new ResponseEntity<>(size-1, HttpStatus.OK);
         } else {
@@ -139,8 +139,9 @@ public class FlowController {
 
     @RequestMapping(value = "/count/finished", method = RequestMethod.GET)
     public ResponseEntity<Integer> countFinished(HttpServletRequest request) {
-        String username = UserUtil.getCurrentUsername(request);
-        int size = flowService.readFinished(username).size();
+//        String username = UserUtil.getCurrentUsername(request);
+        int size = flowService.readFinished().size();
+//        int size = flowService.readFinished(username).size();
         if (size == 0) {
             return new ResponseEntity<>(size-1, HttpStatus.OK);
         } else {
@@ -203,10 +204,10 @@ public class FlowController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> delete(@PathVariable("id") final Integer flowId) {
+    public ResponseEntity delete(@PathVariable("id") final Integer flowId) {
         try {
             flowService.delete(flowId);
-            return new ResponseEntity<>(OK_MSG, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -234,10 +235,10 @@ public class FlowController {
     }
 
     @RequestMapping(value = "/reject/{id}", method = RequestMethod.POST)
-    public ResponseEntity<String> rejectFlow(@PathVariable("id") final Integer flowId) {
+    public ResponseEntity rejectFlow(@PathVariable("id") final Integer flowId) {
         try {
             flowService.rejectFlow(flowId);
-            return new ResponseEntity<>(OK_MSG, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

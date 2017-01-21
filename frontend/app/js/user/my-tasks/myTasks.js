@@ -2,12 +2,11 @@ angular.module('cwmd').component('myTasks', {
     templateUrl: 'app/js/user/my-tasks/myTasks.html',
     controller: function ($window, FlowSrv) {
         var $ctrl = this;
-        $ctrl.flows = null;
         $ctrl.remark = null;
+        $ctrl.flows = [];
 
         $ctrl.$onInit = function () {
-            var username = $window.localStorage.getItem("currentUsername");
-            FlowSrv.getFlowsAssignedToCurrentUser(username)
+            FlowSrv.getFlowsAssignedToCurrentUser()
                 .then(function (response) {
                     $ctrl.flows = response;
                 })
@@ -20,6 +19,9 @@ angular.module('cwmd').component('myTasks', {
             FlowSrv.goToNextDepartment(id)
                 .then(function (response) {
                     alert("Flow " + response + " was sent to the next department");
+                    _.remove($ctrl.flows, function (flow) {
+                        return flow.id === id;
+                    });
                 })
                 .catch(function (response) {
                     console.log(response);
@@ -35,5 +37,15 @@ angular.module('cwmd').component('myTasks', {
                     console.log(response);
                 });
         };
+
+        $ctrl.reject = function (flowId) {
+            FlowSrv.rejectFlow(flowId)
+                .then(function () {
+                    _.remove($ctrl.flows, function (flow) {
+                        return flow.id === flowId;
+                    });
+                });
+        };
+
     }
 });

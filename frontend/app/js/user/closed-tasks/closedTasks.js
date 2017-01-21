@@ -2,6 +2,7 @@ angular.module('cwmd').component('closedTasks', {
     templateUrl: 'app/js/user/closed-tasks/closedTasks.html',
     controller: function (FlowSrv) {
         var $ctrl = this;
+        $ctrl.finished = [];
 
         $ctrl.$onInit = function () {
             FlowSrv.getFinishedFlows()

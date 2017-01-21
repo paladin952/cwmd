@@ -23,7 +23,7 @@
                                 </div>
                             </form>
                         </td>
-                        <td><button class="btn btn-danger" ng-click="">Reject</button><td>
+                        <td><button class="btn btn-danger" ng-click="$ctrl.reject(flow.id)">Reject</button><td>
                     </tr>
                 </table>
                 <span class="col-xs-12 path">Path:
@@ -33,7 +33,7 @@
                     </span>
                 </span>
             </div>
-            <div ng-hide="$ctrl.flows">
+            <div ng-hide="$ctrl.flows.length != 0">
                 There are no flows assigned for you!
             </div>
         </div>

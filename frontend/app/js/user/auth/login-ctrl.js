@@ -24,10 +24,10 @@
                     return;
                 }
 
-                $window.localStorage.setItem("currentUsername", $s.username);
-                $window.localStorage.setItem("currentUserRole", $s.role);
-                
-                $state.go('workingArea');
+                // $window.localStorage.setItem("currentUsername", $s.username);
+                // $window.localStorage.setItem("currentUserRole", $s.role);
+                //
+                // $state.go('workingArea');
                 userService.login($s.username, $s.password)
                     .then(function (response) {
                         var user = response;
