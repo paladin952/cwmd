@@ -13,7 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 @RequestMapping("/log")
 @RestController
@@ -53,8 +57,14 @@ public class LogController {
     @RequestMapping(value = "/all/timestamps", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getAll(@RequestBody LogTimeIntervalDTO logTimeIntervalDTO) {
         try {
-            Timestamp from = TimestampConverter.fromString(logTimeIntervalDTO.getFrom());
-            Timestamp to = TimestampConverter.fromString(logTimeIntervalDTO.getTo());
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(logTimeIntervalDTO.getFrom());
+            Date dateTo = format.parse(logTimeIntervalDTO.getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());
 
             return new ResponseEntity<>(converter.toDTOs(logService.getAll(from, to)), HttpStatus.OK);
         } catch (Exception e) {
@@ -67,8 +77,14 @@ public class LogController {
     @RequestMapping(value = "/all/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getAll(@RequestBody LogFilterDataDTO data) {
         try {
-            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
-            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(data.getInterval().getFrom());
+            Date dateTo = format.parse(data.getInterval().getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());
 
             return new ResponseEntity<>(converter.toDTOs(logService.getAll(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
@@ -136,6 +152,7 @@ public class LogController {
     @RequestMapping(value = "/info/filter", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getInfo(@RequestBody String filter) {
         try {
+            System.out.println(filter);
             return new ResponseEntity<>(converter.toDTOs(logService.getInfo(filter)), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application info log", e);
@@ -167,10 +184,16 @@ public class LogController {
     }
 
     @RequestMapping(value = "/debug/timestamps", method = RequestMethod.POST)
-    public ResponseEntity<List<LogItemDTO>> getDebug(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
+    public ResponseEntity<List<LogItemDTO>> getDebug(@RequestBody LogTimeIntervalDTO logTimeIntervalDTO) {
         try {
-            Timestamp from = TimestampConverter.fromString(timeIntervalDTO.getFrom());
-            Timestamp to = TimestampConverter.fromString(timeIntervalDTO.getTo());
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(logTimeIntervalDTO.getFrom());
+            Date dateTo = format.parse(logTimeIntervalDTO.getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());
 
             return new ResponseEntity<>(converter.toDTOs(logService.getDebug(from, to)), HttpStatus.OK);
         } catch (Exception e) {
@@ -181,10 +204,16 @@ public class LogController {
     }
 
     @RequestMapping(value = "/info/timestamps", method = RequestMethod.POST)
-    public ResponseEntity<List<LogItemDTO>> getInfo(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
+    public ResponseEntity<List<LogItemDTO>> getInfo(@RequestBody LogTimeIntervalDTO logTimeIntervalDTO) {
         try {
-            Timestamp from = TimestampConverter.fromString(timeIntervalDTO.getFrom());
-            Timestamp to = TimestampConverter.fromString(timeIntervalDTO.getTo());
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(logTimeIntervalDTO.getFrom());
+            Date dateTo = format.parse(logTimeIntervalDTO.getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());
             return new ResponseEntity<>(converter.toDTOs(logService.getInfo(from, to)), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application info log", e);
@@ -194,10 +223,16 @@ public class LogController {
     }
 
     @RequestMapping(value = "/warn/timestamps", method = RequestMethod.POST)
-    public ResponseEntity<List<LogItemDTO>> getWarnings(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
+    public ResponseEntity<List<LogItemDTO>> getWarnings(@RequestBody LogTimeIntervalDTO logTimeIntervalDTO) {
         try {
-            Timestamp from = TimestampConverter.fromString(timeIntervalDTO.getFrom());
-            Timestamp to = TimestampConverter.fromString(timeIntervalDTO.getTo());
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(logTimeIntervalDTO.getFrom());
+            Date dateTo = format.parse(logTimeIntervalDTO.getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());
             return new ResponseEntity<>(converter.toDTOs(logService.getWarnings(from, to)), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application warnings log", e);
@@ -207,10 +242,16 @@ public class LogController {
     }
 
     @RequestMapping(value = "/error/timestamps", method = RequestMethod.POST)
-    public ResponseEntity<List<LogItemDTO>> getErrors(@RequestBody LogTimeIntervalDTO timeIntervalDTO) {
+    public ResponseEntity<List<LogItemDTO>> getErrors(@RequestBody LogTimeIntervalDTO logTimeIntervalDTO) {
         try {
-            Timestamp from = TimestampConverter.fromString(timeIntervalDTO.getFrom());
-            Timestamp to = TimestampConverter.fromString(timeIntervalDTO.getTo());
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(logTimeIntervalDTO.getFrom());
+            Date dateTo = format.parse(logTimeIntervalDTO.getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());
             return new ResponseEntity<>(converter.toDTOs(logService.getErrors(from, to)), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Ironic error while retrieving application error log", e);
@@ -222,8 +263,14 @@ public class LogController {
     @RequestMapping(value = "/debug/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getDebug(@RequestBody LogFilterDataDTO data) {
         try {
-            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
-            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(data.getInterval().getFrom());
+            Date dateTo = format.parse(data.getInterval().getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());
             return new ResponseEntity<>(converter.toDTOs(logService.getDebug(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application debug log", e);
@@ -235,8 +282,14 @@ public class LogController {
     @RequestMapping(value = "/info/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getInfo(@RequestBody LogFilterDataDTO data) {
         try {
-            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
-            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(data.getInterval().getFrom());
+            Date dateTo = format.parse(data.getInterval().getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());
             return new ResponseEntity<>(converter.toDTOs(logService.getInfo(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application info log", e);
@@ -248,9 +301,14 @@ public class LogController {
     @RequestMapping(value = "/warn/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getWarnings(@RequestBody LogFilterDataDTO data) {
         try {
-            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
-            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
-            return new ResponseEntity<>(converter.toDTOs(logService.getWarnings(from, to, data.getFilter())), HttpStatus.OK);
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(data.getInterval().getFrom());
+            Date dateTo = format.parse(data.getInterval().getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());            return new ResponseEntity<>(converter.toDTOs(logService.getWarnings(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Error while retrieving application warnings log", e);
             e.printStackTrace();
@@ -261,8 +319,14 @@ public class LogController {
     @RequestMapping(value = "/error/all_filters", method = RequestMethod.POST)
     public ResponseEntity<List<LogItemDTO>> getErrors(@RequestBody LogFilterDataDTO data) {
         try {
-            Timestamp from = TimestampConverter.fromString(data.getInterval().getFrom());
-            Timestamp to = TimestampConverter.fromString(data.getInterval().getTo());
+            SimpleDateFormat format = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date dateFrom = format.parse(data.getInterval().getFrom());
+            Date dateTo = format.parse(data.getInterval().getTo());
+            Timestamp from = new Timestamp(dateFrom.getTime());
+            Timestamp to = new Timestamp(dateTo.getTime());
             return new ResponseEntity<>(converter.toDTOs(logService.getErrors(from, to, data.getFilter())), HttpStatus.OK);
         } catch (Exception e) {
             log.error(LogController.class.getSimpleName(), "Ironic error while retrieving application error log", e);
