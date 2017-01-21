@@ -12,15 +12,17 @@
     </div>
     <div ui-view></div>
     <div class="row">
+        <h3>Departments</h3>
+        <tags-input ng-show="$ctrl.canAddDocuments" ng-model="$ctrl.departmentsForFlow" display-property="name">
+            <auto-complete source="$ctrl.getDepartments($query)" minLength="1">
+            </auto-complete>
+        </tags-input>
         <div class="col-xs-6 documentList">
             <h3>DR - documents</h3>
             <div ng-repeat="document in $ctrl.drDocuments" class="col-xs-12 document">
                 <span>{{document.name}}</span>
                 <span class="caption pull-right">{{document.dateAdded | date: "yyyy-MM-dd"}}</span>
                 <button class="btn btn-default" ng-show="$ctrl.canAddDocuments" ng-click="$ctrl.addDocumentToFlow(document.id)">Add to flow</button>
-                <tags-input ng-show="$ctrl.canAddDocuments" ng-model="$ctrl.departmentsForFlow" display-property="name">
-                    <auto-complete source="$ctrl.getDepartments($query)"></auto-complete>
-                </tags-input>
             </div>
         </div>
         <div class="col-xs-6 documentList">
@@ -29,12 +31,6 @@
                 <span>{{document.name}}</span>
                 <span class="caption pull-right">{{document.dateAdded | date: "yyyy-MM-dd"}}</span>
                 <button class="btn btn-default" ng-show="$ctrl.canAddDocuments" ng-click="$ctrl.addDocumentToFlow(document.id)">Add to flow</button>
-                <tags-input ng-show="$ctrl.canAddDocuments" ng-model="$ctrl.departmentsForFlow" display-property="name">
-                    <auto-complete
-                            source="$ctrl.getDepartments($query)"
-                            minLength="1">
-                    </auto-complete>
-                </tags-input>
             </div>
         </div>
 
