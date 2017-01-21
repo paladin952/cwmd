@@ -19,11 +19,10 @@
                                     <input type="text" class="form-control input-lg" placeholder="Remark" ng-model="$ctrl.remark" required>
                                 </div>
                                 <div class="form-group">
-                                    <button ng-disabled="!$ctrl.remark" ng-click="$ctrl.reject(flow.id)">Send to initial department</button>
+                                    <button ng-disabled="!$ctrl.remark" ng-click="$ctrl.reject(flow.id)">Reject Flow</button>
                                 </div>
                             </form>
                         </td>
-                        <td><button class="btn btn-danger" ng-click="$ctrl.reject(flow.id)">Reject</button><td>
                     </tr>
                 </table>
                 <span class="col-xs-12 path">Path:
