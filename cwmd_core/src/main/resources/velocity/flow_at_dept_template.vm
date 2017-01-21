@@ -7,11 +7,13 @@
         <p>The documents in question are: </p>
         <br/>
         <p>
-            ${flow.documents}
+            $documents
         </p>
         <br />
+        <hr />
+        <p>The remarks mentioned by the departments it has passed through are:</p>
         <p>
-            ${flow.remarks}
+            $remarks
         </p>
         <br/>
         <br/>

@@ -5,6 +5,8 @@ import application.core.service.exceptions.ServiceException;
 import application.core.utils.exceptions.FlowMailerException;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -16,6 +18,8 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 
 import java.io.StringWriter;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,13 +35,17 @@ public class FlowMailer implements ICWMDMailer {
     @Value("${email.address}")
     private String from;
 
-    private String velocityTemplateLocation = "/resources/velocity/flow_at_dept_template.vm";
+    private String velocityTemplateLocation = "/velocity/flow_at_dept_template.vm";
 
-    @Autowired
     private JavaMailSender mailSender;
 
-    @Autowired
     private VelocityEngine velocityEngine;
+
+    @Autowired
+    public FlowMailer(JavaMailSender mailSender, VelocityEngine velocityEngine) {
+        this.mailSender = mailSender;
+        this.velocityEngine = velocityEngine;
+    }
 
     @Override
     public ICWMDMailer setMailSender(JavaMailSender sender) {
@@ -123,7 +131,7 @@ public class FlowMailer implements ICWMDMailer {
             }
             else {
                 Optional<DepartmentUser> chief = dept.getUserList().stream()
-                        .filter(departmentUser -> !departmentUser.getUser().getUserInfo().getIsDepartmentChief())
+                        .filter(departmentUser -> departmentUser.getUser().getUserInfo().getIsDepartmentChief())
                         .findFirst();
                 if (chief.isPresent()) {
                     User user = chief.get().getUser();
@@ -155,8 +163,8 @@ public class FlowMailer implements ICWMDMailer {
                 flowDocs = flowDocs.substring(0, flowDocs.length() - 2);
 
             VelocityContext velocityContext = new VelocityContext();
-            velocityContext.put(FLOW_TOKEN + ".documents", flowDocs);
-            velocityContext.put(FLOW_TOKEN + ".remarks", flow.getRemarks());
+            velocityContext.put("documents", flowDocs);
+            velocityContext.put("remarks", (flow.getRemarks() == null || flow.getRemarks().equals("")) ? "N/A" : flow.getRemarks());
 
             StringWriter content = new StringWriter();
             velocityEngine.mergeTemplate(velocityTemplateLocation, "UTF-8", velocityContext, content);

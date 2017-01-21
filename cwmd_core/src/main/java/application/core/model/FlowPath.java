@@ -17,6 +17,11 @@ import java.io.Serializable;
 @Setter
 @Builder
 public class FlowPath implements Serializable {
+
+    @Column(name = "FlowPathID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
     @Id
     @ManyToOne
     @JoinColumn(name = "FlowID", nullable = false)
@@ -27,6 +32,11 @@ public class FlowPath implements Serializable {
     @ManyToOne
     @JoinColumn(name = "DepartmentID", nullable = false)
     private Department department;
+
+    public FlowPath(Flow flow, Department department) {
+        this.flow = flow;
+        this.department = department;
+    }
 
     @Override
     public String toString() {

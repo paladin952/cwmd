@@ -17,31 +17,33 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class FlowServiceImpl implements IFlowService {
-    private final String VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC = "/resources/velocity/flow_at_dept_template.vm";
-    private final String VELOCITY_FLOW_REJECTED_TEMPLATE_LOC      = "/resources/velocity/flow_rejected_template.vm";
+    private final String VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC = "/velocity/flow_at_dept_template.vm";
+    private final String VELOCITY_FLOW_REJECTED_TEMPLATE_LOC      = "/velocity/flow_rejected_template.vm";
+
+    private final FlowRepository flowRepo;
+    private final FlowPathRepository flowPathRepo;
+    private final FlowDocumentRepository flowDocumentRepo;
+    private final DocumentRepository documentRepository;
+    private final DepartmentRepository departmentRepository;
+    private final UserRepository userRepository;
+    private final DepartmentUserRepository departmentUserRepository;
+    private final FlowMailer flowMailer;
 
     @Autowired
-    private FlowRepository flowRepo;
-    @Autowired
-    private FlowPathRepository flowPathRepo;
-    @Autowired
-    private FlowDocumentRepository flowDocumentRepo;
-    @Autowired
-    private DocumentRepository documentRepository;
-    @Autowired
-    private DepartmentRepository departmentRepository;
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private DepartmentUserRepository departmentUserRepository;
-    @Autowired
-    private FlowMailer flowMailer;
+    public FlowServiceImpl(FlowRepository flowRepo, FlowPathRepository flowPathRepo, FlowDocumentRepository flowDocumentRepo, DocumentRepository documentRepository, DepartmentRepository departmentRepository, UserRepository userRepository, DepartmentUserRepository departmentUserRepository, FlowMailer flowMailer) {
+        this.flowRepo = flowRepo;
+        this.flowPathRepo = flowPathRepo;
+        this.flowDocumentRepo = flowDocumentRepo;
+        this.documentRepository = documentRepository;
+        this.departmentRepository = departmentRepository;
+        this.userRepository = userRepository;
+        this.departmentUserRepository = departmentUserRepository;
+        this.flowMailer = flowMailer;
+    }
 
     @Override
     public Flow startFlow(List<Integer> documents, List<Integer> departments, String username) {
         User user = userRepository.findOne(username);
-
         try {
             Flow flow = Flow.builder()
                     .crtDepartment(0)
@@ -51,7 +53,7 @@ public class FlowServiceImpl implements IFlowService {
                     .flowDocuments(new ArrayList<>())
                     .build();
 
-            flow = flowRepo.saveAndFlush(flow); // TODO: shouldn't this be done at the end?
+            flow = flowRepo.saveAndFlush(flow);
             for (Integer documentId : documents) {
                 Document dbDoc = documentRepository.findOne(documentId);
                 if (dbDoc != null) {
@@ -78,6 +80,11 @@ public class FlowServiceImpl implements IFlowService {
                 if (dbDoc != null) {
                     dbDoc.setIsPartOfFlow(true);
                 } else throw new RuntimeException("Document with id " + documentId + " was not found in the database");
+            }
+
+            if (flow.getFlowPath().size() > 0) {
+                flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC);
+                flowMailer.sendMail(flow);
             }
 
             return flow;
@@ -136,11 +143,13 @@ public class FlowServiceImpl implements IFlowService {
             throw new ServiceException("No flow having ID " + flowId.toString() + " was found in the database");
 
         int crt = flow.getCrtDepartment();
-        flow.setCrtDepartment(crt == flow.getFlowPath().size() - 1 ? crt : crt + 1); // stop going further once we're at the end of the road
+        flow.setCrtDepartment(crt >= flow.getFlowPath().size() ? crt : crt + 1); // stop going further once we're at the end of the road
         flowRepo.save(flow);
 
-        flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC);
-        flowMailer.sendMail(flow);
+        if (crt < flow.getFlowPath().size()) {
+            flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC);
+            flowMailer.sendMail(flow);
+        }
 
         return flow;
     }

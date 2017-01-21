@@ -16,16 +16,19 @@ import java.util.stream.Collectors;
 public class DocumentScheduler {
     private Long docFirstThreshold  = 30L;
     private Long docSecondThreshold = 60L;
-    private String docFirstThresholdTemplateLocation  = "/resources/velocity/doc_30_days_template.vm";
-    private String docSecondThresholdTemplateLocation = "/resources/velocity/doc_60_days_template.vm";
+    private String docFirstThresholdTemplateLocation  = "/velocity/doc_30_days_template.vm";
+    private String docSecondThresholdTemplateLocation = "/velocity/doc_60_days_template.vm";
 
-    @Autowired
     private DocumentRepository documentRepository;
-    @Autowired
     private FlowRepository flowRepository;
+    private DocumentMailer mailer;
 
     @Autowired
-    private DocumentMailer mailer;
+    public DocumentScheduler(DocumentRepository documentRepository, FlowRepository flowRepository, DocumentMailer mailer) {
+        this.documentRepository = documentRepository;
+        this.flowRepository = flowRepository;
+        this.mailer = mailer;
+    }
 
     @Scheduled(fixedRate = 86400000L)
     public void checkDocumentStatus() {

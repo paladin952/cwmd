@@ -18,12 +18,6 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: ADD YOUR OWN email.properties FILE, UNDER CWMD_CORE.SRC.MAIN.RESOURCES
-// properties file format:
-// email.address=YOUREMAIL@gmail.com
-// email.password=YOURPASSWORD
-// ! might need to set up an application password
-// if two-step authentication is enabled on your account
 @Component
 @PropertySources({@PropertySource(value = "classpath:local/email.properties")})
 public class DocumentMailer implements ICWMDMailer {
@@ -33,13 +27,17 @@ public class DocumentMailer implements ICWMDMailer {
     @Value("${email.address}")
     private String from;
 
-    private String velocityTemplateLocation = "/resources/velocity/doc_30_days_template.vm";
+    private String velocityTemplateLocation = "/velocity/doc_30_days_template.vm";
 
-    @Autowired
     private JavaMailSender mailSender;
 
-    @Autowired
     private VelocityEngine velocityEngine;
+
+    @Autowired
+    public DocumentMailer(JavaMailSender mailSender, VelocityEngine velocityEngine) {
+        this.mailSender = mailSender;
+        this.velocityEngine = velocityEngine;
+    }
 
     @Override
     public ICWMDMailer setMailSender(JavaMailSender sender) {
@@ -103,9 +101,9 @@ public class DocumentMailer implements ICWMDMailer {
         try {
             Document doc = (Document) model.get(DOCUMENT_TOKEN);
             VelocityContext velocityContext = new VelocityContext();
-            velocityContext.put(DOCUMENT_TOKEN + ".name", doc.getName());
-            velocityContext.put(DOCUMENT_TOKEN + ".date", doc.getDateAdded());
-            velocityContext.put(DOCUMENT_TOKEN + ".owner", doc.getUser().getUsername());
+            velocityContext.put("name", doc.getName());
+            velocityContext.put("date", doc.getDateAdded());
+            velocityContext.put("owner", doc.getUser().getUsername());
 
             StringWriter content = new StringWriter();
             velocityEngine.mergeTemplate(velocityTemplateLocation, "UTF-8", velocityContext, content);

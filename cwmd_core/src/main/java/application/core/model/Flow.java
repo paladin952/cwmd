@@ -26,6 +26,7 @@ public class Flow implements Serializable {
     private List<FlowDocument> flowDocuments = new ArrayList<>();
 
     @OneToMany(mappedBy = "flow", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("FlowPathID")
     private List<FlowPath> flowPath = new ArrayList<>();
 
     @Column(name = "CurrentDepartment")

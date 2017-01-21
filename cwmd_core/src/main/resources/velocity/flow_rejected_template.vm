@@ -7,13 +7,13 @@
         <p>The documents in question are: </p>
         <br/>
         <p>
-            ${flow.documents}
+            $documents
         </p>
         <br />
 
         <p>The remarks mentioned by the departments it has passed through are:</p>
         <p>
-            ${flow.remarks}
+            $remarks
         </p>
         <br/>
         <p>Once you've made the necessary modifications, you may resubmit it.</p>

@@ -4,6 +4,7 @@ package application.web.config;
 import application.core.config.JPAConfig;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -57,8 +58,8 @@ public class AppLocalConfig {
     public VelocityEngine getVelocityEngine() throws VelocityException, IOException {
         VelocityEngineFactory factory = new VelocityEngineFactory();
         Properties props = new Properties();
-        props.put("resource.loader", "class");
-        props.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        props.setProperty("resource.loader", "classpath");
+        props.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 
         factory.setVelocityProperties(props);
         return factory.createVelocityEngine();

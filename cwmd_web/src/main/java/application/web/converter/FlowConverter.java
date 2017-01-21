@@ -3,6 +3,8 @@ package application.web.converter;
 import application.core.model.Flow;
 import application.core.model.FlowDocument;
 import application.core.model.FlowPath;
+import application.core.repository.FlowDocumentRepository;
+import application.core.repository.FlowPathRepository;
 import application.web.dto.FlowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,11 +13,15 @@ import java.util.stream.Collectors;
 
 @Component
 public class FlowConverter extends Converter<Flow, FlowDTO> {
-    @Autowired
-    private DepartmentConverter departmentConverter;
+    private final DepartmentConverter departmentConverter;
+
+    private final LightDocumentConverter documentConverter;
 
     @Autowired
-    private LightDocumentConverter documentConverter;
+    public FlowConverter(DepartmentConverter departmentConverter, LightDocumentConverter documentConverter, FlowDocumentRepository flowDocumentRepository, FlowPathRepository flowPathRepository) {
+        this.departmentConverter = departmentConverter;
+        this.documentConverter = documentConverter;
+    }
 
     @Override
     public FlowDTO toDTO(Flow obj) {
