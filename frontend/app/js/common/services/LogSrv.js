@@ -28,10 +28,10 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             to: to
         };
         var parameters = {
-            filer: filter,
-            timestamp: timestamp
+            filter: filter,
+            interval: timestamp
         };
-
+        console.log(parameters);
         return Restangular.all(path).post(parameters);
     };
 
@@ -64,8 +64,8 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             to: to
         };
         var parameters = {
-            filer: filter,
-            timestamp: timestamp
+            filter: filter,
+            interval: timestamp
         };
 
         return Restangular.all(path).post(parameters);
@@ -100,8 +100,8 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             to: to
         };
         var parameters = {
-            filer: filter,
-            timestamp: timestamp
+            filter: filter,
+            interval: timestamp
         };
 
         return Restangular.all(path).post(parameters);
@@ -136,8 +136,8 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             to: to
         };
         var parameters = {
-            filer: filter,
-            timestamp: timestamp
+            filter: filter,
+            interval: timestamp
         };
 
         return Restangular.all(path).post(parameters);
@@ -172,8 +172,8 @@ angular.module('cwmd').service('LogSrv', function (Restangular) {
             to: to
         };
         var parameters = {
-            filer: filter,
-            timestamp: timestamp
+            filter: filter,
+            interval: timestamp
         };
 
         return Restangular.all(path).post(parameters);
