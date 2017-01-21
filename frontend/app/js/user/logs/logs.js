@@ -12,10 +12,6 @@ angular.module('cwmd').component('logs', {
         $ctrl.log = null;
         $ctrl.filters = null;
 
-        function convertDate(date){
-
-        }
-
         $ctrl.$onInit = function () {
             LogSrv.getAllLogs()
                 .then(function (response) {
@@ -136,7 +132,6 @@ angular.module('cwmd').component('logs', {
                         alert("You need to properly fill in the dates");
                         return;
                     }
-                    console.log(new Date ($ctrl.to));
                     if ($ctrl.log === $ctrl.logTypes[0]) {
                         LogSrv.getAllLogsWithTimestamp($ctrl.from, $ctrl.to)
                             .then(function (response) {
@@ -184,7 +179,7 @@ angular.module('cwmd').component('logs', {
                     }
                 }
             }
-            else if ($ctrl.filters.length == 2) {
+            else if ($ctrl.filters.length === 2) {
                 if (!$ctrl.filterValue) {
                     alert("You need to pick a filter value.");
                     return;
