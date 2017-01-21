@@ -86,7 +86,7 @@ angular.module('cwmd').component('logs', {
                         return;
                     }
                     if ($ctrl.log === $ctrl.logTypes[0]) {
-                        LogSrv.getAllLogsWithFilter($ctrl.log)
+                        LogSrv.getAllLogsWithFilter($ctrl.filterValue)
                             .then(function (response) {
                                 $ctrl.logs = response;
                             })
@@ -95,7 +95,7 @@ angular.module('cwmd').component('logs', {
                             });
                     }
                     else if ($ctrl.log === $ctrl.logTypes[1]) {
-                        LogSrv.getAllDebugLogsWithFilter($ctrl.log)
+                        LogSrv.getAllDebugLogsWithFilter($ctrl.filterValue)
                             .then(function (response) {
                                 $ctrl.logs = response;
                             })
@@ -104,7 +104,7 @@ angular.module('cwmd').component('logs', {
                             });
                     }
                     else if ($ctrl.log === $ctrl.logTypes[2]) {
-                        LogSrv.getAllInfoLogsWithFilter($ctrl.log)
+                        LogSrv.getAllInfoLogsWithFilter($ctrl.filterValue)
                             .then(function (response) {
                                 $ctrl.logs = response;
                             })
@@ -113,7 +113,7 @@ angular.module('cwmd').component('logs', {
                             });
                     }
                     else if ($ctrl.log === $ctrl.logTypes[3]) {
-                        LogSrv.getAllWarnLogsWithFilter($ctrl.log)
+                        LogSrv.getAllWarnLogsWithFilter($ctrl.filterValue)
                             .then(function (response) {
                                 $ctrl.logs = response;
                             })
@@ -122,7 +122,7 @@ angular.module('cwmd').component('logs', {
                             });
                     }
                     else if ($ctrl.log === $ctrl.logTypes[4]) {
-                        LogSrv.getAllErrorLogsWithFilter($ctrl.log)
+                        LogSrv.getAllErrorLogsWithFilter($ctrl.filterValue)
                             .then(function (response) {
                                 $ctrl.logs = response;
                             })
@@ -194,7 +194,7 @@ angular.module('cwmd').component('logs', {
                     return;
                 }
                 if ($ctrl.log === $ctrl.logTypes[0]) {
-                    LogSrv.getAllLogsWithAllFilters($ctrl.log, $ctrl.from, $ctrl.to)
+                    LogSrv.getAllLogsWithAllFilters($ctrl.filterValue, $ctrl.from, $ctrl.to)
                         .then(function (response) {
                             $ctrl.logs = response;
                         })
@@ -203,7 +203,7 @@ angular.module('cwmd').component('logs', {
                         });
                 }
                 else if ($ctrl.log === $ctrl.logTypes[1]) {
-                    LogSrv.getAllDebugLogsWithAllFilters($ctrl.log, $ctrl.from, $ctrl.to)
+                    LogSrv.getAllDebugLogsWithAllFilters($ctrl.filterValue, $ctrl.from, $ctrl.to)
                         .then(function (response) {
                             $ctrl.logs = response;
                         })
@@ -212,7 +212,7 @@ angular.module('cwmd').component('logs', {
                         });
                 }
                 else if ($ctrl.log === $ctrl.logTypes[2]) {
-                    LogSrv.getAllInfoLogsWithAllFilters($ctrl.log, $ctrl.from, $ctrl.to)
+                    LogSrv.getAllInfoLogsWithAllFilters($ctrl.filterValue, $ctrl.from, $ctrl.to)
                         .then(function (response) {
                             $ctrl.logs = response;
                         })
@@ -221,7 +221,7 @@ angular.module('cwmd').component('logs', {
                         });
                 }
                 else if ($ctrl.log === $ctrl.logTypes[3]) {
-                    LogSrv.getAllWarnLogsWithAllFilters($ctrl.log, $ctrl.from, $ctrl.to)
+                    LogSrv.getAllWarnLogsWithAllFilters($ctrl.filterValue, $ctrl.from, $ctrl.to)
                         .then(function (response) {
                             $ctrl.logs = response;
                         })
@@ -230,7 +230,7 @@ angular.module('cwmd').component('logs', {
                         });
                 }
                 else if ($ctrl.log === $ctrl.logTypes[4]) {
-                    LogSrv.getAllErrorLogsWithAllFilters($ctrl.log, $ctrl.from, $ctrl.to)
+                    LogSrv.getAllErrorLogsWithAllFilters($ctrl.filterValue, $ctrl.from, $ctrl.to)
                         .then(function (response) {
                             $ctrl.logs = response;
                         })
