@@ -88,14 +88,10 @@ public class FlowServiceImpl implements IFlowService {
             }
 
             if (flow.getFlowPath().size() > 0) {
-                try {
-                    flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC);
-                    flowMailer.sendMail(flow);
-                } catch (RuntimeException e) {
-                    e.printStackTrace();
-                    log.error(TAG, "Failed to send email for 'flow at department", flow.getUser().getUsername(), e);
-                }
+                flowMailer.setVelocityTemplateLocation(VELOCITY_FLOW_AT_DEPARTMENT_TEMPLATE_LOC);
+                flowMailer.sendMail(flow);
             }
+
             return flow;
         } catch (Exception e) {
             throw new ServiceException("Unknown error while starting a flow", e);
@@ -172,7 +168,7 @@ public class FlowServiceImpl implements IFlowService {
                 flowMailer.sendMail(flow);
             } catch (RuntimeException e) {
                 e.printStackTrace();
-                log.error(TAG, "Failed to send email for 'flow at department", flow.getUser().getUsername(), e);
+                log.error(FlowServiceImpl.class.getSimpleName(), "Failed to send email for 'flow at department", flow.getUser().getUsername());
             }
         }
 
